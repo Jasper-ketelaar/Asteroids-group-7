@@ -11,7 +11,8 @@ public class Launch {
 		try {
 			AppGameContainer appgc;
 			appgc = new AppGameContainer(new AsteroidsGame("Asteroids"));
-			appgc.setDisplayMode(640, 480, false);
+			appgc.setDisplayMode(1200, 800, false);
+			appgc.setTargetFrameRate(60);
 			appgc.start();
 		} catch (SlickException ex) {
 			ex.printStackTrace();

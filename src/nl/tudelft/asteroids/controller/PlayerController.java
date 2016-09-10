@@ -55,7 +55,7 @@ public class PlayerController {
 				velocity = new Vector2f(0, 0);
 			}
 		}
-		player.update(velocity);
+		//player.update(velocity);
 	}
 
 	public void render(Graphics graphics) {

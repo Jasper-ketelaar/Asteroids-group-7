@@ -5,23 +5,25 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
 	
-	private float x;
-	private float y;
+	private Vector2f pos;
 	private Image sprite;
 	
-	public Entity(Image sprite, float x, float y, float rotation) {
+	public Entity(Image sprite, Vector2f pos, float rotation) {
 		this.sprite = sprite;
 		this.sprite.setRotation(rotation);
-		this.x = x;
-		this.y = y;
+		this.pos = pos;
 	}
 	
 	public float getX() {
-		return x;
+		return pos.x;
 	}
 	
 	public float getY() {
-		return y;
+		return pos.y;
+	}
+	
+	public Vector2f getPosition() {
+		return pos;
 	}
 	
 	public float getRotation() {
@@ -34,11 +36,6 @@ public abstract class Entity {
 	
 	public void setRotation(float rotation) {
 		sprite.setRotation(rotation);
-	}
-	
-	public void update(Vector2f direction) {
-		this.x += direction.x;
-		this.y += direction.y;
 	}
 
 }

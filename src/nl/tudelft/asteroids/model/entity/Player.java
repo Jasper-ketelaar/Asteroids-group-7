@@ -3,7 +3,6 @@ package nl.tudelft.asteroids.model.entity;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.lwjgl.util.vector.Matrix;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,7 +14,7 @@ import nl.tudelft.asteroids.util.Util;
 
 public class Player extends Entity {
 
-	private static final float VELOCITY_MULTIPLIER = 1.05f;
+	private static final float VELOCITY_MULTIPLIER = 1.03f;
 
 	private ArrayList<Bullet> bulletList = new ArrayList<>();
 
@@ -25,7 +24,6 @@ public class Player extends Entity {
 
 	public Player(Vector2f position, float rotation) throws SlickException {
 		super(new Image("resources/Plane.png").getScaledCopy(0.1f), position, rotation);
-		//getSprite().setCenterOfRotation(200, 200);
 		direction = Util.decompose(Math.toRadians(getRotation() - 90));
 	}
 
@@ -33,7 +31,6 @@ public class Player extends Entity {
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
-		//getSprite().setCenterOfRotation(50, 50);
 	}
 
 	public ArrayList<Bullet> getFiredBullets() {
@@ -76,7 +73,7 @@ public class Player extends Entity {
 		if (input.isKeyDown(Input.KEY_UP)) {
 			if (velocity == 0)
 				velocity = 1;
-			if (velocity <= 10)
+			if (velocity <= 7)
 				velocity *= VELOCITY_MULTIPLIER;
 			if (hasRotated) {
 				if (movingDirection == null) {
@@ -109,10 +106,10 @@ public class Player extends Entity {
 
 	private boolean updateRotation(Input input) {
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
-			setRotation(getRotation() + 4);
+			setRotation(getRotation() + 2.5f);
 			return true;
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
-			setRotation(getRotation() - 4);
+			setRotation(getRotation() - 2.5f);
 			return true;
 		}
 		return false;

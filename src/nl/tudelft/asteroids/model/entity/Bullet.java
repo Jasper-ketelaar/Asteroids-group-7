@@ -14,7 +14,7 @@ import org.newdawn.slick.geom.Vector2f;
 public class Bullet extends Entity{
 	
 	private final Vector2f direction;
-	private static final float SCALE = 15;
+	private static final float SCALE = 12;
 	
 	/**
 	 * Constructor. The direction of the bullet is determined based direction

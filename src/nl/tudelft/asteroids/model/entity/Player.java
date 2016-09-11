@@ -3,6 +3,7 @@ package nl.tudelft.asteroids.model.entity;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.lwjgl.util.vector.Matrix;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -15,7 +16,7 @@ import nl.tudelft.asteroids.util.Util;
 public class Player extends Entity {
 
 	private static final float VELOCITY_MULTIPLIER = 1.05f;
-	
+
 	private ArrayList<Bullet> bulletList = new ArrayList<>();
 
 	private Vector2f direction;
@@ -24,26 +25,36 @@ public class Player extends Entity {
 
 	public Player(Vector2f position, float rotation) throws SlickException {
 		super(new Image("resources/Plane.png").getScaledCopy(0.1f), position, rotation);
+		//getSprite().setCenterOfRotation(200, 200);
+		direction = Util.decompose(Math.toRadians(getRotation() - 90));
 	}
 
 	public void update(GameContainer gc, int delta) {
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
+		//getSprite().setCenterOfRotation(50, 50);
 	}
-	
+
+	public ArrayList<Bullet> getFiredBullets() {
+		return bulletList;
+	}
+
 	private void handleBullets(GameContainer gc) {
 		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
 			try {
-				Bullet bullet = new Bullet(new Vector2f(getPosition()), getRotation());
+				double rotationRadians = Math.toRadians(getRotation() - 90);
+				float x = (float) Math.cos(rotationRadians) * 40 + getX() + 35;
+				float y = (float) Math.sin(rotationRadians) * 40 + getY() + 35;
+				Bullet bullet = new Bullet(new Vector2f(x, y), getRotation());
 				bulletList.add(bullet);
-			} catch(SlickException e) {
+			} catch (SlickException e) {
 				e.printStackTrace();
 			}
 		}
-		
+
 		Iterator<Bullet> it = bulletList.iterator();
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			Bullet b = it.next();
 			if (b.getX() < 0 || b.getX() > gc.getScreenWidth() || b.getY() < 0 || b.getY() > gc.getScreenHeight())
 				it.remove();
@@ -71,7 +82,8 @@ public class Player extends Entity {
 				if (movingDirection == null) {
 					movingDirection = new Vector2f(direction);
 				} else {
-					movingDirection = new Vector2f(direction).add(movingDirection).normalise();
+
+					movingDirection = new Vector2f(direction).add(movingDirection).scale(0.5f).normalise();
 				}
 				move(movingDirection, velocity);
 			} else {
@@ -105,7 +117,7 @@ public class Player extends Entity {
 		}
 		return false;
 	}
-	
+
 	public void render(Graphics g) {
 		g.drawImage(getSprite(), getX(), getY());
 		for (Bullet b : bulletList) {

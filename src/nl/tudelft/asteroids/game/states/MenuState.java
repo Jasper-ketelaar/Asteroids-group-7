@@ -7,8 +7,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import nl.tudelft.asteroids.game.states.menu.MenuItem;
-
 public class MenuState extends BasicGameState {
 	
 	private final Image background;

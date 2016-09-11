@@ -26,9 +26,9 @@ public class PlayState extends BasicGameState {
 	}
 
 	@Override
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2) throws SlickException {
-		arg2.drawImage(background, 0, 0);
-		arg2.drawImage(player.getSprite(), player.getX(), player.getY());
+	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {
+		g.drawImage(background, 0, 0);
+		player.render(g);
 		
 	}
 

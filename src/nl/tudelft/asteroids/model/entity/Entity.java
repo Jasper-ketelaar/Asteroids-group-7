@@ -26,6 +26,10 @@ public abstract class Entity {
 		return pos;
 	}
 	
+	public void setPosition(Vector2f pos) {
+		this.pos = pos;
+	}
+	
 	public float getRotation() {
 		return sprite.getRotation();
 	}

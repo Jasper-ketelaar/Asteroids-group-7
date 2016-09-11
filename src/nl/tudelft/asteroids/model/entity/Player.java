@@ -15,7 +15,11 @@ import nl.tudelft.asteroids.util.Util;
 public class Player extends Entity {
 
 	private static final float VELOCITY_MULTIPLIER = 1.03f;
-
+	private static final float ROTATION_SPEED = 2.5f;
+	private static final float MAXIMUM_VELOCITY = 7;
+	
+	private static final int BULLET_ADJUSTMENT = 35;
+	
 	private ArrayList<Bullet> bulletList = new ArrayList<>();
 
 	private Vector2f direction;
@@ -23,8 +27,8 @@ public class Player extends Entity {
 	private double velocity;
 
 	public Player(Vector2f position, float rotation) throws SlickException {
-		super(new Image("resources/Plane.png").getScaledCopy(0.1f), position, rotation);
-		direction = Util.decompose(Math.toRadians(getRotation() - 90));
+		super(new Image("resources/plane.png"), position, rotation);
+		direction = Util.decompose(Math.toRadians(getRotation() - DEGREE_ADJUSTMENT));
 	}
 
 	public void update(GameContainer gc, int delta) {
@@ -40,9 +44,9 @@ public class Player extends Entity {
 	private void handleBullets(GameContainer gc) {
 		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
 			try {
-				double rotationRadians = Math.toRadians(getRotation() - 90);
-				float x = (float) Math.cos(rotationRadians) * 40 + getX() + 35;
-				float y = (float) Math.sin(rotationRadians) * 40 + getY() + 35;
+				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
+				float x = (float) Math.cos(rotationRadians) * BULLET_ADJUSTMENT + getX() + BULLET_ADJUSTMENT;
+				float y = (float) Math.sin(rotationRadians) * BULLET_ADJUSTMENT + getY() + BULLET_ADJUSTMENT;
 				Bullet bullet = new Bullet(new Vector2f(x, y), getRotation());
 				bulletList.add(bullet);
 			} catch (SlickException e) {
@@ -64,7 +68,7 @@ public class Player extends Entity {
 		boolean hasRotated = updateRotation(input);
 
 		if (hasRotated) {
-			direction = Util.decompose(Math.toRadians(getRotation() - 90));
+			direction = Util.decompose(Math.toRadians(getRotation() - DEGREE_ADJUSTMENT));
 			if (direction.length() > 0) {
 				direction.normalise();
 			}
@@ -73,7 +77,7 @@ public class Player extends Entity {
 		if (input.isKeyDown(Input.KEY_UP)) {
 			if (velocity == 0)
 				velocity = 1;
-			if (velocity <= 7)
+			if (velocity <= MAXIMUM_VELOCITY)
 				velocity *= VELOCITY_MULTIPLIER;
 			if (hasRotated) {
 				if (movingDirection == null) {
@@ -106,10 +110,10 @@ public class Player extends Entity {
 
 	private boolean updateRotation(Input input) {
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
-			setRotation(getRotation() + 2.5f);
+			setRotation(getRotation() + ROTATION_SPEED);
 			return true;
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
-			setRotation(getRotation() - 2.5f);
+			setRotation(getRotation() - ROTATION_SPEED);
 			return true;
 		}
 		return false;

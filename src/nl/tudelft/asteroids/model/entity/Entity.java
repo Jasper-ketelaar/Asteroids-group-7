@@ -6,6 +6,8 @@ import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
 	
+	protected static final int DEGREE_ADJUSTMENT = 90;
+	
 	private Vector2f pos;
 	private Image sprite;
 	

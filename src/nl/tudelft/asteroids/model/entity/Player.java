@@ -27,7 +27,7 @@ public class Player extends Entity {
 	private double velocity;
 
 	public Player(Vector2f position, float rotation) throws SlickException {
-		super(new Image("resources/plane.png"), position, rotation);
+		super(new Image("resources/Plane.png"), position, rotation);
 		direction = Util.decompose(Math.toRadians(getRotation() - DEGREE_ADJUSTMENT));
 	}
 

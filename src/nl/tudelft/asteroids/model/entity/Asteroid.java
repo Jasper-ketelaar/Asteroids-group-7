@@ -18,7 +18,7 @@ public class Asteroid extends Entity {
 	private final Vector2f velocity;
 
 	public Asteroid(Vector2f position, float rotation) throws SlickException {
-		super(new Image("resources/asteroid.png"), position, rotation);
+		super(new Image("resources/Asteroid.png"), position, rotation);
 
 		double radian = Math.toRadians(rotation + MAX_DEGREES * new Random().nextFloat());
 		float xDelta = (float) Math.cos(radian);

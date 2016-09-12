@@ -11,6 +11,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.tudelft.asteroids.model.entity.Asteroid;
+import nl.tudelft.asteroids.model.entity.Entity;
 import nl.tudelft.asteroids.model.entity.Player;
 
 public class PlayState extends BasicGameState {
@@ -46,6 +47,18 @@ public class PlayState extends BasicGameState {
 		for (Asteroid as : asteroids) {
 			as.update(gc);
 		}
+	}
+	
+	public void intersects(Entity entity){
+		for(Asteroid as: asteroids){
+			if(player.getBox().intersects(as.getBox())){
+				System.out.println("INTERSECT");
+			}
+			else {
+				System.out.println("NO INTERSECT");
+			}
+		}
+		System.out.println("NO INTERSECT");
 	}
 
 	@Override

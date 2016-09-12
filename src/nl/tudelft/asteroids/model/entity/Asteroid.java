@@ -8,6 +8,7 @@ import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 
 /**
  * Asteroid moving around the screen, while rotating.
@@ -23,6 +24,7 @@ public class Asteroid extends Entity {
 	private static final int MAX_DEGREES = 360;
 	private static final int EXPLOSION_SPEED = 35;
 	
+	private final Sound explSound;
 	private final Animation explosion;
 	private final Vector2f velocity;
 
@@ -49,6 +51,8 @@ public class Asteroid extends Entity {
 		};
 		explosion = new Animation(sprites, EXPLOSION_SPEED);
 		explosion.setLooping(false);
+		this.explSound = new Sound("resources/sfx/explode1.ogg");
+		
 		
 		
 		double radian = Math.toRadians(rotation + MAX_DEGREES * new Random().nextFloat());
@@ -87,6 +91,7 @@ public class Asteroid extends Entity {
 	
 	public void playExplosion() {
 		setAnimation(explosion);
+		explSound.play();
 		
 	}
 	

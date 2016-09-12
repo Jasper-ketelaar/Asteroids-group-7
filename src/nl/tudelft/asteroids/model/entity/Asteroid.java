@@ -6,7 +6,6 @@ import java.util.Random;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
@@ -22,6 +21,7 @@ public class Asteroid extends Entity {
 	private static final float ROTATION_SPEED = 1.75f;
 
 	private static final int MAX_DEGREES = 360;
+	private static final int EXPLOSION_SPEED = 35;
 	
 	private final Animation explosion;
 	private final Vector2f velocity;
@@ -47,7 +47,7 @@ public class Asteroid extends Entity {
 				new Image("resources/asteroid/Explosion-7.png"),
 				new Image("resources/asteroid/Explosion-8.png")
 		};
-		explosion = new Animation(sprites, 50);
+		explosion = new Animation(sprites, EXPLOSION_SPEED);
 		explosion.setLooping(false);
 		
 		
@@ -61,34 +61,6 @@ public class Asteroid extends Entity {
 		velocity = new Vector2f(direction.x * SPEED, direction.y * SPEED);
 	}
 
-	/** 
-	 * @return The minimal x-coordinate of the Asteroid.
-	 */
-	public float getMinX() {
-		return super.getX();
-	}
-
-	/** 
-	 * @return The maximal x-coordinate of the Asteroid.
-	 */
-	public float getMaxX() {
-		return super.getX() + super.getSprite().getWidth();
-	}
-
-	/** 
-	 * @return The minimal y-coordinate of the Asteroid.
-	 */
-	public float getMinY() {
-		return super.getY() + super.getSprite().getHeight();
-	}
-
-	/** 
-	 * @return The maximal y-coordinate of the Asteroid.
-	 */
-	public float getMaxY() {
-		return super.getY();
-	}
-
 	/**
 	 * Updates the position of the Asteroid. If an Asteroid reaches
 	 * the border of the screen, it enters the screen on the opposite
@@ -97,9 +69,6 @@ public class Asteroid extends Entity {
 	 * @param gc
 	 */
 	public void update(GameContainer gc) {
-		if (explosion.isStopped()) {
-			
-		}
 		setRotation(getRotation() + ROTATION_SPEED);
 		super.setPosition(getPosition().add(velocity));
 		if (getMaxX() < 0 && getMinX() < 0) {
@@ -118,6 +87,7 @@ public class Asteroid extends Entity {
 	
 	public void playExplosion() {
 		setAnimation(explosion);
+		
 	}
 	
 	public Animation getExplosion() {

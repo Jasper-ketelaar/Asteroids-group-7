@@ -33,6 +33,10 @@ public abstract class Entity {
 		this.sprite.getCurrentFrame().setRotation(rotation);
 		this.pos = pos;
 	}
+	
+	public Entity(Vector2f pos) {
+		this.pos = pos;
+	}
 
 	/**
 	 * @return The x-coordinate of the Entity
@@ -95,6 +99,34 @@ public abstract class Entity {
 	public void render(Graphics g) {
 		if (sprite != null)
 			sprite.draw(getX(), getY());
+	}
+	
+	/** 
+	 * @return The minimal x-coordinate of the Asteroid.
+	 */
+	public float getMinX() {
+		return getX();
+	}
+
+	/** 
+	 * @return The maximal x-coordinate of the Asteroid.
+	 */
+	public float getMaxX() {
+		return getX() + getSprite().getWidth();
+	}
+
+	/** 
+	 * @return The minimal y-coordinate of the Asteroid.
+	 */
+	public float getMinY() {
+		return getY() + getSprite().getHeight();
+	}
+
+	/** 
+	 * @return The maximal y-coordinate of the Asteroid.
+	 */
+	public float getMaxY() {
+		return getY();
 	}
 
 }

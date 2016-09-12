@@ -43,7 +43,8 @@ public class PlayState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
-		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2), 0);
+		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
+		this.player.init();
 		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0));
 	}
 

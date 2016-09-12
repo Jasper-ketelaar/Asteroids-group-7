@@ -8,6 +8,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -46,6 +47,8 @@ public class PlayState extends BasicGameState {
 		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
 		this.player.init();
 		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0));
+		Sound sound = new Sound("resources/sfx/music_loop.ogg");
+		sound.loop(1f, 0.5f);
 	}
 
 	/**

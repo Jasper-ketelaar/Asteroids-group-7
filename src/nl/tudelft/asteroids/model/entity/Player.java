@@ -9,6 +9,7 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 
 import nl.tudelft.asteroids.util.Util;
@@ -33,6 +34,7 @@ public class Player extends Entity {
 	private Vector2f movingDirection;
 	private double velocity;
 	private Animation still, moving;
+	private Sound fire, thrust;
 
 	/**
 	 * Constructor.
@@ -44,6 +46,8 @@ public class Player extends Entity {
 	public Player(Vector2f position) throws SlickException {
 		super(position);
 		this.direction = new Vector2f(0, -1);
+		this.fire = new Sound("resources/sfx/shoot.ogg");
+		this.thrust = new Sound("resources/sfx/thrust.ogg");
 	}
 	
 	public void init() {
@@ -114,6 +118,7 @@ public class Player extends Entity {
 	 */
 	private void handleBullets(GameContainer gc) {
 		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+			fire.play(1, 0.6f);
 			try {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
 				float x = (float) Math.cos(rotationRadians) * BULLET_ADJUSTMENT + getX() + BULLET_ADJUSTMENT;
@@ -151,6 +156,9 @@ public class Player extends Entity {
 		}
 
 		if (input.isKeyDown(Input.KEY_UP)) {
+			if (!thrust.playing()) {
+				thrust.play(1, 0.6f);
+			}
 			setAnimation(moving);
 			if (velocity == 0 || movingDirection == null)
 				velocity = 1;

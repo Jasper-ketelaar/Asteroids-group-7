@@ -11,6 +11,7 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.tudelft.asteroids.model.entity.Asteroid;
+import nl.tudelft.asteroids.model.entity.Bullet;
 import nl.tudelft.asteroids.model.entity.Entity;
 import nl.tudelft.asteroids.model.entity.Player;
 
@@ -45,20 +46,22 @@ public class PlayState extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		player.update(gc, delta);
 		for (Asteroid as : asteroids) {
+			
 			as.update(gc);
-		}
-		intersects();
-	}
-	
-	public void intersects(){
-		for(Asteroid as: asteroids){
-
 			if(player.collide(as)){
-				System.out.println("INTERSECT");
+				System.out.println("Player/Asteroid intersect");
+			}
+			Bullet[] activeBullets = new Bullet[player.getFiredBullets().size()];
+			player.getFiredBullets().toArray(activeBullets);
+			for(Bullet a : activeBullets) {
+				if(a.collide(as)){
+					System.out.println("Bullet/Asteroid intersect");
+				}
 			}
 		}
 		
 	}
+	
 
 	@Override
 	public int getID() {

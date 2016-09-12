@@ -12,6 +12,12 @@ import org.newdawn.slick.geom.Vector2f;
 
 import nl.tudelft.asteroids.util.Util;
 
+/**
+ * Player controlling the spaceship and shooting bullets.
+ * 
+ * @author Bernard
+ *
+ */
 public class Player extends Entity {
 
 	private static final float VELOCITY_MULTIPLIER = 1.03f;
@@ -26,21 +32,44 @@ public class Player extends Entity {
 	private Vector2f movingDirection;
 	private double velocity;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param position
+	 * @param rotation
+	 * @throws SlickException
+	 */
 	public Player(Vector2f position, float rotation) throws SlickException {
 		super(new Image("resources/Plane.png"), position, rotation);
 		direction = Util.decompose(Math.toRadians(getRotation() - DEGREE_ADJUSTMENT));
 	}
 
+	/**
+	 * Updates the movement and bullets of the Player,
+	 * based on the user's input.
+	 * 
+	 * @param gc
+	 * @param delta
+	 */
 	public void update(GameContainer gc, int delta) {
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
 	}
 
+	/**
+	 * 
+	 * @return list containing all the bullets on screen
+	 */
 	public ArrayList<Bullet> getFiredBullets() {
 		return bulletList;
 	}
 
+	/**
+	 * Handles the input and movement of the Players bullets.
+	 * Deletes bullets when they go out of the screen.
+	 * @param gc
+	 */
 	private void handleBullets(GameContainer gc) {
 		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
 			try {
@@ -64,6 +93,10 @@ public class Player extends Entity {
 		}
 	}
 
+	/**
+	 * Handles the Players movement: converting input to speed, position, and rotation.
+	 * @param input
+	 */
 	private void handleMovement(Input input) {
 		boolean hasRotated = updateRotation(input);
 
@@ -104,10 +137,22 @@ public class Player extends Entity {
 		}
 	}
 
+	/**
+	 * Updates the position of the Player.
+	 * 
+	 * @param direction
+	 * @param velocity
+	 */
 	private void move(Vector2f direction, double velocity) {
 		setPosition(getPosition().add(direction.scale((float) velocity)));
 	}
 
+	/**
+	 * Updates the Players rotation.
+	 * 
+	 * @param input
+	 * @return
+	 */
 	private boolean updateRotation(Input input) {
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
 			setRotation(getRotation() + ROTATION_SPEED);
@@ -119,6 +164,9 @@ public class Player extends Entity {
 		return false;
 	}
 
+	/**
+	 * Renders the Player and Bullet sprites.
+	 */
 	public void render(Graphics g) {
 		g.drawImage(getSprite(), getX(), getY());
 		for (Bullet b : bulletList) {

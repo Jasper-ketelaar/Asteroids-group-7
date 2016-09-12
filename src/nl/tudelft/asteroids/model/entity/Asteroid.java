@@ -10,6 +10,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
+/**
+ * Asteroid moving around the screen, while rotating.
+ * 
+ * @author Bernard
+ *
+ */
 public class Asteroid extends Entity {
 
 	private static final float SPEED = 2f;
@@ -20,6 +26,15 @@ public class Asteroid extends Entity {
 	private final Animation explosion;
 	private final Vector2f velocity;
 
+	/**
+	 * Constructor. The velocity vector is calculated.
+	 * 
+	 * @param 	position
+	 * 			The position of the Asteroid.
+	 * @param 	rotation
+	 * 			The rotation of the Asteroid
+	 * @throws SlickException
+	 */
 	public Asteroid(Vector2f position, float rotation) throws SlickException {
 		super(new Image("resources/Asteroid.png"), position, rotation);
 		Image[] sprites = new Image[] {
@@ -46,22 +61,41 @@ public class Asteroid extends Entity {
 		velocity = new Vector2f(direction.x * SPEED, direction.y * SPEED);
 	}
 
+	/** 
+	 * @return The minimal x-coordinate of the Asteroid.
+	 */
 	public float getMinX() {
 		return super.getX();
 	}
 
+	/** 
+	 * @return The maximal x-coordinate of the Asteroid.
+	 */
 	public float getMaxX() {
 		return super.getX() + super.getSprite().getWidth();
 	}
 
+	/** 
+	 * @return The minimal y-coordinate of the Asteroid.
+	 */
 	public float getMinY() {
 		return super.getY() + super.getSprite().getHeight();
 	}
 
+	/** 
+	 * @return The maximal y-coordinate of the Asteroid.
+	 */
 	public float getMaxY() {
 		return super.getY();
 	}
 
+	/**
+	 * Updates the position of the Asteroid. If an Asteroid reaches
+	 * the border of the screen, it enters the screen on the opposite
+	 * side.
+	 * 
+	 * @param gc
+	 */
 	public void update(GameContainer gc) {
 		if (explosion.isStopped()) {
 			

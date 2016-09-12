@@ -1,5 +1,6 @@
 package nl.tudelft.asteroids.model.entity;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Vector2f;
@@ -9,11 +10,11 @@ public abstract class Entity {
 	protected static final int DEGREE_ADJUSTMENT = 90;
 	
 	private Vector2f pos;
-	private Image sprite;
+	private Animation sprite;
 	
 	public Entity(Image sprite, Vector2f pos, float rotation) {
-		this.sprite = sprite;
-		this.sprite.setRotation(rotation);
+		this.sprite = new Animation(new Image[] {sprite}, 200);
+		this.sprite.getCurrentFrame().setRotation(rotation);
 		this.pos = pos;
 	}
 	
@@ -34,19 +35,24 @@ public abstract class Entity {
 	}
 	
 	public float getRotation() {
-		return sprite.getRotation();
+		return sprite.getCurrentFrame().getRotation();
 	}
 	
 	public Image getSprite() {
-		return sprite;
+		return sprite.getCurrentFrame();
 	}
 	
 	public void setRotation(float rotation) {
-		sprite.setRotation(rotation);
+		sprite.getCurrentFrame().setRotation(rotation);
+	}
+	
+	public void setAnimation(Animation animation) {
+		this.sprite = animation;
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(getSprite(), getX(), getY());
+		if (sprite != null)
+			sprite.draw(getX(), getY());
 	}
 
 }

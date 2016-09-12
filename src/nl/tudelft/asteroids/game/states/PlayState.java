@@ -1,10 +1,12 @@
 package nl.tudelft.asteroids.game.states;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.BasicGameState;
@@ -31,26 +33,36 @@ public class PlayState extends BasicGameState {
 	}
 
 	@Override
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {
+	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		g.drawImage(background, 0, 0);
 		player.render(g);
-		for (Asteroid as : asteroids) {
-			as.render(g);
+		Iterator<Asteroid> iterator = asteroids.iterator();
+		while (iterator.hasNext()) {
+			Asteroid next = iterator.next();
+			next.render(g);
 		}
-
 	}
 
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		player.update(gc, delta);
-		for (Asteroid as : asteroids) {
-			as.update(gc);
+		Iterator<Asteroid> iterator = asteroids.iterator();
+		while (iterator.hasNext()) {
+			Asteroid next = iterator.next();
+			if (next.getExplosion().isStopped()) {
+				iterator.remove();
+				continue;
+			}
+			next.update(gc);
+		}
+		
+		if (gc.getInput().isKeyDown(Input.KEY_W)) {
+			asteroids.get(0).playExplosion();
 		}
 	}
 
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 

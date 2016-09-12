@@ -26,7 +26,7 @@ public class Bullet extends Entity{
 	 * @throws SlickException
 	 */
 	public Bullet(Vector2f location, float rotation) throws SlickException {
-		super(new Image("resources/Bullet.png"), location, rotation, null);
+		super(new Image("resources/Bullet.png"), location, rotation);
 		
 		double rotationRadians = Math.toRadians(rotation - DEGREE_ADJUSTMENT);
 		float xDelta = (float) Math.cos(rotationRadians);

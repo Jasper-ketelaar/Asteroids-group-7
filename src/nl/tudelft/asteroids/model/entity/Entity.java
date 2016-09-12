@@ -2,7 +2,9 @@ package nl.tudelft.asteroids.model.entity;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 public abstract class Entity {
@@ -11,13 +13,13 @@ public abstract class Entity {
 	
 	private Vector2f pos;
 	private Image sprite;
-	private Shape box;
 	
-	public Entity(Image sprite, Vector2f pos, float rotation, Shape box) {
+	
+	public Entity(Image sprite, Vector2f pos, float rotation) {
 		this.sprite = sprite;
 		this.sprite.setRotation(rotation);
 		this.pos = pos;
-		this.box = box;
+
 	}
 	
 	public float getX() {
@@ -52,24 +54,38 @@ public abstract class Entity {
 		g.drawImage(getSprite(), getX(), getY());
 	}
 	
-	public float getMaxXShape(){
-		return box.getMaxX();
+	protected int getWidth(){
+		return this.getSprite().getWidth();
 	}
 	
-	public Shape getBox() {
-		return this.box;
+	protected int getHeight(){
+		return this.getSprite().getHeight();
 	}
 	
-	public float getMaxYShape(){
-		return box.getMaxY();
-	}
-	
-	public float getMinXShape(){
-		return box.getMinX();
-	}
-	
-	public float getMinYShape(){
-		return box.getMinY();
+	protected float getMinX() {
+		return getX();
 	}
 
+	protected float getMaxX() {
+		return getX() + getSprite().getWidth();
+	}
+
+	protected float getMinY() {
+		return getY() + getSprite().getHeight();
+	}
+
+	protected float getMaxY() {
+		return getY();
+	}
+
+	public Shape getBoundingBox() {
+		  return new Rectangle(this.getMinX(), this.getMinY(), this.getWidth(), this.getHeight()).transform(new Transform());
+	}
+	
+	public boolean collide(Entity entity) {
+	    if (this.getBoundingBox() == null) {
+	        return false;
+	    }
+	    return this.getBoundingBox().intersects(entity.getBoundingBox());
+	}
 }

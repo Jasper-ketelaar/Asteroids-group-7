@@ -27,7 +27,7 @@ public class Player extends Entity {
 	private double velocity;
 
 	public Player(Vector2f position, float rotation) throws SlickException {
-		super(new Image("resources/Plane.png"), position, rotation, null);
+		super(new Image("resources/Plane.png"), position, rotation);
 		direction = Util.decompose(Math.toRadians(getRotation() - DEGREE_ADJUSTMENT));
 	}
 
@@ -35,6 +35,7 @@ public class Player extends Entity {
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
+		
 	}
 
 	public ArrayList<Bullet> getFiredBullets() {

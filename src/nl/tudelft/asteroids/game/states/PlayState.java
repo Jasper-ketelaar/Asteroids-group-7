@@ -52,8 +52,7 @@ public class PlayState extends BasicGameState {
 	
 	public void intersects(){
 		for(Asteroid as: asteroids){
-			System.out.println("player bb :: " + player.getBoundingBox().getCenterX());
-			System.out.println("as bb :: " + as.getBoundingBox().getCenterX());
+
 			if(player.collide(as)){
 				System.out.println("INTERSECT");
 			}

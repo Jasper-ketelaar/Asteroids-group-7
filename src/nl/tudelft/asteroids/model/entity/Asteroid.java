@@ -1,5 +1,9 @@
 package nl.tudelft.asteroids.model.entity;
 
+import org.newdawn.slick.geom.Ellipse;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.Random;
@@ -49,6 +53,15 @@ public class Asteroid extends Entity {
 			setPosition(new Vector2f(getX(), 0.0f - getHeight()));
 		}
 
+	}
+	
+	@Override
+	public Shape getBoundingBox() {
+		final float cX = super.getBoundingBox().getCenterX();
+		final float cY = super.getBoundingBox().getCenterY();
+		final float xRad = super.getWidth() / 2;
+		final float yRad = super.getHeight() / 2;
 		
+		return new Ellipse(cX, cY, xRad, yRad).transform(new Transform());
 	}
 }

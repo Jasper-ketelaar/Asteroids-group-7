@@ -79,7 +79,7 @@ public abstract class Entity {
 	}
 
 	public Shape getBoundingBox() {
-		  return new Rectangle(this.getMinX(), this.getMinY(), this.getWidth(), this.getHeight()).transform(new Transform());
+		  return new Rectangle(getMinX(), getMinY(), getWidth(), getHeight()).transform(new Transform());
 	}
 	
 	public boolean collide(Entity entity) {

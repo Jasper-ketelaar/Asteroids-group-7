@@ -152,7 +152,7 @@ public class Player extends Entity {
 
 		if (input.isKeyDown(Input.KEY_UP)) {
 			setAnimation(moving);
-			if (velocity == 0)
+			if (velocity == 0 || movingDirection == null)
 				velocity = 1;
 			if (velocity <= MAXIMUM_VELOCITY)
 				velocity *= VELOCITY_MULTIPLIER;
@@ -178,6 +178,7 @@ public class Player extends Entity {
 				move(movingDirection, velocity);
 			} else {
 				velocity = 0;
+				movingDirection = null;
 			}
 		}
 	}

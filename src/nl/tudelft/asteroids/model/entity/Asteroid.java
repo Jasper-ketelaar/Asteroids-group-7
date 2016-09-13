@@ -1,7 +1,6 @@
 package nl.tudelft.asteroids.model.entity;
 
 import org.newdawn.slick.geom.Ellipse;
-import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
@@ -10,7 +9,6 @@ import java.util.Random;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -21,16 +19,13 @@ import org.newdawn.slick.Sound;
  * @author Bernard
  *
  */
-public class Asteroid extends Entity {
+public class Asteroid extends ExplodableEntity {
 
 	private static final float SPEED = 2f;
 	private static final float ROTATION_SPEED = 1.75f;
 
 	private static final int MAX_DEGREES = 360;
-	private static final int EXPLOSION_SPEED = 35;
 	
-	private final Sound explSound;
-	private final Animation explosion;
 	private final Vector2f velocity;
 
 	private int size;
@@ -44,24 +39,7 @@ public class Asteroid extends Entity {
 	 * @throws SlickException
 	 */
 	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
-		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)),position, rotation);
-		
-
-		Image[] sprites = new Image[] {
-				new Image("resources/asteroid/Explosion-1.png"),
-				new Image("resources/asteroid/Explosion-2.png"),
-				new Image("resources/asteroid/Explosion-3.png"),
-				new Image("resources/asteroid/Explosion-4.png"),
-				new Image("resources/asteroid/Explosion-5.png"),
-				new Image("resources/asteroid/Explosion-6.png"),
-				new Image("resources/asteroid/Explosion-7.png"),
-				new Image("resources/asteroid/Explosion-8.png")
-		};
-		explosion = new Animation(sprites, EXPLOSION_SPEED);
-		explosion.setLooping(false);
-		this.explSound = new Sound("resources/sfx/explode1.ogg");
-		
-		
+		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)),position, rotation);		
 		
 		double radian = Math.toRadians(rotation + MAX_DEGREES * new Random().nextFloat());
 		float xDelta = (float) Math.cos(radian);
@@ -107,23 +85,4 @@ public class Asteroid extends Entity {
 		
 		return new Ellipse(cX, cY, xRad, yRad).transform(new Transform());
 	}
-	
-	@Override
-	public void render(Graphics g) {
-		g.fill(getBoundingBox());
-		getSprite().draw(getX(), getY());
-	}
-
-	public void playExplosion() {
-		setAnimation(explosion);
-		if (!explSound.playing())
-			explSound.play();
-		
-	}
-	
-	public Animation getExplosion() {
-		return explosion;
-	}
-	
-
 }

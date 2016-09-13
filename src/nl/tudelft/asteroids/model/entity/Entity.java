@@ -33,8 +33,10 @@ public abstract class Entity {
 	 */
 
 	public Entity(Image sprite, Vector2f pos, float rotation) {
-		this.sprite = new Animation(new Image[] {sprite}, 200);
-		this.sprite.getCurrentFrame().setRotation(rotation);
+		if (sprite != null) {
+			this.sprite = new Animation(new Image[] {sprite}, 200);
+			this.sprite.getCurrentFrame().setRotation(rotation);
+		}
 		this.pos = pos;
 
 	}
@@ -96,6 +98,10 @@ public abstract class Entity {
 		this.sprite = animation;
 	}
 
+	public Animation getAnimation() {
+		return sprite;
+	}
+	
 	/**
 	 * Draws Entity on specified location.
 	 * 

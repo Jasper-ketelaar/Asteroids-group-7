@@ -90,14 +90,12 @@ public class PlayState extends BasicGameState {
 			for(Bullet a : activeBullets) {
 				if(a.collide(next)){
 					System.out.println("Bullet/Asteroid intersect");
+					next.playExplosion();
+					
 				}
 			}
 		}
 		
-		if (gc.getInput().isKeyDown(Input.KEY_W)) {
-			asteroids.get(0).playExplosion();
-
-		}
 		
 	}
 	

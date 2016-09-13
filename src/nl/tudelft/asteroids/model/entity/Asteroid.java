@@ -10,6 +10,7 @@ import java.util.Random;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
@@ -97,12 +98,18 @@ public class Asteroid extends Entity {
 	
 	@Override
 	public Shape getBoundingBox() {
-		final float cX = super.getBoundingBox().getCenterX();
-		final float cY = super.getBoundingBox().getCenterY();
+		final float cX = getX() + getSprite().getWidth() / 2;
+		final float cY = getY() + getSprite().getHeight() / 2;
 		final float xRad = super.getWidth() / 2;
 		final float yRad = super.getHeight() / 2;
 		
 		return new Ellipse(cX, cY, xRad, yRad).transform(new Transform());
+	}
+	
+	@Override
+	public void render(Graphics g) {
+		g.fill(getBoundingBox());
+		getSprite().draw(getX(), getY());
 	}
 
 	public void playExplosion() {

@@ -32,6 +32,7 @@ public class Asteroid extends Entity {
 	private final Animation explosion;
 	private final Vector2f velocity;
 
+	private int size;
 	/**
 	 * Constructor. The velocity vector is calculated.
 	 * 
@@ -41,8 +42,9 @@ public class Asteroid extends Entity {
 	 * 			The rotation of the Asteroid
 	 * @throws SlickException
 	 */
-	public Asteroid(Vector2f position, float rotation) throws SlickException {
-		super(new Image("resources/Asteroid.png"), position, rotation);
+	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
+		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)),position, rotation);
+		
 
 		Image[] sprites = new Image[] {
 				new Image("resources/asteroid/Explosion-1.png"),

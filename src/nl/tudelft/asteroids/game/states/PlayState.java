@@ -48,7 +48,7 @@ public class PlayState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
 		this.player.init();
-		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0));
+		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 3));
 		Sound sound = new Sound("resources/sfx/music_loop.ogg");
 		sound.loop(1f, 0.5f);
 	}

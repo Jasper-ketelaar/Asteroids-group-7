@@ -118,7 +118,7 @@ public class Player extends Entity {
 	 */
 	private void handleBullets(GameContainer gc) {
 		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-			fire.play(1, 0.6f);
+			fire.play();
 			try {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
 				float x = (float) Math.cos(rotationRadians) * BULLET_ADJUSTMENT + getX() + BULLET_ADJUSTMENT;
@@ -157,7 +157,7 @@ public class Player extends Entity {
 
 		if (input.isKeyDown(Input.KEY_UP)) {
 			if (!thrust.playing()) {
-				thrust.play(1, 0.6f);
+				thrust.play();
 			}
 			setAnimation(moving);
 			if (velocity == 0 || movingDirection == null)

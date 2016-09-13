@@ -91,7 +91,8 @@ public class Asteroid extends Entity {
 	
 	public void playExplosion() {
 		setAnimation(explosion);
-		explSound.play();
+		if (!explSound.playing())
+			explSound.play();
 		
 	}
 	

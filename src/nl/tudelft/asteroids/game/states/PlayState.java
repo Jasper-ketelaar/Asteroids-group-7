@@ -91,7 +91,7 @@ public class PlayState extends BasicGameState {
 				if(a.collide(next)){
 					System.out.println("Bullet/Asteroid intersect");
 					next.playExplosion();
-					
+					player.getFiredBullets().remove(a);
 				}
 			}
 		}

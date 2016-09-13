@@ -2,6 +2,7 @@ package nl.tudelft.asteroids.game.states;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.ListIterator;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -48,7 +49,7 @@ public class PlayState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
 		this.player.init();
-		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 3));
+		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 1));
 		Sound sound = new Sound("resources/sfx/music_loop.ogg");
 		sound.loop(1f, 0.5f);
 	}
@@ -74,7 +75,7 @@ public class PlayState extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		player.update(gc, delta);
 
-		Iterator<Asteroid> iterator = asteroids.iterator();
+		ListIterator<Asteroid> iterator = asteroids.listIterator();
 		while (iterator.hasNext()) {
 			Asteroid next = iterator.next();
 			if (next.getExplosion().isStopped()) {
@@ -82,6 +83,9 @@ public class PlayState extends BasicGameState {
 				continue;
 			}
 			next.update(gc);
+			if (next.getExplosion().getFrame() > 0) {
+				continue;
+			}
 			if(player.collide(next)){
 				System.out.println("Player/Asteroid intersect");
 			}
@@ -90,8 +94,10 @@ public class PlayState extends BasicGameState {
 			for(Bullet a : activeBullets) {
 				if(a.collide(next)){
 					System.out.println("Bullet/Asteroid intersect");
-					next.playExplosion();
+					next.destroyAsteroid(iterator);
+					
 					player.getFiredBullets().remove(a);
+					break;
 				}
 			}
 		}

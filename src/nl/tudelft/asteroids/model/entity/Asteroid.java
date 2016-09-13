@@ -6,6 +6,9 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Random;
 
 import org.newdawn.slick.Animation;
@@ -45,7 +48,8 @@ public class Asteroid extends Entity {
 	 */
 	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
 		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)),position, rotation);
-		
+		System.out.println("size: " + size);
+		this.size = size;
 
 		Image[] sprites = new Image[] {
 				new Image("resources/asteroid/Explosion-1.png"),
@@ -107,17 +111,28 @@ public class Asteroid extends Entity {
 		
 		return new Ellipse(cX, cY, xRad, yRad).transform(new Transform());
 	}
-	
-	@Override
-	public void render(Graphics g) {
-		g.fill(getBoundingBox());
-		getSprite().draw(getX(), getY());
-	}
 
-	public void playExplosion() {
+
+	private void playExplosion() {
 		setAnimation(explosion);
 		if (!explSound.playing())
 			explSound.play();
+		
+	}
+	
+	public void destroyAsteroid(ListIterator<Asteroid> asteroids) throws SlickException {
+		
+		if(size == 3){
+			playExplosion();
+			return;
+		}
+		else {
+			
+			float newRot =  MAX_DEGREES * new Random().nextFloat();
+			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot , size+1));
+			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot - 180 , size+1));
+			playExplosion();
+		}
 		
 	}
 	

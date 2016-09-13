@@ -20,7 +20,7 @@ import nl.tudelft.asteroids.util.Util;
  * @author Jasper, Bernard
  *
  */
-public class Player extends Entity {
+public class Player extends ExplodableEntity {
 
 	private static final float VELOCITY_MULTIPLIER = 1.03f;
 	private static final float ROTATION_SPEED = 2.5f;
@@ -84,7 +84,10 @@ public class Player extends Entity {
 	 * @param delta
 	 */
 	public void update(GameContainer gc, int delta) {
-		
+		if (!getAnimation().equals(still) && !getAnimation().equals(moving)) {
+			getAnimation().update(delta);
+		}
+			
 		if (getMaxX() < 0 && getMinX() < 0) {
 			setPosition(new Vector2f(gc.getWidth(), getY()));
 		} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
@@ -100,6 +103,7 @@ public class Player extends Entity {
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
+		
 	}
 
 	/**
@@ -159,7 +163,8 @@ public class Player extends Entity {
 			if (!thrust.playing()) {
 				thrust.play();
 			}
-			setAnimation(moving);
+			if (getAnimation().equals(still))
+				setAnimation(moving);
 			if (velocity == 0 || movingDirection == null)
 				velocity = 1;
 			if (velocity <= MAXIMUM_VELOCITY)
@@ -177,7 +182,8 @@ public class Player extends Entity {
 				move(movingDirection, velocity);
 			}
 		} else {
-			setAnimation(still);
+			if (getAnimation().equals(moving))
+				setAnimation(still);
 			if (velocity > 0.1f) {
 				if (movingDirection.length() > 0) {
 					movingDirection.normalise();
@@ -224,8 +230,6 @@ public class Player extends Entity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-		
-		
 		getSprite().draw(getX(), getY());
 		for (Bullet b : bulletList) {
 			b.render(g);

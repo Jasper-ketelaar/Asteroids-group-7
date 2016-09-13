@@ -3,6 +3,9 @@ package nl.tudelft.asteroids.model.entity;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 /**
@@ -28,10 +31,14 @@ public abstract class Entity {
 	 * @param rotation
 	 *            The rotation of the Entity
 	 */
+
 	public Entity(Image sprite, Vector2f pos, float rotation) {
-		this.sprite = new Animation(new Image[] {sprite}, 200);
-		this.sprite.getCurrentFrame().setRotation(rotation);
+		if (sprite != null) {
+			this.sprite = new Animation(new Image[] {sprite}, 200);
+			this.sprite.getCurrentFrame().setRotation(rotation);
+		}
 		this.pos = pos;
+
 	}
 	
 	public Entity(Vector2f pos) {
@@ -91,6 +98,10 @@ public abstract class Entity {
 		this.sprite = animation;
 	}
 
+	public Animation getAnimation() {
+		return sprite;
+	}
+	
 	/**
 	 * Draws Entity on specified location.
 	 * 
@@ -101,32 +112,49 @@ public abstract class Entity {
 			sprite.draw(getX(), getY());
 	}
 	
+	
+	protected int getWidth(){
+		return this.getSprite().getWidth();
+	}
+	
+	protected int getHeight(){
+		return this.getSprite().getHeight();
+	}
+	
 	/** 
 	 * @return The minimal x-coordinate of the Asteroid.
 	 */
-	public float getMinX() {
+	protected float getMinX() {
 		return getX();
 	}
-
 	/** 
 	 * @return The maximal x-coordinate of the Asteroid.
 	 */
-	public float getMaxX() {
+	protected float getMaxX() {
 		return getX() + getSprite().getWidth();
 	}
 
 	/** 
 	 * @return The minimal y-coordinate of the Asteroid.
 	 */
-	public float getMinY() {
+	protected float getMinY() {
 		return getY() + getSprite().getHeight();
 	}
-
 	/** 
 	 * @return The maximal y-coordinate of the Asteroid.
 	 */
-	public float getMaxY() {
+	protected float getMaxY() {
 		return getY();
 	}
 
+	public Shape getBoundingBox() {
+		  return new Rectangle(getMinX(), getMinY(), getWidth(), getHeight()).transform(new Transform());
+	}
+	
+	public boolean collide(Entity entity) {
+	    if (this.getBoundingBox() == null) {
+	        return false;
+	    }
+	    return this.getBoundingBox().intersects(entity.getBoundingBox());
+	}
 }

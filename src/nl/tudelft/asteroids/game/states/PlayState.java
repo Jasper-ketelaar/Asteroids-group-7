@@ -94,7 +94,8 @@ public class PlayState extends BasicGameState {
 		asteroids.stream().forEach(e -> {
 			if(player.getExplosion().getFrame() < player.getExplosion().getFrameCount() && player.collide(e))
 				player.playExplosion();
-			if(e.getExplosion().getFrame() > 0) {
+			e.update(gc);
+			if(!(e.getExplosion().getFrame() > 0)) {
 				for(Bullet b : player.getFiredBullets()) {
 					if (b.collide(e)) {
 						System.out.println("Bullet/Asteroid intersect");

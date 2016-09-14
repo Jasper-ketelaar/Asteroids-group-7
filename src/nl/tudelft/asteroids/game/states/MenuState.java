@@ -35,7 +35,7 @@ public class MenuState extends BasicGameState {
 	}
 
 	/**
-	 * Empty override method.
+	 * Draws the background image.
 	 */
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {

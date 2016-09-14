@@ -47,16 +47,12 @@ public class PlayState extends BasicGameState {
 	}
 
 	/**
-	 * Initializes the PlayState. The Player and Asteroids are added to the
-	 * game.
+	 * Initializes the PlayState. The Player, Asteroids and sound are added to the
+	 * game. Prints load time to console.
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
-		long curr = System.currentTimeMillis();
-
-		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
-		this.player.init();
-		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 3));
+		long curr = System.currentTimeMillis(); // measure load time
 		try {
 			Audio audio = AudioLoader.getAudio("WAV",
 					ResourceLoader.getResourceAsStream("resources/sfx/music_loop.wav"));
@@ -64,6 +60,10 @@ public class PlayState extends BasicGameState {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
+		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
+		this.player.init();
+		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 3));
 		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 1));
 
 		System.out.println("Loaded in " + (System.currentTimeMillis() - curr) + " ms");
@@ -71,7 +71,7 @@ public class PlayState extends BasicGameState {
 	}
 
 	/**
-	 * Renders the Player and Asteroid sprites on the screen.
+	 * Renders the Player (Bullets are rendered in the Player Class), Asteroids and background.
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
@@ -85,7 +85,8 @@ public class PlayState extends BasicGameState {
 	}
 
 	/**
-	 * Updates the location (for now) of the Player and Asteroids.
+	 * Updates the Player and Asteroids. Handles Bullet/Asteroid collision.
+	 * Plays the explosion sound.
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {

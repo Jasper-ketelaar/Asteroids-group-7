@@ -28,34 +28,30 @@ public class Asteroid extends ExplodableEntity {
 	private static final float ROTATION_SPEED = 1.75f;
 
 	private static final int MAX_DEGREES = 360;
-	
+
 	private final Vector2f velocity;
 
 	private int size;
+
 	/**
 	 * Constructor. The velocity vector is calculated.
 	 * 
-	 * @param 	position
-	 * 			The position of the Asteroid.
-	 * @param 	rotation
-	 * 			The rotation of the Asteroid
+	 * @param position
+	 *            The position of the Asteroid.
+	 * @param rotation
+	 *            The rotation of the Asteroid
 	 * @throws SlickException
 	 */
 	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
-		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)),position, rotation);		
+		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)), position, rotation);
 		this.size = size;
 
-		Image[] sprites = new Image[] {
-				new Image("resources/asteroid/Explosion-1.png"),
-				new Image("resources/asteroid/Explosion-2.png"),
-				new Image("resources/asteroid/Explosion-3.png"),
-				new Image("resources/asteroid/Explosion-4.png"),
-				new Image("resources/asteroid/Explosion-5.png"),
-				new Image("resources/asteroid/Explosion-6.png"),
-				new Image("resources/asteroid/Explosion-7.png"),
-				new Image("resources/asteroid/Explosion-8.png")
-		};
-		
+		Image[] sprites = new Image[] { new Image("resources/asteroid/Explosion-1.png"),
+				new Image("resources/asteroid/Explosion-2.png"), new Image("resources/asteroid/Explosion-3.png"),
+				new Image("resources/asteroid/Explosion-4.png"), new Image("resources/asteroid/Explosion-5.png"),
+				new Image("resources/asteroid/Explosion-6.png"), new Image("resources/asteroid/Explosion-7.png"),
+				new Image("resources/asteroid/Explosion-8.png") };
+
 		double radian = Math.toRadians(rotation + MAX_DEGREES * new Random().nextFloat());
 		float xDelta = (float) Math.cos(radian);
 		float yDelta = (float) Math.sin(radian);
@@ -65,12 +61,10 @@ public class Asteroid extends ExplodableEntity {
 		}
 		velocity = new Vector2f(direction.x * SPEED, direction.y * SPEED);
 	}
-	
 
 	/**
-	 * Updates the position of the Asteroid. If an Asteroid reaches
-	 * the border of the screen, it enters the screen on the opposite
-	 * side.
+	 * Updates the position of the Asteroid. If an Asteroid reaches the border
+	 * of the screen, it enters the screen on the opposite side.
 	 * 
 	 * @param gc
 	 */
@@ -88,35 +82,41 @@ public class Asteroid extends ExplodableEntity {
 		} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
 			setPosition(new Vector2f(getX(), 0.0f - getHeight()));
 		}
-
 	}
-	
+
+	/**
+	 * Creates a bounding box based on the height and width of the sprite
+	 * @return The ellipse shaped bounding box of the asteroid.
+	 */
 	@Override
 	public Shape getBoundingBox() {
 		final float cX = getX() + getSprite().getWidth() / 2;
 		final float cY = getY() + getSprite().getHeight() / 2;
 		final float xRad = super.getWidth() / 2;
 		final float yRad = super.getHeight() / 2;
-		
+
 		return new Ellipse(cX, cY, xRad, yRad).transform(new Transform());
 	}
 
-	
+	/**
+	 * Destroys or split an asteroid, used when an asteroid is hit by a bullet.
+	 * @param 	asteroids 
+	 * 			The list containing the asteroids
+	 * @throws SlickException
+	 */
 	public void destroyAsteroid(ListIterator<Asteroid> asteroids) throws SlickException {
-		
-		if(size == 3){
+
+		if (size == 3) {
 			playExplosion();
 			return;
-		}
-		else {
-			
-			float newRot =  MAX_DEGREES * new Random().nextFloat();
-			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot , size+1));
-			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot - 180 , size+1));
+		} else {
+
+			float newRot = MAX_DEGREES * new Random().nextFloat();
+			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot, size + 1));
+			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot - 180, size + 1));
 			playExplosion();
 		}
-		
+
 	}
-	
-	
+
 }

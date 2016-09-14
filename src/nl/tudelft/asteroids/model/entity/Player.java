@@ -49,17 +49,21 @@ public class Player extends ExplodableEntity {
 		this.fire = new Sound("resources/sfx/shoot.ogg");
 		this.thrust = new Sound("resources/sfx/thrust.ogg");
 	}
-	
+
+	/**
+	 * Creates moving and still animations for the plane controlled by the
+	 * Player. The animation is initially set to still.
+	 */
 	public void init() {
 		try {
 			Image image = new Image("resources/Plane.png");
-			
+
 			Image canvasStill = new Image(image.getWidth(), image.getHeight());
 			Graphics gfx = canvasStill.getGraphics();
 			gfx.drawImage(image, 0, 0);
 			gfx.flush();
-			still = new Animation(new Image[] {canvasStill}, 50);
-			
+			still = new Animation(new Image[] { canvasStill }, 50);
+
 			Image exhaust = new Image("resources/Exhaust.png");
 			Image canvasMoving = new Image(image.getWidth(), image.getHeight());
 			gfx = canvasMoving.getGraphics();
@@ -67,9 +71,9 @@ public class Player extends ExplodableEntity {
 			gfx.drawImage(exhaust, 44, 53);
 			gfx.drawImage(exhaust, 22, 53);
 			gfx.flush();
-			moving = new Animation(new Image[] {canvasMoving}, 50);
-			
-			setAnimation(new Animation(new Image[]{canvasStill}, 50));
+			moving = new Animation(new Image[] { canvasMoving }, 50);
+
+			setAnimation(new Animation(new Image[] { canvasStill }, 50));
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -78,7 +82,8 @@ public class Player extends ExplodableEntity {
 
 	/**
 	 * Updates the movement and bullets of the Player, based on the user's
-	 * input.
+	 * input. Spawns the Player on the opposite side of the screen when the
+	 * Player goes off-screen. Updates the animation of the Player.
 	 * 
 	 * @param gc
 	 * @param delta
@@ -87,7 +92,7 @@ public class Player extends ExplodableEntity {
 		if (!getAnimation().equals(still) && !getAnimation().equals(moving)) {
 			getAnimation().update(delta);
 		}
-			
+
 		if (getMaxX() < 0 && getMinX() < 0) {
 			setPosition(new Vector2f(gc.getWidth(), getY()));
 		} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
@@ -99,15 +104,14 @@ public class Player extends ExplodableEntity {
 		} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
 			setPosition(new Vector2f(getX(), 0.0f - getSprite().getHeight()));
 		}
-		
+
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
-		
+
 	}
 
 	/**
-	 * 
 	 * @return list containing all the bullets on screen
 	 */
 	public ArrayList<Bullet> getFiredBullets() {
@@ -215,12 +219,12 @@ public class Player extends ExplodableEntity {
 	 */
 	private boolean updateRotation(Input input) {
 		if (input.isKeyDown(Input.KEY_RIGHT)) {
-			moving.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED); 
-			still.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED); 
+			moving.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
+			still.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			return true;
 		} else if (input.isKeyDown(Input.KEY_LEFT)) {
-			moving.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED); 
-			still.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED); 
+			moving.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
+			still.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
 			return true;
 		}
 		return false;

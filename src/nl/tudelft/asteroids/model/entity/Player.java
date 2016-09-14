@@ -1,7 +1,8 @@
 package nl.tudelft.asteroids.model.entity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -28,7 +29,7 @@ public class Player extends ExplodableEntity {
 
 	private static final int BULLET_ADJUSTMENT = 35;
 
-	private ArrayList<Bullet> bulletList = new ArrayList<>();
+	private List<Bullet> bullets = new ArrayList<>();
 
 	private Vector2f direction;
 	private Vector2f movingDirection;
@@ -114,8 +115,8 @@ public class Player extends ExplodableEntity {
 	/**
 	 * @return list containing all the bullets on screen
 	 */
-	public ArrayList<Bullet> getFiredBullets() {
-		return bulletList;
+	public List<Bullet> getFiredBullets() {
+		return bullets;
 	}
 
 	/**
@@ -132,20 +133,16 @@ public class Player extends ExplodableEntity {
 				float x = (float) Math.cos(rotationRadians) * BULLET_ADJUSTMENT + getX() + BULLET_ADJUSTMENT;
 				float y = (float) Math.sin(rotationRadians) * BULLET_ADJUSTMENT + getY() + BULLET_ADJUSTMENT;
 				Bullet bullet = new Bullet(new Vector2f(x, y), getRotation());
-				bulletList.add(bullet);
+				bullets.add(bullet);
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
 		}
 
-		Iterator<Bullet> it = bulletList.iterator();
-		while (it.hasNext()) {
-			Bullet b = it.next();
-			if (b.getX() < 0 || b.getX() > gc.getScreenWidth() || b.getY() < 0 || b.getY() > gc.getScreenHeight())
-				it.remove();
-			else
-				b.move();
-		}
+		bullets = bullets.stream()
+				.filter(e -> !(e.getX() < 0 || e.getX() > gc.getScreenWidth() || e.getY() < 0 || e.getY() > gc.getScreenHeight()))
+				.collect(Collectors.toList());
+		bullets.stream().forEach(e -> e.move());
 	}
 
 	/**
@@ -235,10 +232,7 @@ public class Player extends ExplodableEntity {
 	 */
 	public void render(Graphics g) {
 		getSprite().draw(getX(), getY());
-		for (Bullet b : bulletList) {
-			b.render(g);
-		}
-
+		bullets.stream().forEach(e -> e.render(g));
 	}
 
 }

@@ -71,8 +71,7 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param pos
-	 *            The position of the Entity
+	 * @param pos The position of the Entity
 	 */
 	public void setPosition(Vector2f pos) {
 		this.pos = pos;

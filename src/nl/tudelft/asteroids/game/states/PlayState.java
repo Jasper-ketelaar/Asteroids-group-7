@@ -84,39 +84,37 @@ public class PlayState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		List<Asteroid> splitList = new ArrayList<>();
-		
+		/*update player, exit game when player has exploded*/
 		player.update(gc, delta);
-		if (player.getExplosion().isStopped()) {gc.exit();}
+		if (player.getExplosion().isStopped()) {
+			gc.exit();
+		}
 
-		asteroids = asteroids.stream()
-		.filter(e -> !e.getExplosion().isStopped())
-		.collect(Collectors.toList());
-		
-		asteroids.stream().forEach(e -> {
-			if(player.getExplosion().getFrame() < player.getExplosion().getFrameCount() && player.collide(e))
+		/*update asteroids, play player explode animation, split asteroids, */
+		ListIterator<Asteroid> iterator = asteroids.listIterator();
+		while (iterator.hasNext()) {
+			Asteroid asteroid = iterator.next();
+			asteroid.update(gc);
+			if (asteroid.getExplosion().isStopped()) {
+				iterator.remove();
+			} else if (player.getExplosion().getFrame() < player.getExplosion().getFrameCount()
+					&& player.collide(asteroid)) {
 				player.playExplosion();
-			e.update(gc);
-			if(!(e.getExplosion().getFrame() > 0)) {
+			} else if (!(asteroid.getExplosion().getFrame() > 0)) {
 				List<Bullet> bullets = player.getFiredBullets();
-				for(Bullet b : bullets) {
-					if (b.collide(e)) {
+				for (Bullet b : bullets) {
+					if (b.collide(asteroid)) {
 						System.out.println("Bullet/Asteroid intersect");
-						splitList.add(e);
+						asteroid.splitAsteroid(iterator);
+						
+						/*remove the bullet from the list, stop looping over bullets*/
 						player.getFiredBullets().remove(b);
+						break;
 					}
 				}
 			}
-		});
-		
-		splitList.forEach(e -> {
-			try {
-				e.splitAsteroid(asteroids);
-			} catch (SlickException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		});
+
+		}
 	}
 
 	/**

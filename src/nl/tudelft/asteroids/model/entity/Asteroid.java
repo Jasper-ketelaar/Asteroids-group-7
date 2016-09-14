@@ -5,7 +5,7 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
@@ -102,7 +102,7 @@ public class Asteroid extends ExplodableEntity {
 	 *            The list containing the asteroids
 	 * @throws SlickException
 	 */
-	public void splitAsteroid(List<Asteroid> asteroids) throws SlickException {
+	public void splitAsteroid(ListIterator<Asteroid> asteroids) throws SlickException {
 		if (size == 3) {
 			playExplosion();
 			return;

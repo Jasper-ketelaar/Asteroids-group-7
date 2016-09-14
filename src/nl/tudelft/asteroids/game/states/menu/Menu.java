@@ -51,7 +51,7 @@ public class Menu extends AbstractComponent {
 	}
 
 	/**
-	 * @return The 'startin' y-coordinate of the menu
+	 * @return The 'starting' y-coordinate of the menu
 	 */
 	@Override
 	public int getY() {

@@ -31,16 +31,20 @@ public abstract class Entity {
 	 * @param rotation
 	 *            The rotation of the Entity
 	 */
-
 	public Entity(Image sprite, Vector2f pos, float rotation) {
 		if (sprite != null) {
-			this.sprite = new Animation(new Image[] {sprite}, 200);
+			this.sprite = new Animation(new Image[] { sprite }, 200);
 			this.sprite.getCurrentFrame().setRotation(rotation);
 		}
 		this.pos = pos;
 
 	}
-	
+
+	/**
+	 * Simple Constructor only taking a position vector.
+	 * @param 	pos
+	 * 			The position of the asteroid.
+	 */
 	public Entity(Vector2f pos) {
 		this.pos = pos;
 	}
@@ -67,7 +71,8 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param pos The position of the Entity
+	 * @param pos
+	 *            The position of the Entity
 	 */
 	public void setPosition(Vector2f pos) {
 		this.pos = pos;
@@ -88,20 +93,27 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param The rotation of the Entity
+	 * @param rotation The rotation of the Entity
 	 */
 	public void setRotation(float rotation) {
 		sprite.getCurrentFrame().setRotation(rotation);
 	}
-	
+
+	/**
+	 * @param 	animation 
+	 * 			The animation of the sprite
+	 */
 	public void setAnimation(Animation animation) {
 		this.sprite = animation;
 	}
 
+	/**
+	 * @return The animation of the sprite
+	 */
 	public Animation getAnimation() {
 		return sprite;
 	}
-	
+
 	/**
 	 * Draws Entity on specified location.
 	 * 
@@ -111,50 +123,65 @@ public abstract class Entity {
 		if (sprite != null)
 			sprite.draw(getX(), getY());
 	}
-	
-	
-	protected int getWidth(){
+
+	/**
+	 * @return The width of the sprite
+	 */
+	protected int getWidth() {
 		return this.getSprite().getWidth();
 	}
-	
-	protected int getHeight(){
+
+	/**
+	 * @return The height of the sprite
+	 */
+	protected int getHeight() {
 		return this.getSprite().getHeight();
 	}
-	
-	/** 
+
+	/**
 	 * @return The minimal x-coordinate of the Asteroid.
 	 */
 	protected float getMinX() {
 		return getX();
 	}
-	/** 
+
+	/**
 	 * @return The maximal x-coordinate of the Asteroid.
 	 */
 	protected float getMaxX() {
 		return getX() + getSprite().getWidth();
 	}
 
-	/** 
+	/**
 	 * @return The minimal y-coordinate of the Asteroid.
 	 */
 	protected float getMinY() {
 		return getY() + getSprite().getHeight();
 	}
-	/** 
+
+	/**
 	 * @return The maximal y-coordinate of the Asteroid.
 	 */
 	protected float getMaxY() {
 		return getY();
 	}
 
+	/**
+	 * @return The rectangular bounding box, based on the sprites height and width
+	 */
 	public Shape getBoundingBox() {
-		  return new Rectangle(getMinX(), getMinY(), getWidth(), getHeight()).transform(new Transform());
+		return new Rectangle(getMinX(), getMinY(), getWidth(), getHeight()).transform(new Transform());
 	}
-	
+
+	/**
+	 * Handles collision between Entities.
+	 * @param entity The other Entity
+	 * @return True if the sprite collides
+	 */
 	public boolean collide(Entity entity) {
-	    if (this.getBoundingBox() == null) {
-	        return false;
-	    }
-	    return this.getBoundingBox().intersects(entity.getBoundingBox());
+		if (this.getBoundingBox() == null) {
+			return false;
+		}
+		return this.getBoundingBox().intersects(entity.getBoundingBox());
 	}
 }

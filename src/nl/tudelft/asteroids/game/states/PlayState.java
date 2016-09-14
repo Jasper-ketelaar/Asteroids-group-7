@@ -84,6 +84,8 @@ public class PlayState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		List<Asteroid> splitList = new ArrayList<>();
+		
 		player.update(gc, delta);
 		if (player.getExplosion().isStopped()) {gc.exit();}
 
@@ -96,18 +98,23 @@ public class PlayState extends BasicGameState {
 				player.playExplosion();
 			e.update(gc);
 			if(!(e.getExplosion().getFrame() > 0)) {
-				for(Bullet b : player.getFiredBullets()) {
+				List<Bullet> bullets = player.getFiredBullets();
+				for(Bullet b : bullets) {
 					if (b.collide(e)) {
 						System.out.println("Bullet/Asteroid intersect");
-						try {
-							e.destroyAsteroid(asteroids);
-						} catch (SlickException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
+						splitList.add(e);
 						player.getFiredBullets().remove(b);
 					}
 				}
+			}
+		});
+		
+		splitList.forEach(e -> {
+			try {
+				e.splitAsteroid(asteroids);
+			} catch (SlickException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
 			}
 		});
 	}

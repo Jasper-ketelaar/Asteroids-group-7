@@ -102,7 +102,7 @@ public class Asteroid extends ExplodableEntity {
 	 *            The list containing the asteroids
 	 * @throws SlickException
 	 */
-	public void destroyAsteroid(List<Asteroid> asteroids) throws SlickException {
+	public void splitAsteroid(List<Asteroid> asteroids) throws SlickException {
 		if (size == 3) {
 			playExplosion();
 			return;

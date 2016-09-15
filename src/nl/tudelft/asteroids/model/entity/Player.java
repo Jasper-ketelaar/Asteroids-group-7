@@ -36,6 +36,8 @@ public class Player extends ExplodableEntity {
 	private double velocity;
 	private Animation still, moving;
 	private Sound fire, thrust;
+	private int score;
+	
 
 	/**
 	 * Constructor.
@@ -49,6 +51,7 @@ public class Player extends ExplodableEntity {
 		this.direction = new Vector2f(0, -1);
 		this.fire = new Sound("resources/sfx/shoot.ogg");
 		this.thrust = new Sound("resources/sfx/thrust.ogg");
+		this.score = 0;
 	}
 
 	/**
@@ -219,12 +222,27 @@ public class Player extends ExplodableEntity {
 		}
 		return false;
 	}
+	
+	/**
+	 * @return The score of the player
+	 */
+	public int getScore() {
+		return score;
+	}
+	
+	/**
+	 * @param points Amount of points with which the score is increased.
+	 */
+	public void updateScore(int points) {
+		score += points;
+	}
 
 	/**
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
 		getSprite().draw(getX(), getY());
+		g.drawString("SCORE: " + score, 8, 22); //location (x,y) is magic numbers for now
 		bullets.stream().forEach(e -> e.render(g));
 	}
 

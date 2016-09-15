@@ -105,6 +105,8 @@ public class PlayState extends BasicGameState {
 				for (Bullet b : bullets) {
 					if (b.collide(asteroid)) {
 						System.out.println("Bullet/Asteroid intersect");
+						
+						player.updateScore(asteroid.getPoints()); // update score
 						asteroid.splitAsteroid(iterator);
 						
 						/*remove the bullet from the list, stop looping over bullets*/

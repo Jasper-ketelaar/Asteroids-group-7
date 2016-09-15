@@ -24,6 +24,7 @@ public class Asteroid extends ExplodableEntity {
 	private static final float ROTATION_SPEED = 1.75f;
 
 	private static final int MAX_DEGREES = 360;
+	private static final int BASE_POINTS = 100;
 
 	private final Vector2f velocity;
 
@@ -112,6 +113,13 @@ public class Asteroid extends ExplodableEntity {
 			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot - 180, size + 1));
 			playExplosion();
 		}
+	}
+	
+	/**
+	 * @return The base points of an Asteroid multiplied by the size
+	 */
+	public int getPoints() {
+		return (4 - size) * BASE_POINTS;
 	}
 
 }

@@ -109,7 +109,6 @@ public class Player extends ExplodableEntity {
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
-
 	}
 
 	/**
@@ -132,16 +131,14 @@ public class Player extends ExplodableEntity {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
 				float x = (float) Math.cos(rotationRadians) * BULLET_ADJUSTMENT + getX() + BULLET_ADJUSTMENT;
 				float y = (float) Math.sin(rotationRadians) * BULLET_ADJUSTMENT + getY() + BULLET_ADJUSTMENT;
-				Bullet bullet = new Bullet(new Vector2f(x, y), getRotation());
-				bullets.add(bullet);
+				bullets.add(new Bullet(new Vector2f(x, y), getRotation()));
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
 		}
 
-		bullets = bullets.stream()
-				.filter(e -> !(e.getX() < 0 || e.getX() > gc.getScreenWidth() || e.getY() < 0 || e.getY() > gc.getScreenHeight()))
-				.collect(Collectors.toList());
+		bullets = bullets.stream().filter(e -> !(e.getX() < 0 || e.getX() > gc.getScreenWidth() || e.getY() < 0
+				|| e.getY() > gc.getScreenHeight())).collect(Collectors.toList());
 		bullets.stream().forEach(e -> e.move());
 	}
 
@@ -161,11 +158,9 @@ public class Player extends ExplodableEntity {
 		}
 
 		if (input.isKeyDown(Input.KEY_UP)) {
-			if (!thrust.playing()) {
+			setAnimation(moving); // sprite with thrusters
+			if (!thrust.playing())
 				thrust.play();
-			}
-			if (getAnimation().equals(still))
-				setAnimation(moving);
 			if (velocity == 0 || movingDirection == null)
 				velocity = 1;
 			if (velocity <= MAXIMUM_VELOCITY)
@@ -174,7 +169,6 @@ public class Player extends ExplodableEntity {
 				if (movingDirection == null) {
 					movingDirection = new Vector2f(direction);
 				} else {
-
 					movingDirection = new Vector2f(direction).add(movingDirection).scale(0.5f).normalise();
 				}
 				move(movingDirection, velocity);
@@ -183,8 +177,7 @@ public class Player extends ExplodableEntity {
 				move(movingDirection, velocity);
 			}
 		} else {
-			if (getAnimation().equals(moving))
-				setAnimation(still);
+			setAnimation(still); // sprite without thrusters
 			if (velocity > 0.1f) {
 				if (movingDirection.length() > 0) {
 					movingDirection.normalise();

@@ -17,8 +17,8 @@ public class Bullet extends Entity {
 	private static final float SCALE = 12;
 
 	/**
-	 * Constructor. The direction of the bullet is determined based direction of
-	 * the Player.
+	 * Constructor. The direction of the bullet is determined based on the 
+	 * direction of the Player.
 	 * 
 	 * @param x
 	 * @param y

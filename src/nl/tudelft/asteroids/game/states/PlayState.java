@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -31,7 +33,8 @@ import nl.tudelft.asteroids.model.entity.Player;
 public class PlayState extends BasicGameState {
 
 	private Player player;
-
+	private Random random = new Random();
+	
 	private List<Asteroid> asteroids = new ArrayList<>();
 	private final Image background;
 
@@ -61,9 +64,7 @@ public class PlayState extends BasicGameState {
 
 		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
 		this.player.init();
-		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 3));
-		asteroids.add(new Asteroid(new Vector2f(gc.getWidth() / 2, 0), 0, 1));
-
+		
 		System.out.println("Loaded in " + (System.currentTimeMillis() - curr) + " ms");
 	}
 
@@ -88,6 +89,19 @@ public class PlayState extends BasicGameState {
 		player.update(gc, delta);
 		if (player.getExplosion().isStopped()) {
 			gc.exit();
+		}
+		
+		int max = (int) (2 + Math.floor(player.getScore() / 2000));
+		if (asteroids.size() < max) {
+			boolean playerLeft = player.getX() < gc.getWidth() / 2;
+			boolean playerTop = player.getY() > gc.getHeight() / 2;
+			
+			float randomX = playerLeft ? random.nextFloat() * (gc.getWidth() / 2) : random.nextFloat() * (gc.getWidth() / 2) + gc.getWidth() / 2;
+			float randomY = playerTop ? random.nextFloat() * (gc.getHeight() / 2) : random.nextFloat() * (gc.getHeight() / 2) + gc.getHeight() / 2;
+			
+			Vector2f randomPosition = new Vector2f(randomX, randomY);
+			Asteroid asteroid = new Asteroid(randomPosition, 0, 1);
+			asteroids.add(asteroid);
 		}
 
 		/* update asteroids, play player explode animation, split asteroids, */

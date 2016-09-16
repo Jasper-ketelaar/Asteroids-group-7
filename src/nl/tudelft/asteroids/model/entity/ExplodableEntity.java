@@ -69,11 +69,15 @@ public class ExplodableEntity extends Entity {
 	 * Plays the explosion animation and sound.
 	 */
 	public void playExplosion() {
+	
+		
+	}
+	
+	public void playExplosion(float size) {
 		setAnimation(explosion);
 		explosion.start();
 		if (!explSound.playing())
 			explSound.play();
-		
 	}
 	
 	/**

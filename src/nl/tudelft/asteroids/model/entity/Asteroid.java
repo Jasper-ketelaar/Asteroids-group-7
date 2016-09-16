@@ -82,21 +82,6 @@ public class Asteroid extends ExplodableEntity {
 	}
 
 	/**
-	 * Creates a bounding box based on the height and width of the sprite
-	 * 
-	 * @return The ellipse shaped bounding box of the asteroid.
-	 */
-	@Override
-	public Shape getBoundingBox() {
-		final float cX = getX() + getSprite().getWidth() / 2;
-		final float cY = getY() + getSprite().getHeight() / 2;
-		final float xRad = super.getWidth() / 2;
-		final float yRad = super.getHeight() / 2;
-
-		return new Ellipse(cX, cY, xRad, yRad).transform(new Transform());
-	}
-
-	/**
 	 * Destroys or split an asteroid, used when an asteroid is hit by a bullet.
 	 * 
 	 * @param asteroids

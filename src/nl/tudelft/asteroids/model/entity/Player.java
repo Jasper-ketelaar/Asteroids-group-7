@@ -241,6 +241,7 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
+		g.fill(getBoundingBox());
 		getSprite().draw(getX(), getY());
 		g.drawString("SCORE: " + score, 8, 22); //location (x,y) is magic numbers for now
 		bullets.stream().forEach(e -> e.render(g));

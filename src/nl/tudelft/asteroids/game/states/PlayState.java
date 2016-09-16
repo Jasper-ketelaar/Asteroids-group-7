@@ -2,6 +2,7 @@ package nl.tudelft.asteroids.game.states;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.stream.Collectors;
@@ -84,38 +85,37 @@ public class PlayState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		/*update player, exit game when player has exploded*/
+		/* update player, exit game when player has exploded */
 		player.update(gc, delta);
 		if (player.getExplosion().isStopped()) {
 			gc.exit();
 		}
 
-		/*update asteroids, play player explode animation, split asteroids, */
+		/* update asteroids, play player explode animation, split asteroids, */
 		ListIterator<Asteroid> iterator = asteroids.listIterator();
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
 			asteroid.update(gc);
 			if (asteroid.getExplosion().isStopped()) {
 				iterator.remove();
-			} else if (player.getExplosion().getFrame() < player.getExplosion().getFrameCount()
-					&& player.collide(asteroid)) {
-				player.playExplosion();
-			} else if (!(asteroid.getExplosion().getFrame() > 0)) {
-				List<Bullet> bullets = player.getFiredBullets();
-				for (Bullet b : bullets) {
-					if (b.collide(asteroid)) {
-						System.out.println("Bullet/Asteroid intersect");
-						
-						player.updateScore(asteroid.getPoints()); // update score
-						asteroid.splitAsteroid(iterator);
-						
-						/*remove the bullet from the list, stop looping over bullets*/
-						player.getFiredBullets().remove(b);
-						break;
-					}
-				}
+				continue;
 			}
 
+			if (player.getExplosion().getFrame() < player.getExplosion().getFrameCount() && player.collide(asteroid)) {
+				player.playExplosion();
+				continue;
+			}
+
+			Iterator<Bullet> bullets = player.getFiredBullets().iterator();
+			while (bullets.hasNext()) {
+				Bullet b = bullets.next();
+				if (b.collide(asteroid)) {
+					System.out.println("Bullet/Asteroid intersect");
+					player.updateScore(asteroid.getPoints());
+					asteroid.splitAsteroid(iterator);
+					bullets.remove();
+				}
+			}
 		}
 	}
 

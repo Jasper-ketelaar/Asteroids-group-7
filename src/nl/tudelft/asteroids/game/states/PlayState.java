@@ -101,7 +101,8 @@ public class PlayState extends BasicGameState {
 				continue;
 			}
 
-			if (player.getExplosion().getFrame() < player.getExplosion().getFrameCount() && player.collide(asteroid)) {
+			if ((player.getExplosion().getFrame() < player.getExplosion().getFrameCount() && player.collide(asteroid))
+					|| player.getExplosion().getFrame() > 0) {
 				player.playExplosion();
 				continue;
 			}
@@ -110,7 +111,6 @@ public class PlayState extends BasicGameState {
 			while (bullets.hasNext()) {
 				Bullet b = bullets.next();
 				if (b.collide(asteroid)) {
-					System.out.println("Bullet/Asteroid intersect");
 					player.updateScore(asteroid.getPoints());
 					asteroid.splitAsteroid(iterator);
 					bullets.remove();

@@ -1,7 +1,8 @@
 package nl.tudelft.asteroids.model.entity;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
@@ -28,13 +29,15 @@ public class Player extends ExplodableEntity {
 
 	private static final int BULLET_ADJUSTMENT = 35;
 
-	private ArrayList<Bullet> bulletList = new ArrayList<>();
+	private List<Bullet> bullets = new ArrayList<>();
 
 	private Vector2f direction;
 	private Vector2f movingDirection;
 	private double velocity;
 	private Animation still, moving;
 	private Sound fire, thrust;
+	private int score;
+	
 
 	/**
 	 * Constructor.
@@ -48,6 +51,7 @@ public class Player extends ExplodableEntity {
 		this.direction = new Vector2f(0, -1);
 		this.fire = new Sound("resources/sfx/shoot.ogg");
 		this.thrust = new Sound("resources/sfx/thrust.ogg");
+		this.score = 0;
 	}
 
 	/**
@@ -108,14 +112,13 @@ public class Player extends ExplodableEntity {
 		Input input = gc.getInput();
 		handleMovement(input);
 		handleBullets(gc);
-
 	}
 
 	/**
 	 * @return list containing all the bullets on screen
 	 */
-	public ArrayList<Bullet> getFiredBullets() {
-		return bulletList;
+	public List<Bullet> getFiredBullets() {
+		return bullets;
 	}
 
 	/**
@@ -131,21 +134,15 @@ public class Player extends ExplodableEntity {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
 				float x = (float) Math.cos(rotationRadians) * BULLET_ADJUSTMENT + getX() + BULLET_ADJUSTMENT;
 				float y = (float) Math.sin(rotationRadians) * BULLET_ADJUSTMENT + getY() + BULLET_ADJUSTMENT;
-				Bullet bullet = new Bullet(new Vector2f(x, y), getRotation());
-				bulletList.add(bullet);
+				bullets.add(new Bullet(new Vector2f(x, y), getRotation()));
 			} catch (SlickException e) {
 				e.printStackTrace();
 			}
 		}
 
-		Iterator<Bullet> it = bulletList.iterator();
-		while (it.hasNext()) {
-			Bullet b = it.next();
-			if (b.getX() < 0 || b.getX() > gc.getScreenWidth() || b.getY() < 0 || b.getY() > gc.getScreenHeight())
-				it.remove();
-			else
-				b.move();
-		}
+		bullets = bullets.stream().filter(e -> !(e.getX() < 0 || e.getX() > gc.getScreenWidth() || e.getY() < 0
+				|| e.getY() > gc.getScreenHeight())).collect(Collectors.toList());
+		bullets.stream().forEach(e -> e.move());
 	}
 
 	/**
@@ -164,11 +161,9 @@ public class Player extends ExplodableEntity {
 		}
 
 		if (input.isKeyDown(Input.KEY_UP)) {
-			if (!thrust.playing()) {
+			setAnimation(moving); // sprite with thrusters
+			if (!thrust.playing())
 				thrust.play();
-			}
-			if (getAnimation().equals(still))
-				setAnimation(moving);
 			if (velocity == 0 || movingDirection == null)
 				velocity = 1;
 			if (velocity <= MAXIMUM_VELOCITY)
@@ -177,7 +172,6 @@ public class Player extends ExplodableEntity {
 				if (movingDirection == null) {
 					movingDirection = new Vector2f(direction);
 				} else {
-
 					movingDirection = new Vector2f(direction).add(movingDirection).scale(0.5f).normalise();
 				}
 				move(movingDirection, velocity);
@@ -186,8 +180,7 @@ public class Player extends ExplodableEntity {
 				move(movingDirection, velocity);
 			}
 		} else {
-			if (getAnimation().equals(moving))
-				setAnimation(still);
+			setAnimation(still); // sprite without thrusters
 			if (velocity > 0.1f) {
 				if (movingDirection.length() > 0) {
 					movingDirection.normalise();
@@ -229,16 +222,29 @@ public class Player extends ExplodableEntity {
 		}
 		return false;
 	}
+	
+	/**
+	 * @return The score of the player
+	 */
+	public int getScore() {
+		return score;
+	}
+	
+	/**
+	 * @param points Amount of points with which the score is increased.
+	 */
+	public void updateScore(int points) {
+		score += points;
+	}
 
 	/**
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
+		g.fill(getBoundingBox());
 		getSprite().draw(getX(), getY());
-		for (Bullet b : bulletList) {
-			b.render(g);
-		}
-
+		g.drawString("SCORE: " + score, 8, 22); //location (x,y) is magic numbers for now
+		bullets.stream().forEach(e -> e.render(g));
 	}
 
 }

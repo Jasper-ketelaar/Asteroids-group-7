@@ -5,16 +5,12 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Random;
 
-import org.newdawn.slick.Animation;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 
 /**
  * Asteroid moving around the screen, while rotating.
@@ -28,6 +24,7 @@ public class Asteroid extends ExplodableEntity {
 	private static final float ROTATION_SPEED = 1.75f;
 
 	private static final int MAX_DEGREES = 360;
+	private static final int BASE_POINTS = 100;
 
 	private final Vector2f velocity;
 
@@ -85,38 +82,29 @@ public class Asteroid extends ExplodableEntity {
 	}
 
 	/**
-	 * Creates a bounding box based on the height and width of the sprite
-	 * @return The ellipse shaped bounding box of the asteroid.
-	 */
-	@Override
-	public Shape getBoundingBox() {
-		final float cX = getX() + getSprite().getWidth() / 2;
-		final float cY = getY() + getSprite().getHeight() / 2;
-		final float xRad = super.getWidth() / 2;
-		final float yRad = super.getHeight() / 2;
-
-		return new Ellipse(cX, cY, xRad, yRad).transform(new Transform());
-	}
-
-	/**
 	 * Destroys or split an asteroid, used when an asteroid is hit by a bullet.
-	 * @param 	asteroids 
-	 * 			The list containing the asteroids
+	 * 
+	 * @param asteroids
+	 *            The list containing the asteroids
 	 * @throws SlickException
 	 */
-	public void destroyAsteroid(ListIterator<Asteroid> asteroids) throws SlickException {
-
+	public void splitAsteroid(ListIterator<Asteroid> asteroids) throws SlickException {
 		if (size == 3) {
 			playExplosion();
 			return;
 		} else {
-
 			float newRot = MAX_DEGREES * new Random().nextFloat();
 			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot, size + 1));
 			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot - 180, size + 1));
 			playExplosion();
 		}
-
+	}
+	
+	/**
+	 * @return The base points of an Asteroid multiplied by the size
+	 */
+	public int getPoints() {
+		return (4 - size) * BASE_POINTS;
 	}
 
 }

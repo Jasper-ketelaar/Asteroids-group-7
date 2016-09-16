@@ -3,6 +3,7 @@ package nl.tudelft.asteroids.model.entity;
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.geom.Ellipse;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.geom.Transform;
@@ -71,8 +72,7 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param pos
-	 *            The position of the Entity
+	 * @param pos The position of the Entity
 	 */
 	public void setPosition(Vector2f pos) {
 		this.pos = pos;
@@ -167,10 +167,17 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @return The rectangular bounding box, based on the sprites height and width
+	 * Creates a bounding box based on the height and width of the sprite
+	 * 
+	 * @return The ellipse shaped bounding box of the asteroid.
 	 */
 	public Shape getBoundingBox() {
-		return new Rectangle(getMinX(), getMinY(), getWidth(), getHeight()).transform(new Transform());
+		final float cX = getX() + getSprite().getWidth() / 2;
+		final float cY = getY() + getSprite().getHeight() / 2;
+		final float xRad = getWidth() / 2;
+		final float yRad = getHeight() / 2;
+
+		return new Ellipse(cX, cY, xRad, yRad);
 	}
 
 	/**

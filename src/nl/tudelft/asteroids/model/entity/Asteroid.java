@@ -86,8 +86,10 @@ public class Asteroid extends ExplodableEntity {
 			return;
 		} else {
 			float newRot = MAX_DEGREES * new Random().nextFloat();
+			System.out.println(newRot);
+			System.out.println(Math.abs(newRot - 180));
 			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot, size + 1));
-			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot - 180, size + 1));
+			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), Math.abs(newRot - 180), size + 1));
 			playExplosion();
 		}
 	}

@@ -88,13 +88,16 @@ public class PlayState extends BasicGameState {
 		/* update player, exit game when player has exploded */
 		player.update(gc, delta);
 		if (player.getExplosion().isStopped()) {
+			System.out.println("Game over! Your score was  " + player.getScore());
 			gc.exit();
 		}
 		
+		/* algorithm for randomly spawning in asteroids when there are too little asteroids on the screen */
 		int max = (int) (2 + Math.floor(player.getScore() / 2000));
 		if (asteroids.size() < max) {
+			
 			boolean playerLeft = player.getX() < gc.getWidth() / 2;
-			boolean playerTop = player.getY() > gc.getHeight() / 2;
+			boolean playerTop = player.getY() < gc.getHeight() / 2;
 			
 			float randomX = playerLeft ? random.nextFloat() * (gc.getWidth() / 2) : random.nextFloat() * (gc.getWidth() / 2) + gc.getWidth() / 2;
 			float randomY = playerTop ? random.nextFloat() * (gc.getHeight() / 2) : random.nextFloat() * (gc.getHeight() / 2) + gc.getHeight() / 2;

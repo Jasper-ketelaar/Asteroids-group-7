@@ -10,7 +10,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
 
@@ -250,7 +249,6 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-		g.fill(getBoundingBox());
 		getSprite().draw(getX(), getY());
 		g.drawString("SCORE: " + score, 8, 22); // location (x,y) is magic
 												// numbers for now

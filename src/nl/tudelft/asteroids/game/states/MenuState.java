@@ -10,7 +10,8 @@ import org.newdawn.slick.state.StateBasedGame;
 /**
  * The menu state of the Asteroids game.
  * 
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class MenuState extends BasicGameState {

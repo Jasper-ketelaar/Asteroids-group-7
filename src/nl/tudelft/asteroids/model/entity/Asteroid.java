@@ -1,8 +1,5 @@
 package nl.tudelft.asteroids.model.entity;
 
-import org.newdawn.slick.geom.Ellipse;
-import org.newdawn.slick.geom.Shape;
-import org.newdawn.slick.geom.Transform;
 import org.newdawn.slick.geom.Vector2f;
 
 import java.util.ListIterator;
@@ -15,7 +12,8 @@ import org.newdawn.slick.SlickException;
 /**
  * Asteroid moving around the screen, while rotating.
  * 
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class Asteroid extends ExplodableEntity {
@@ -40,14 +38,8 @@ public class Asteroid extends ExplodableEntity {
 	 * @throws SlickException
 	 */
 	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
-		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)), position, rotation);
+		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)), position, rotation, size);
 		this.size = size;
-
-		Image[] sprites = new Image[] { new Image("resources/asteroid/Explosion-1.png"),
-				new Image("resources/asteroid/Explosion-2.png"), new Image("resources/asteroid/Explosion-3.png"),
-				new Image("resources/asteroid/Explosion-4.png"), new Image("resources/asteroid/Explosion-5.png"),
-				new Image("resources/asteroid/Explosion-6.png"), new Image("resources/asteroid/Explosion-7.png"),
-				new Image("resources/asteroid/Explosion-8.png") };
 
 		double radian = Math.toRadians(rotation + MAX_DEGREES * new Random().nextFloat());
 		float xDelta = (float) Math.cos(radian);
@@ -104,7 +96,7 @@ public class Asteroid extends ExplodableEntity {
 	 * @return The base points of an Asteroid multiplied by the size
 	 */
 	public int getPoints() {
-		return (4 - size) * BASE_POINTS;
+		return size * BASE_POINTS;
 	}
 
 }

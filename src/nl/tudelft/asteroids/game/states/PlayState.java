@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.stream.Collectors;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -26,7 +24,8 @@ import nl.tudelft.asteroids.model.entity.Player;
  * The play state of the Asteroids game. The actual gameplay is executed in this
  * state.
  * 
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class PlayState extends BasicGameState {
@@ -100,13 +99,19 @@ public class PlayState extends BasicGameState {
 				iterator.remove();
 				continue;
 			}
+			
+			/* if the asteroid explosion is playing, don't make any further calculations with this asteroid */
+			if (asteroid.getExplosion().getFrame() > 0) 
+				continue;
 
+			/* if the player is colliding with the asteroid or the explosion was already playing, continue playing the explosion */
 			if ((player.getExplosion().getFrame() < player.getExplosion().getFrameCount() && player.collide(asteroid))
 					|| player.getExplosion().getFrame() > 0) {
 				player.playExplosion();
 				continue;
 			}
 
+			/* iterate over the bullets and remove them; iterator used to prevent ConcurrentModificationException */
 			Iterator<Bullet> bullets = player.getFiredBullets().iterator();
 			while (bullets.hasNext()) {
 				Bullet b = bullets.next();

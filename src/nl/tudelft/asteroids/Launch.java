@@ -9,7 +9,8 @@ import nl.tudelft.asteroids.game.AsteroidsGame;
  * Launcher for the game Asteroids.
  * Defines the screen height and width, and sets the target frame rate.
  * 
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class Launch {

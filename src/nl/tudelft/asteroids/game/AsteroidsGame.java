@@ -9,7 +9,8 @@ import nl.tudelft.asteroids.game.states.PlayState;
 
 /**
  * Asteroids game with multiple states.
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class AsteroidsGame extends StateBasedGame {

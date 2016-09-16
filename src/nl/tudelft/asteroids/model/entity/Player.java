@@ -12,13 +12,14 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 import org.newdawn.slick.geom.Vector2f;
+import org.newdawn.slick.openal.Audio;
 
 import nl.tudelft.asteroids.util.Util;
 
 /**
  * Player controlling the spaceship and shooting bullets.
  * 
- * @author Jasper, Bernard
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class Player extends ExplodableEntity {
@@ -33,11 +34,14 @@ public class Player extends ExplodableEntity {
 
 	private Vector2f direction;
 	private Vector2f movingDirection;
-	private double velocity;
+
 	private Animation still, moving;
-	private Sound fire, thrust;
+
+	private Audio fire, thrust;
+
 	private int score;
-	
+
+	private double velocity;
 
 	/**
 	 * Constructor.
@@ -49,8 +53,8 @@ public class Player extends ExplodableEntity {
 	public Player(Vector2f position) throws SlickException {
 		super(position);
 		this.direction = new Vector2f(0, -1);
-		this.fire = new Sound("resources/sfx/shoot.ogg");
-		this.thrust = new Sound("resources/sfx/thrust.ogg");
+		this.fire = Util.load("WAV", "fire.wav");
+		this.thrust = Util.load("WAV", "thrust.wav");
 		this.score = 0;
 	}
 
@@ -129,7 +133,7 @@ public class Player extends ExplodableEntity {
 	 */
 	private void handleBullets(GameContainer gc) {
 		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
-			fire.play();
+			fire.playAsSoundEffect(1, 1, false);
 			try {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
 				float x = (float) Math.cos(rotationRadians) * BULLET_ADJUSTMENT + getX() + BULLET_ADJUSTMENT;
@@ -162,12 +166,16 @@ public class Player extends ExplodableEntity {
 
 		if (input.isKeyDown(Input.KEY_UP)) {
 			setAnimation(moving); // sprite with thrusters
-			if (!thrust.playing())
-				thrust.play();
+
+			if (!thrust.isPlaying())
+				thrust.playAsSoundEffect(1, 1, false);
+			
 			if (velocity == 0 || movingDirection == null)
 				velocity = 1;
+			
 			if (velocity <= MAXIMUM_VELOCITY)
 				velocity *= VELOCITY_MULTIPLIER;
+			
 			if (hasRotated) {
 				if (movingDirection == null) {
 					movingDirection = new Vector2f(direction);
@@ -222,16 +230,17 @@ public class Player extends ExplodableEntity {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * @return The score of the player
 	 */
 	public int getScore() {
 		return score;
 	}
-	
+
 	/**
-	 * @param points Amount of points with which the score is increased.
+	 * @param points
+	 *            Amount of points with which the score is increased.
 	 */
 	public void updateScore(int points) {
 		score += points;
@@ -243,7 +252,8 @@ public class Player extends ExplodableEntity {
 	public void render(Graphics g) {
 		g.fill(getBoundingBox());
 		getSprite().draw(getX(), getY());
-		g.drawString("SCORE: " + score, 8, 22); //location (x,y) is magic numbers for now
+		g.drawString("SCORE: " + score, 8, 22); // location (x,y) is magic
+												// numbers for now
 		bullets.stream().forEach(e -> e.render(g));
 	}
 

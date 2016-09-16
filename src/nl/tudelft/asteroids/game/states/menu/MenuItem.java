@@ -6,7 +6,8 @@ import org.newdawn.slick.Graphics;
 /**
  * Item used in the menu, consisting of text and a font.
  * 
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class MenuItem {

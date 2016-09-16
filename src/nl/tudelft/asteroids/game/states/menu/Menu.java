@@ -10,7 +10,8 @@ import org.newdawn.slick.gui.GUIContext;
 /**
  * Menu component of the Asteroids game.
  * 
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class Menu extends AbstractComponent {

@@ -8,7 +8,8 @@ import org.newdawn.slick.geom.Vector2f;
  * Bullet fired by the player. Used to destroy Asteroids. Travels in a straight
  * line.
  * 
- * @author Bernard
+ * @author Leroy Velzel, Bernard Bot, 
+ * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class Bullet extends Entity {

@@ -37,12 +37,12 @@ public class Logger {
 	}
 
 	public Object[] getData(String key) {
-		StackTraceElement previous = getCaller();
+		StackTraceElement previous = getCaller(3);
 		return data.get(previous.getClassName()).get(key);
 	}
 
 	public void putData(String key, Object[] data) {
-		StackTraceElement previous = getCaller();
+		StackTraceElement previous = getCaller(3);
 		this.data.get(previous.getClassName()).put(key, data);
 	}
 
@@ -51,7 +51,7 @@ public class Logger {
 	}
 
 	public void update() {
-		if (outputQueue.size() > 0) {
+		while (outputQueue.size() > 0) {
 			String next = outputQueue.poll();
 			for (PrintStream stream : outputs) {
 				stream.println(next);
@@ -59,13 +59,25 @@ public class Logger {
 		}
 		flush();
 	}
+	
+	public void log(String message) {
+		log(message, Level.INFO, false, 4);
+	}
 
 	public void log(String message, Level level, boolean update) {
+		log(message, level, update, 4);
+	}
+	
+	public void log(String message, Level level, boolean update, int callerDepth) {
+		StackTraceElement caller = getCaller(callerDepth);
 		long millis = System.currentTimeMillis() - initialized;
 		String time = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(millis),
 				TimeUnit.MILLISECONDS.toSeconds(millis)
 						- TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-		String result = String.format("[%s %s] %s", level.toString(), time, message);
+		String className = caller.getClassName().substring(caller.getClassName().lastIndexOf('.') + 1,
+				caller.getClassName().length());
+		String result = String.format("[%s %s] (%s#%s) - %s", level.toString(), time, className, caller.getMethodName(),
+				message);
 		outputQueue.add(result);
 		if (update) {
 			update();
@@ -78,10 +90,10 @@ public class Logger {
 		});
 	}
 
-	private StackTraceElement getCaller() {
+	private StackTraceElement getCaller(int depth) {
 		StackTraceElement[] elements = Thread.currentThread().getStackTrace();
-		if (elements.length > 2) {
-			StackTraceElement previous = elements[2];
+		if (elements.length > depth) {
+			StackTraceElement previous = elements[depth];
 			return previous;
 		} else {
 			throw new RuntimeException("Stacktrace malfunctioning");
@@ -89,7 +101,7 @@ public class Logger {
 	}
 
 	public enum Level {
-		INFO, WARNING
+		INFO, WARNING, ERROR
 	}
 
 }

@@ -21,6 +21,8 @@ import org.newdawn.slick.util.ResourceLoader;
 import nl.tudelft.asteroids.model.entity.Asteroid;
 import nl.tudelft.asteroids.model.entity.Bullet;
 import nl.tudelft.asteroids.model.entity.Player;
+import nl.tudelft.asteroids.util.Logger;
+import nl.tudelft.asteroids.util.Logger.Level;
 
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
@@ -32,6 +34,8 @@ import nl.tudelft.asteroids.model.entity.Player;
  */
 public class PlayState extends BasicGameState {
 
+	private final static Logger LOGGER = Logger.getInstance(PlayState.class.getName());
+	
 	private Player player;
 	private Random random = new Random();
 	
@@ -58,14 +62,15 @@ public class PlayState extends BasicGameState {
 			Audio audio = AudioLoader.getAudio("WAV",
 					ResourceLoader.getResourceAsStream("resources/sfx/music_loop.wav"));
 			audio.playAsMusic(1, 1, true);
+			LOGGER.log("Background music loaded");
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOGGER.log("IOException occured: music loop file", Level.ERROR, true);
 		}
 
 		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
 		this.player.init();
 		
-		System.out.println("Loaded in " + (System.currentTimeMillis() - curr) + " ms");
+		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
 	}
 
 	/**
@@ -88,7 +93,8 @@ public class PlayState extends BasicGameState {
 		/* update player, exit game when player has exploded */
 		player.update(gc, delta);
 		if (player.getExplosion().isStopped()) {
-			System.out.println("Game over! Your score was  " + player.getScore());
+			LOGGER.log("Player collided with asteroid and died");
+			LOGGER.log("Game over! The score was  " + player.getScore());
 			gc.exit();
 		}
 		
@@ -113,6 +119,7 @@ public class PlayState extends BasicGameState {
 			Asteroid asteroid = iterator.next();
 			asteroid.update(gc);
 			if (asteroid.getExplosion().isStopped()) {
+				LOGGER.log("Asteroid destroyed and instance removed from the game");
 				iterator.remove();
 				continue;
 			}
@@ -139,6 +146,7 @@ public class PlayState extends BasicGameState {
 				}
 			}
 		}
+		LOGGER.update();
 	}
 
 	/**

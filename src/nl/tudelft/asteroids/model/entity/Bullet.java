@@ -4,6 +4,8 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import nl.tudelft.asteroids.util.Logger;
+
 /**
  * Bullet fired by the player. Used to destroy Asteroids. Travels in a straight
  * line.
@@ -13,6 +15,8 @@ import org.newdawn.slick.geom.Vector2f;
  *
  */
 public class Bullet extends Entity {
+	
+	private final static Logger LOGGER = Logger.getInstance(Asteroid.class.getName());
 
 	private final Vector2f direction;
 	private static final float SCALE = 12;
@@ -32,6 +36,7 @@ public class Bullet extends Entity {
 		float xDelta = (float) Math.cos(rotationRadians);
 		float yDelta = (float) Math.sin(rotationRadians);
 		this.direction = new Vector2f(xDelta, yDelta).normalise().scale(SCALE);
+		LOGGER.log(String.format("Bullet fired at (%dx, %dy) with a rotation of %d deg", (int) location.getX(), (int) location.getY(), (int) rotation));
 	}
 
 	/**

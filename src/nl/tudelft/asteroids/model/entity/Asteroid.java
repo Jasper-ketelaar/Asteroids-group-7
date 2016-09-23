@@ -2,6 +2,8 @@ package nl.tudelft.asteroids.model.entity;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import nl.tudelft.asteroids.util.Logger;
+
 import java.util.ListIterator;
 import java.util.Random;
 
@@ -12,11 +14,12 @@ import org.newdawn.slick.SlickException;
 /**
  * Asteroid moving around the screen, while rotating.
  * 
- * @author Leroy Velzel, Bernard Bot, 
- * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class Asteroid extends ExplodableEntity {
+
+	private final static Logger LOGGER = Logger.getInstance(Asteroid.class.getName());
 
 	private static final float SPEED = 2f;
 	private static final float ROTATION_SPEED = 1.75f;
@@ -49,6 +52,8 @@ public class Asteroid extends ExplodableEntity {
 			direction = direction.normalise();
 		}
 		velocity = new Vector2f(direction.x * SPEED, direction.y * SPEED);
+		LOGGER.log(String.format("Asteroid spawned in at: (%dx, %dy) with %d deg as rotation and size %d",
+				(int) position.getX(), (int) position.getY(), (int) rotation, size));
 	}
 
 	/**
@@ -86,14 +91,12 @@ public class Asteroid extends ExplodableEntity {
 			return;
 		} else {
 			float newRot = MAX_DEGREES * new Random().nextFloat();
-			System.out.println(newRot);
-			System.out.println(Math.abs(newRot - 180));
 			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot, size + 1));
 			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), Math.abs(newRot - 180), size + 1));
 			playExplosion();
 		}
 	}
-	
+
 	/**
 	 * @return The base points of an Asteroid multiplied by the size
 	 */

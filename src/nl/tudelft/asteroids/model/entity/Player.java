@@ -10,11 +10,12 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.SpriteSheet;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
 
+import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Util;
+import nl.tudelft.asteroids.util.Logger.Level;
 
 /**
  * Player controlling the spaceship and shooting bullets.
@@ -23,6 +24,8 @@ import nl.tudelft.asteroids.util.Util;
  *
  */
 public class Player extends ExplodableEntity {
+
+	private final static Logger LOGGER = Logger.getInstance(Player.class.getName());
 
 	private static final float VELOCITY_MULTIPLIER = 1.03f;
 	private static final float ROTATION_SPEED = 2.5f;
@@ -56,6 +59,7 @@ public class Player extends ExplodableEntity {
 		this.fire = Util.load("WAV", "fire.wav");
 		this.thrust = Util.load("WAV", "thrust.wav");
 		this.score = 0;
+		LOGGER.log("Player initialized", Level.INFO, true);
 	}
 
 	/**
@@ -65,12 +69,13 @@ public class Player extends ExplodableEntity {
 	public void init() {
 		try {
 			Image image = new Image("resources/Plane.png");
-			
+
 			Image canvasStill = new Image(image.getWidth(), image.getHeight());
 			Graphics gfx = canvasStill.getGraphics();
 			gfx.drawImage(image, 0, 0);
 			gfx.flush();
 			still = new Animation(new Image[] { canvasStill }, 50);
+			LOGGER.log("Still animation loaded");
 
 			Image exhaust = new Image("resources/Exhaust.png");
 			Image canvasMoving = new Image(image.getWidth(), image.getHeight());
@@ -80,8 +85,12 @@ public class Player extends ExplodableEntity {
 			gfx.drawImage(exhaust, 22, 53);
 			gfx.flush();
 			moving = new Animation(new Image[] { canvasMoving }, 50);
+			LOGGER.log("Moving animation loaded");
 
 			setAnimation(new Animation(new Image[] { canvasStill }, 50));
+			LOGGER.update();
+			LOGGER.putData("delta", new Object[] { 0 });
+			LOGGER.putData("position", new Object[] { getPosition() });
 		} catch (SlickException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,8 +123,9 @@ public class Player extends ExplodableEntity {
 		}
 
 		Input input = gc.getInput();
-		handleMovement(input);
+		handleMovement(input, delta);
 		handleBullets(gc);
+		LOGGER.update();
 	}
 
 	/**
@@ -155,7 +165,13 @@ public class Player extends ExplodableEntity {
 	 * 
 	 * @param input
 	 */
-	private void handleMovement(Input input) {
+	private void handleMovement(Input input, int delta) {
+		int deltaTotal = (int) LOGGER.getData("delta")[0] + delta;
+
+		boolean upd = deltaTotal > 1000;
+
+		LOGGER.putData("delta", new Object[] { deltaTotal });
+
 		boolean hasRotated = updateRotation(input);
 		if (hasRotated) {
 			direction = Util.decompose(Math.toRadians(getRotation() - DEGREE_ADJUSTMENT));
@@ -165,17 +181,18 @@ public class Player extends ExplodableEntity {
 		}
 
 		if (input.isKeyDown(Input.KEY_UP)) {
+
 			setAnimation(moving); // sprite with thrusters
 
 			if (!thrust.isPlaying())
 				thrust.playAsSoundEffect(1, 1, false);
-			
+
 			if (velocity == 0 || movingDirection == null)
 				velocity = 1;
-			
+
 			if (velocity <= MAXIMUM_VELOCITY)
 				velocity *= VELOCITY_MULTIPLIER;
-			
+
 			if (hasRotated) {
 				if (movingDirection == null) {
 					movingDirection = new Vector2f(direction);
@@ -183,9 +200,26 @@ public class Player extends ExplodableEntity {
 					movingDirection = new Vector2f(direction).add(movingDirection).scale(0.5f).normalise();
 				}
 				move(movingDirection, velocity);
+				if (upd) {
+					Vector2f old = (Vector2f) LOGGER.getData("position")[0];
+					LOGGER.log("Position changed from (" + old.getX() + ", " + old.getY() + ") to ("
+							+ getPosition().getX() + ", " + getPosition().getY() + ")");
+					LOGGER.putData("position", new Object[] { getPosition().copy() });
+					LOGGER.putData("delta", new Object[] { 0 });
+
+				}
 			} else {
 				movingDirection = new Vector2f(direction);
 				move(movingDirection, velocity);
+				if (upd) {
+					Vector2f old = (Vector2f) LOGGER.getData("position")[0];
+					LOGGER.log("Position changed from (" + old.getX() + ", " + old.getY() + ") to ("
+							+ getPosition().getX() + ", " + getPosition().getY() + ")");
+					LOGGER.putData("position", new Object[] { getPosition().copy() });
+					LOGGER.putData("delta", new Object[] { 0 });
+
+				}
+
 			}
 		} else {
 			setAnimation(still); // sprite without thrusters
@@ -244,13 +278,14 @@ public class Player extends ExplodableEntity {
 	 */
 	public void updateScore(int points) {
 		score += points;
+		LOGGER.log(String.format("Gained %d points", points));
 	}
 
 	/**
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-	
+
 		getSprite().draw(getX(), getY());
 		g.drawString("SCORE: " + score, 8, 22); // location (x,y) is magic
 												// numbers for now

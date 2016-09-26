@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd version="5.3.5" timestamp="2016-09-26T19:07:42.512">
+<file name="C:\Users\Bernard\Documents\EclipseProjects\asteroids\src\main\java\nl\tudelft\asteroids\game\states\PlayState.java">
+<violation beginline="132" endline="132" begincolumn="30" endcolumn="129" rule="UselessParentheses" ruleset="Unnecessary" package="nl.tudelft.asteroids.game.states" class="PlayState" method="update" externalInfoUrl="https://pmd.github.io/pmd-5.3.5/pmd-java/rules/java/unnecessary.html#UselessParentheses" priority="4">
+Useless parentheses.
+</violation>
+</file>
+</pmd>

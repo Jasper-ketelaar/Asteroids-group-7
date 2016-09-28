@@ -94,9 +94,8 @@ public class ExplodableEntity extends Entity {
 	 */
 	public void playExplosion() {
 		setAnimation(explosion);
-		explosion.start();
-		if (!explosionAudio.isPlaying())
-			explosionAudio.playAsSoundEffect(1, 1, false);
+		explosion.update(0);
+		explosionAudio.playAsSoundEffect(1, 1, false);
 
 	}
 

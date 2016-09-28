@@ -129,8 +129,7 @@ public class PlayState extends BasicGameState {
 				continue;
 
 			/* if the player is colliding with the asteroid or the explosion was already playing, continue playing the explosion */
-			if ((player.getExplosion().getFrame() < player.getExplosion().getFrameCount() && player.collide(asteroid))
-					|| player.getExplosion().getFrame() > 0) {
+			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
 				player.playExplosion();
 				continue;
 			}

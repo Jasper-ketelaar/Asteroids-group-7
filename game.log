@@ -1,127 +1,34 @@
 [INFO 00:00] (Launch#main) - Game container fired up
-[INFO 00:01] (AsteroidsGame#initStatesList) - Background image loaded
-[INFO 00:02] (PlayState#init) - Background music loaded
-[INFO 00:02] (Player#<init>) - Player initialized
-[INFO 00:02] (Player#init) - Still animation loaded
-[INFO 00:02] (Player#init) - Moving animation loaded
-[INFO 00:02] (PlayState#init) - Game was loaded in 677 ms
-[INFO 00:02] (Asteroid#<init>) - Asteroid spawned in at: (1046x, 689y) with 0 deg as rotation and size 1
-[INFO 00:02] (Asteroid#<init>) - Asteroid spawned in at: (733x, 450y) with 0 deg as rotation and size 1
-[INFO 00:04] (Player#handleMovement) - Position changed from (599.08636, 349.5244) to (599.08636, 349.5244)
-[INFO 00:05] (Bullet#<init>) - Bullet fired at (503x, 277y) with a rotation of 37 deg
-[INFO 00:05] (Bullet#<init>) - Bullet fired at (498x, 275y) with a rotation of 37 deg
-[INFO 00:06] (Bullet#<init>) - Bullet fired at (495x, 273y) with a rotation of 37 deg
-[INFO 00:06] (Player#handleMovement) - Position changed from (599.08636, 349.5244) to (437.4709, 264.8122)
-[INFO 00:08] (Bullet#<init>) - Bullet fired at (992x, 299y) with a rotation of 312 deg
-[INFO 00:08] (Player#updateScore) - Gained 100 points
-[INFO 00:08] (Asteroid#<init>) - Asteroid spawned in at: (849x, 119y) with 99 deg as rotation and size 2
-[INFO 00:08] (Asteroid#<init>) - Asteroid spawned in at: (849x, 119y) with 80 deg as rotation and size 2
-[INFO 00:09] (Bullet#<init>) - Bullet fired at (997x, 300y) with a rotation of 312 deg
-[INFO 00:09] (Player#updateScore) - Gained 200 points
-[INFO 00:09] (Asteroid#<init>) - Asteroid spawned in at: (892x, 147y) with 322 deg as rotation and size 3
-[INFO 00:09] (Asteroid#<init>) - Asteroid spawned in at: (892x, 147y) with 142 deg as rotation and size 3
-[INFO 00:09] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:09] (Bullet#<init>) - Bullet fired at (999x, 300y) with a rotation of 312 deg
-[INFO 00:09] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:09] (Bullet#<init>) - Bullet fired at (999x, 300y) with a rotation of 312 deg
-[INFO 00:09] (Player#updateScore) - Gained 300 points
-[INFO 00:09] (Bullet#<init>) - Bullet fired at (999x, 300y) with a rotation of 312 deg
-[INFO 00:09] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:10] (Player#handleMovement) - Position changed from (437.4709, 264.8122) to (988.8724, 288.60104)
-[INFO 00:12] (Bullet#<init>) - Bullet fired at (757x, 327y) with a rotation of -85 deg
-[INFO 00:12] (Bullet#<init>) - Bullet fired at (756x, 343y) with a rotation of -110 deg
-[INFO 00:12] (Player#updateScore) - Gained 100 points
-[INFO 00:12] (Asteroid#<init>) - Asteroid spawned in at: (294x, 375y) with 110 deg as rotation and size 2
-[INFO 00:12] (Asteroid#<init>) - Asteroid spawned in at: (294x, 375y) with 69 deg as rotation and size 2
-[INFO 00:13] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:13] (Bullet#<init>) - Bullet fired at (756x, 343y) with a rotation of -110 deg
-[INFO 00:13] (Player#updateScore) - Gained 200 points
-[INFO 00:13] (Asteroid#<init>) - Asteroid spawned in at: (130x, 479y) with 98 deg as rotation and size 3
-[INFO 00:13] (Asteroid#<init>) - Asteroid spawned in at: (130x, 479y) with 81 deg as rotation and size 3
-[INFO 00:13] (Bullet#<init>) - Bullet fired at (764x, 355y) with a rotation of -135 deg
-[INFO 00:14] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:14] (Player#updateScore) - Gained 300 points
-[INFO 00:14] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:14] (Bullet#<init>) - Bullet fired at (754x, 332y) with a rotation of -92 deg
-[INFO 00:15] (Bullet#<init>) - Bullet fired at (754x, 332y) with a rotation of -92 deg
-[INFO 00:15] (Player#updateScore) - Gained 300 points
-[INFO 00:15] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:16] (Bullet#<init>) - Bullet fired at (757x, 316y) with a rotation of -65 deg
-[INFO 00:17] (Bullet#<init>) - Bullet fired at (760x, 351y) with a rotation of -125 deg
-[INFO 00:17] (Player#updateScore) - Gained 200 points
-[INFO 00:17] (Asteroid#<init>) - Asteroid spawned in at: (631x, 382y) with 295 deg as rotation and size 3
-[INFO 00:17] (Asteroid#<init>) - Asteroid spawned in at: (631x, 382y) with 115 deg as rotation and size 3
-[INFO 00:17] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:18] (Bullet#<init>) - Bullet fired at (775x, 298y) with a rotation of -22 deg
-[INFO 00:18] (Player#updateScore) - Gained 300 points
-[INFO 00:19] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:19] (Bullet#<init>) - Bullet fired at (754x, 326y) with a rotation of -82 deg
-[INFO 00:20] (Bullet#<init>) - Bullet fired at (754x, 328y) with a rotation of -85 deg
-[INFO 00:20] (Player#updateScore) - Gained 200 points
-[INFO 00:20] (Asteroid#<init>) - Asteroid spawned in at: (473x, 309y) with 323 deg as rotation and size 3
-[INFO 00:20] (Asteroid#<init>) - Asteroid spawned in at: (473x, 309y) with 143 deg as rotation and size 3
-[INFO 00:20] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:21] (Bullet#<init>) - Bullet fired at (765x, 305y) with a rotation of -42 deg
-[INFO 00:21] (Player#updateScore) - Gained 300 points
-[INFO 00:21] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:22] (Bullet#<init>) - Bullet fired at (759x, 349y) with a rotation of -122 deg
-[INFO 00:23] (Bullet#<init>) - Bullet fired at (754x, 325y) with a rotation of -80 deg
-[INFO 00:24] (Bullet#<init>) - Bullet fired at (754x, 325y) with a rotation of -80 deg
-[INFO 00:24] (Bullet#<init>) - Bullet fired at (757x, 345y) with a rotation of -115 deg
-[INFO 00:25] (Player#handleMovement) - Position changed from (988.8724, 288.60104) to (753.4046, 296.5923)
-[INFO 00:26] (Bullet#<init>) - Bullet fired at (630x, 372y) with a rotation of 32 deg
-[INFO 00:27] (Bullet#<init>) - Bullet fired at (610x, 380y) with a rotation of 32 deg
-[INFO 00:27] (Player#updateScore) - Gained 300 points
-[INFO 00:27] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:27] (Asteroid#<init>) - Asteroid spawned in at: (385x, 612y) with 0 deg as rotation and size 1
-[INFO 00:29] (Bullet#<init>) - Bullet fired at (574x, 380y) with a rotation of -5 deg
-[INFO 00:29] (Bullet#<init>) - Bullet fired at (596x, 385y) with a rotation of 32 deg
-[INFO 00:29] (Player#updateScore) - Gained 100 points
-[INFO 00:29] (Asteroid#<init>) - Asteroid spawned in at: (747x, -10y) with 210 deg as rotation and size 2
-[INFO 00:29] (Asteroid#<init>) - Asteroid spawned in at: (747x, -10y) with 30 deg as rotation and size 2
-[INFO 00:29] (Bullet#<init>) - Bullet fired at (596x, 385y) with a rotation of 32 deg
-[INFO 00:29] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:29] (Player#updateScore) - Gained 200 points
-[INFO 00:29] (Asteroid#<init>) - Asteroid spawned in at: (771x, 59y) with 46 deg as rotation and size 3
-[INFO 00:29] (Asteroid#<init>) - Asteroid spawned in at: (771x, 59y) with 133 deg as rotation and size 3
-[INFO 00:29] (Bullet#<init>) - Bullet fired at (596x, 385y) with a rotation of 32 deg
-[INFO 00:30] (Bullet#<init>) - Bullet fired at (596x, 385y) with a rotation of 32 deg
-[INFO 00:30] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:30] (Bullet#<init>) - Bullet fired at (596x, 385y) with a rotation of 32 deg
-[INFO 00:30] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:31] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:31] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:31] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:31] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:31] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:32] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:32] (Player#updateScore) - Gained 300 points
-[INFO 00:32] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:32] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:32] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:32] (Player#updateScore) - Gained 300 points
-[INFO 00:32] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:32] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:32] (Bullet#<init>) - Bullet fired at (611x, 407y) with a rotation of 77 deg
-[INFO 00:33] (Bullet#<init>) - Bullet fired at (579x, 379y) with a rotation of 2 deg
-[INFO 00:33] (Bullet#<init>) - Bullet fired at (576x, 379y) with a rotation of -2 deg
-[INFO 00:33] (Bullet#<init>) - Bullet fired at (556x, 387y) with a rotation of -37 deg
-[INFO 00:33] (Player#updateScore) - Gained 300 points
-[INFO 00:33] (Bullet#<init>) - Bullet fired at (554x, 389y) with a rotation of -42 deg
-[INFO 00:33] (Asteroid#<init>) - Asteroid spawned in at: (559x, 629y) with 0 deg as rotation and size 1
-[INFO 00:33] (Bullet#<init>) - Bullet fired at (554x, 389y) with a rotation of -42 deg
-[INFO 00:34] (Player#updateScore) - Gained 300 points
-[INFO 00:34] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:34] (Asteroid#<init>) - Asteroid spawned in at: (201x, 451y) with 0 deg as rotation and size 1
-[INFO 00:34] (Bullet#<init>) - Bullet fired at (554x, 389y) with a rotation of -42 deg
-[INFO 00:34] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:34] (Asteroid#<init>) - Asteroid spawned in at: (110x, 576y) with 0 deg as rotation and size 1
-[INFO 00:34] (Bullet#<init>) - Bullet fired at (554x, 389y) with a rotation of -42 deg
-[INFO 00:34] (Bullet#<init>) - Bullet fired at (554x, 389y) with a rotation of -42 deg
-[INFO 00:34] (Player#updateScore) - Gained 200 points
-[INFO 00:34] (Asteroid#<init>) - Asteroid spawned in at: (132x, -6y) with 346 deg as rotation and size 3
-[INFO 00:34] (Asteroid#<init>) - Asteroid spawned in at: (132x, -6y) with 166 deg as rotation and size 3
-[INFO 00:34] (Player#handleMovement) - Position changed from (753.4046, 296.5923) to (541.95557, 379.10773)
-[INFO 00:34] (Player#updateScore) - Gained 300 points
-[INFO 00:35] (PlayState#update) - Asteroid destroyed and instance removed from the game
-[INFO 00:35] (PlayState#update) - Asteroid destroyed and instance removed from the game
+[INFO 00:00] (AsteroidsGame#initStatesList) - Background image loaded
+[INFO 00:01] (PlayState#init) - Background music loaded
+[INFO 00:01] (Player#<init>) - Player initialized
+[INFO 00:01] (Player#init) - Still animation loaded
+[INFO 00:01] (Player#init) - Moving animation loaded
+[INFO 00:01] (PlayState#init) - Game was loaded in 404 ms
+[INFO 00:01] (Asteroid#<init>) - Asteroid spawned in at: (1095x, 519y) with 0 deg as rotation and size 1
+[INFO 00:01] (Asteroid#<init>) - Asteroid spawned in at: (871x, 438y) with 0 deg as rotation and size 1
+[INFO 00:02] (Bullet#<init>) - Bullet fired at (662x, 363y) with a rotation of 52 deg
+[INFO 00:02] (Player#updateScore) - Gained 100 points
+[INFO 00:02] (Asteroid#<init>) - Asteroid spawned in at: (711x, 273y) with 357 deg as rotation and size 2
+[INFO 00:02] (Asteroid#<init>) - Asteroid spawned in at: (711x, 273y) with 177 deg as rotation and size 2
+[INFO 00:02] (PlayState#update) - Asteroid destroyed and instance removed from the game
+[INFO 00:03] (Bullet#<init>) - Bullet fired at (635x, 350y) with a rotation of 0 deg
+[INFO 00:03] (Player#updateScore) - Gained 200 points
+[INFO 00:03] (Asteroid#<init>) - Asteroid spawned in at: (590x, 159y) with 67 deg as rotation and size 3
+[INFO 00:03] (Asteroid#<init>) - Asteroid spawned in at: (590x, 159y) with 112 deg as rotation and size 3
+[INFO 00:03] (PlayState#update) - Asteroid destroyed and instance removed from the game
+[INFO 00:04] (Bullet#<init>) - Bullet fired at (610x, 360y) with a rotation of -45 deg
+[INFO 00:04] (Player#updateScore) - Gained 300 points
+[INFO 00:04] (PlayState#update) - Asteroid destroyed and instance removed from the game
+[INFO 00:04] (Player#handleMovement) - Position changed from (599.108, 349.485) to (599.108, 349.485)
+[INFO 00:05] (Bullet#<init>) - Bullet fired at (191x, 416y) with a rotation of 115 deg
+[INFO 00:06] (Bullet#<init>) - Bullet fired at (148x, 397y) with a rotation of 95 deg
+[INFO 00:06] (Bullet#<init>) - Bullet fired at (124x, 393y) with a rotation of 95 deg
+[INFO 00:07] (Player#updateScore) - Gained 200 points
+[INFO 00:07] (Asteroid#<init>) - Asteroid spawned in at: (547x, 403y) with 161 deg as rotation and size 3
+[INFO 00:07] (Asteroid#<init>) - Asteroid spawned in at: (547x, 403y) with 18 deg as rotation and size 3
+[INFO 00:07] (PlayState#update) - Asteroid destroyed and instance removed from the game
+[INFO 00:07] (Bullet#<init>) - Bullet fired at (119x, 392y) with a rotation of 95 deg
+[INFO 00:07] (Player#updateScore) - Gained 300 points
+[INFO 00:08] (PlayState#update) - Asteroid destroyed and instance removed from the game
+[INFO 00:08] (Player#handleMovement) - Position changed from (599.108, 349.485) to (50.296494, 354.5025)

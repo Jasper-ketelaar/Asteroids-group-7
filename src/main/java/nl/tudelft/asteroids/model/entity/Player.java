@@ -106,26 +106,29 @@ public class Player extends ExplodableEntity {
 	 * @param delta
 	 */
 	public void update(GameContainer gc, int delta) {
-		if (!getAnimation().equals(still) && !getAnimation().equals(moving)) {
+		if (!getAnimation().getImage(0).equals(still.getImage(0))
+				&& !getAnimation().getImage(0).equals(moving.getImage(0))) {
+			System.out.println(getAnimation().getImage(0).equals(still.getImage(0)));
 			getAnimation().update(delta);
-		}
+		} else {
 
-		if (getMaxX() < 0 && getMinX() < 0) {
-			setPosition(new Vector2f(gc.getWidth(), getY()));
-		} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
-			setPosition(new Vector2f(0.0f - getSprite().getWidth(), getY()));
-		}
+			if (getMaxX() < 0 && getMinX() < 0) {
+				setPosition(new Vector2f(gc.getWidth(), getY()));
+			} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
+				setPosition(new Vector2f(0.0f - getSprite().getWidth(), getY()));
+			}
 
-		if (getMaxY() < 0 && getMinY() < 0) {
-			setPosition(new Vector2f(getX(), gc.getHeight()));
-		} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
-			setPosition(new Vector2f(getX(), 0.0f - getSprite().getHeight()));
-		}
+			if (getMaxY() < 0 && getMinY() < 0) {
+				setPosition(new Vector2f(getX(), gc.getHeight()));
+			} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
+				setPosition(new Vector2f(getX(), 0.0f - getSprite().getHeight()));
+			}
 
-		Input input = gc.getInput();
-		handleMovement(input, delta);
-		handleBullets(gc);
-		LOGGER.update();
+			Input input = gc.getInput();
+			handleMovement(input, delta);
+			handleBullets(gc);
+			LOGGER.update();
+		}
 	}
 
 	/**
@@ -181,7 +184,6 @@ public class Player extends ExplodableEntity {
 		}
 
 		if (input.isKeyDown(Input.KEY_UP)) {
-
 			setAnimation(moving); // sprite with thrusters
 
 			if (!thrust.isPlaying())

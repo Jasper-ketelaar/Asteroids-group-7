@@ -36,6 +36,10 @@ public class PlayState extends BasicGameState {
 
 	private final static Logger LOGGER = Logger.getInstance(PlayState.class.getName());
 	
+	private final static String MUSIC_LOOP = "sfx/music_loop.wav";
+	
+	private final static Vector2f SCORE_LOCATION = new Vector2f(8, 22);
+	
 	private Player player;
 	private Random random = new Random();
 	
@@ -60,7 +64,7 @@ public class PlayState extends BasicGameState {
 		long curr = System.currentTimeMillis(); // measure load time
 		try {
 			Audio audio = AudioLoader.getAudio("WAV",
-					ResourceLoader.getResourceAsStream("resources/sfx/music_loop.wav"));
+					ResourceLoader.getResourceAsStream(MUSIC_LOOP));
 			audio.playAsMusic(1, 1, true);
 			LOGGER.log("Background music loaded");
 		} catch (IOException e) {
@@ -81,6 +85,7 @@ public class PlayState extends BasicGameState {
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		g.drawImage(background, 0, 0);
 		player.render(g);
+		g.drawString("SCORE: " + player.getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
 		asteroids.stream().forEach(e -> e.render(g));
 	}
 

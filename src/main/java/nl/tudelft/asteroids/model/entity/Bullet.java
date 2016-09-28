@@ -17,6 +17,8 @@ import nl.tudelft.asteroids.util.Logger;
 public class Bullet extends Entity {
 	
 	private final static Logger LOGGER = Logger.getInstance(Asteroid.class.getName());
+	
+	private final static String BULLET = "Bullet.png";
 
 	private final Vector2f direction;
 	private static final float SCALE = 12;
@@ -31,7 +33,7 @@ public class Bullet extends Entity {
 	 * @throws SlickException
 	 */
 	public Bullet(Vector2f location, float rotation) throws SlickException {
-		super(new Image("resources/Bullet.png"), location, rotation);
+		super(new Image(BULLET), location, rotation);
 		double rotationRadians = Math.toRadians(rotation - DEGREE_ADJUSTMENT);
 		float xDelta = (float) Math.cos(rotationRadians);
 		float yDelta = (float) Math.sin(rotationRadians);

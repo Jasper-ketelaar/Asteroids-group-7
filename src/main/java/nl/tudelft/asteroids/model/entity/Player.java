@@ -27,6 +27,13 @@ public class Player extends ExplodableEntity {
 
 	private final static Logger LOGGER = Logger.getInstance(Player.class.getName());
 
+	private final static String FIRE_WAV = "fire.wav";
+	private final static String THRUST_WAV = "thrust.wav";
+	private final static String WAV = "WAV";
+
+	private final static String PLANE = "Plane.png";
+	private final static String EXHAUST = "Exhaust.png";
+
 	private static final float VELOCITY_MULTIPLIER = 1.03f;
 	private static final float ROTATION_SPEED = 2.5f;
 	private static final float MAXIMUM_VELOCITY = 7;
@@ -56,8 +63,8 @@ public class Player extends ExplodableEntity {
 	public Player(Vector2f position) throws SlickException {
 		super(position);
 		this.direction = new Vector2f(0, -1);
-		this.fire = Util.load("WAV", "fire.wav");
-		this.thrust = Util.load("WAV", "thrust.wav");
+		this.fire = Util.load(WAV, FIRE_WAV);
+		this.thrust = Util.load(WAV, THRUST_WAV);
 		this.score = 0;
 		LOGGER.log("Player initialized", Level.INFO, true);
 	}
@@ -68,7 +75,7 @@ public class Player extends ExplodableEntity {
 	 */
 	public void init() {
 		try {
-			Image image = new Image("resources/Plane.png");
+			Image image = new Image(PLANE);
 
 			Image canvasStill = new Image(image.getWidth(), image.getHeight());
 			Graphics gfx = canvasStill.getGraphics();
@@ -77,7 +84,7 @@ public class Player extends ExplodableEntity {
 			still = new Animation(new Image[] { canvasStill }, 50);
 			LOGGER.log("Still animation loaded");
 
-			Image exhaust = new Image("resources/Exhaust.png");
+			Image exhaust = new Image(EXHAUST);
 			Image canvasMoving = new Image(image.getWidth(), image.getHeight());
 			gfx = canvasMoving.getGraphics();
 			gfx.drawImage(image, 0, 0);
@@ -289,8 +296,7 @@ public class Player extends ExplodableEntity {
 	public void render(Graphics g) {
 
 		getSprite().draw(getX(), getY());
-		g.drawString("SCORE: " + score, 8, 22); // location (x,y) is magic
-												// numbers for now
+
 		bullets.stream().forEach(e -> e.render(g));
 	}
 

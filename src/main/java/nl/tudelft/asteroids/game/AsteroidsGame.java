@@ -18,6 +18,8 @@ public class AsteroidsGame extends StateBasedGame {
 	
 	private final static Logger LOGGER = Logger.getInstance(AsteroidsGame.class.getName());
 	
+	private final static String BACKGROUND = "BG4.jpg";
+	
 	/**
 	 * Constructor; specifying the title of the game.
 	 * 
@@ -33,7 +35,7 @@ public class AsteroidsGame extends StateBasedGame {
 	 */
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
-		Image background = new Image("resources/BG4.jpg");
+		Image background = new Image(BACKGROUND);
 		LOGGER.log("Background image loaded");
 		//addState(new MenuState(background));
 		addState(new PlayState(background));

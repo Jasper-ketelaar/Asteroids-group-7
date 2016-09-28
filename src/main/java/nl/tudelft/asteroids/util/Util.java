@@ -15,6 +15,8 @@ import org.newdawn.slick.util.ResourceLoader;
  */
 public class Util {
 
+	private static final String AUDIO_BASE = "sfx/";
+	
 	/**
 	 * Decomposes a radian to a 2D vector.
 	 * 
@@ -33,7 +35,7 @@ public class Util {
 	 */
 	public static Audio load(String format, String name) {
 		try {
-			return AudioLoader.getAudio(format, ResourceLoader.getResourceAsStream("resources/sfx/" + name));
+			return AudioLoader.getAudio(format, ResourceLoader.getResourceAsStream(AUDIO_BASE + name));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -32,6 +32,13 @@ public class Player extends ExplodableEntity {
 
 	private final static Logger LOGGER = Logger.getInstance(Player.class.getName());
 
+	private final static String FIRE_WAV = "fire.wav";
+	private final static String THRUST_WAV = "thrust.wav";
+	private final static String WAV = "WAV";
+
+	private final static String PLANE = "Plane.png";
+	private final static String EXHAUST = "Exhaust.png";
+
 	private static final float VELOCITY_MULTIPLIER = 1.03f;
 	private static final float ROTATION_SPEED = 2.5f;
 	private static final float MAXIMUM_VELOCITY = 7;
@@ -41,6 +48,8 @@ public class Player extends ExplodableEntity {
 	private List<Bullet> bullets = new ArrayList<>();
 
 	private PowerUp powerUp = null;
+	
+	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
 
 	private Vector2f direction;
 	private Vector2f movingDirection;
@@ -66,8 +75,8 @@ public class Player extends ExplodableEntity {
 	public Player(Vector2f position) throws SlickException {
 		super(position);
 		this.direction = new Vector2f(0, -1);
-		this.fire = Util.load("WAV", "fire.wav");
-		this.thrust = Util.load("WAV", "thrust.wav");
+		this.fire = Util.load(WAV, FIRE_WAV);
+		this.thrust = Util.load(WAV, THRUST_WAV);
 		this.score = 0;
 		this.multiplier = 1;
 		this.invincible = false;
@@ -80,7 +89,7 @@ public class Player extends ExplodableEntity {
 	 */
 	public void init() {
 		try {
-			Image image = new Image("resources/Plane.png");
+			Image image = new Image(PLANE);
 
 			Image canvasStill = new Image(image.getWidth(), image.getHeight());
 			Graphics gfx = canvasStill.getGraphics();
@@ -89,7 +98,7 @@ public class Player extends ExplodableEntity {
 			still = new Animation(new Image[] { canvasStill }, 50);
 			LOGGER.log("Still animation loaded");
 
-			Image exhaust = new Image("resources/Exhaust.png");
+			Image exhaust = new Image(EXHAUST);
 			Image canvasMoving = new Image(image.getWidth(), image.getHeight());
 			gfx = canvasMoving.getGraphics();
 			gfx.drawImage(image, 0, 0);
@@ -201,7 +210,7 @@ public class Player extends ExplodableEntity {
 	 * @param gc
 	 */
 	private void handleBullets(GameContainer gc) {
-		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+		if (gc.getInput().isKeyPressed(shoot)) {
 			fire.playAsSoundEffect(1, 1, false);
 			try {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
@@ -239,7 +248,7 @@ public class Player extends ExplodableEntity {
 			}
 		}
 
-		if (input.isKeyDown(Input.KEY_UP)) {
+		if (input.isKeyDown(up)) {
 			setAnimation(moving); // sprite with thrusters
 
 			if (!thrust.isPlaying())
@@ -311,11 +320,11 @@ public class Player extends ExplodableEntity {
 	 * @return
 	 */
 	private boolean updateRotation(Input input) {
-		if (input.isKeyDown(Input.KEY_RIGHT)) {
+		if (input.isKeyDown(right)) {
 			moving.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			still.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			return true;
-		} else if (input.isKeyDown(Input.KEY_LEFT)) {
+		} else if (input.isKeyDown(left)) {
 			moving.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
 			still.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
 			return true;
@@ -339,6 +348,13 @@ public class Player extends ExplodableEntity {
 		LOGGER.log(String.format("Gained %d points with multiplier %d", points, multiplier));
 	}
 
+	public void bindKeys(int up, int left, int right, int shoot) {
+		this.up = up;
+		this.left = left;
+		this.right = right;
+		this.shoot = shoot;
+	}
+
 	/**
 	 * Renders the Player and Bullet sprites.
 	 */
@@ -350,11 +366,9 @@ public class Player extends ExplodableEntity {
 		} else {
 			getSprite().setImageColor(1, 1, 1);
 		}
-		
 
 		getSprite().draw(getX(), getY());
-		g.drawString("SCORE: " + score, 8, 22); // location (x,y) is magic
-												// numbers for now
+
 		bullets.stream().forEach(e -> e.render(g));
 		// TODO: render picked up power ups in the right corner
 	}

@@ -16,3 +16,12 @@ To get this project to work on your local computer you will first have to clone 
 
 ## Ingame image
 ![ingame-image](https://api.monosnap.com/rpc/file/download?id=N2MQZAfANGGQHILv9oOZAyghG9BQse "Ingame image")
+
+### Multiplayer
+Run the program with -mp program argument to get a local multiplayer instance. Menu options will be provided later on.
+
+### Powerups
+There are three powerups in the game that spawn in semi-randomly:
+1. BULLET - This powerup is red of color and will increase your bullet speed for 10 seconds
+2. POINTS - This powerup is green of color and will double your points gained for 8 seconds
+3. INVINCIBLE - This powerup is yellow of color and will give you invincibility for 5 seconds

@@ -20,6 +20,8 @@ import org.newdawn.slick.SlickException;
 public class Asteroid extends ExplodableEntity {
 
 	private final static Logger LOGGER = Logger.getInstance(Asteroid.class.getName());
+	
+	private final static String ASTEROID_F = "asteroid/asteroid_%d.png";
 
 	private static final float SPEED = 2f;
 	private static final float ROTATION_SPEED = 1.75f;
@@ -41,7 +43,7 @@ public class Asteroid extends ExplodableEntity {
 	 * @throws SlickException
 	 */
 	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
-		super(new Image(String.format("resources/asteroid/asteroid_%d.png", size)), position, rotation, size);
+		super(new Image(String.format(ASTEROID_F, size)), position, rotation, size);
 		this.size = size;
 
 		double radian = Math.toRadians(rotation + MAX_DEGREES * new Random().nextFloat());

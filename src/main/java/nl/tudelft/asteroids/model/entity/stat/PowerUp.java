@@ -81,8 +81,9 @@ public class PowerUp extends Entity {
 	@Override
 	public void render(Graphics g) {
 		Color start = g.getColor();
-
+		
 		g.setColor(getType().getColor());
+		
 		g.setAntiAlias(true);
 		g.fill(getBoundingBox());
 
@@ -93,7 +94,7 @@ public class PowerUp extends Entity {
 	 * The different types of power ups.
 	 */
 	public enum PowerupType {
-		BULLET(Color.red, 10000), POINTS(Color.green, 8000), INVINCIBILITY(Color.yellow, 5000);
+		BULLET(new Color(1, 0, 0, 0.5f), 10000), POINTS(new Color(0, 1, 0, 0.5f), 8000), INVINCIBILITY(new Color(1, 1, 0, 0.5f), 5000);
 
 		private final Color color;
 		private final long duration;

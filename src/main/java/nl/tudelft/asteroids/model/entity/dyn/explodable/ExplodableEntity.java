@@ -22,6 +22,7 @@ public class ExplodableEntity extends Entity {
 	private static final int EXPLOSION_SPEED = 35;
 
 	private static final String EXPLOSION_AUDIO_FILE = "explode.wav";
+	private static final String EXPLOSION_F = "asteroid/Explosion-%d.png";
 
 	private static Image[] big = new Image[8];
 	private static Image[] medium = new Image[8];
@@ -30,7 +31,7 @@ public class ExplodableEntity extends Entity {
 	static {
 		try {
 			for (int i = 0; i < big.length; i++) {
-				String name = String.format("resources/asteroid/Explosion-%d.png", i + 1);
+				String name = String.format(EXPLOSION_F, i + 1);
 				big[i] = new Image(name);
 				medium[i] = new Image(name).getScaledCopy(0.7f);
 				small[i] = new Image(name).getScaledCopy(0.4f);

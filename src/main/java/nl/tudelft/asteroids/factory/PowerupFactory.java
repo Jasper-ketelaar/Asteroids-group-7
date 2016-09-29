@@ -29,7 +29,7 @@ public class PowerupFactory {
 
 	public boolean requiresPowerup() {
 		long time = System.currentTimeMillis() - last;
-		if (last != 0 && time > 20000) {
+		if (last != 0 && time > 15000) {
 			return true;
 		} else {
 			float rand = random.nextFloat();

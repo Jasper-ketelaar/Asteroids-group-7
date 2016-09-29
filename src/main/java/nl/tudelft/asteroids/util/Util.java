@@ -9,7 +9,7 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
-import nl.tudelft.asteroids.model.entity.Player;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 
 /**
  * Methods that are often used, providing essential utility.

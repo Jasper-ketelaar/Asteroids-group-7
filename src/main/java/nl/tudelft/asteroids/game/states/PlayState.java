@@ -18,10 +18,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import org.newdawn.slick.util.ResourceLoader;
 
-import nl.tudelft.asteroids.model.entity.Asteroid;
-import nl.tudelft.asteroids.model.entity.Bullet;
-import nl.tudelft.asteroids.model.entity.Player;
-import nl.tudelft.asteroids.model.entity.PowerUp;
+import nl.tudelft.asteroids.factory.PowerupFactory;
+import nl.tudelft.asteroids.model.entity.dyn.Bullet;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
+import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
 import nl.tudelft.asteroids.util.Util;
@@ -37,6 +38,8 @@ public class PlayState extends BasicGameState {
 
 	private final static Logger LOGGER = Logger.getInstance(PlayState.class.getName());
 
+	private final PowerupFactory powerupFactory = new PowerupFactory();
+	
 	private Player player;
 
 	private List<Asteroid> asteroids = new ArrayList<>();
@@ -114,11 +117,8 @@ public class PlayState extends BasicGameState {
 		 * algorithm for randomly spawning in power ups when there are too
 		 * little asteroids on the screen
 		 */
-		if (powerUps.size() < 3 && new Random().nextInt(666) == 1) { // magic
-																		// numbers
-																		// for
-																		// spawning
-			powerUps.add(new PowerUp(Util.randomLocation(player, gc)));
+		if (powerUps.size() < 3 && powerupFactory.requiresPowerup()) { 
+			powerUps.add(powerupFactory.create(gc));
 			LOGGER.log("A new power up is spawned");
 		}
 
@@ -173,7 +173,7 @@ public class PlayState extends BasicGameState {
 				player.setPowerUp(powerUp);
 				power_up_it.remove();
 				LOGGER.log("Power up picked up and removed from screen");
-			} else if (powerUp.creationTimeElapsed() > PowerUp.creationDuration) {
+			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
 				power_up_it.remove();
 				LOGGER.log("Power up despawned after being on screen to long");
 			}

@@ -1,10 +1,11 @@
-package nl.tudelft.asteroids.model.entity;
+package nl.tudelft.asteroids.model.entity.dyn.explodable.playable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -13,6 +14,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
 
+import nl.tudelft.asteroids.model.entity.Entity;
+import nl.tudelft.asteroids.model.entity.dyn.Bullet;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.ExplodableEntity;
+import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Util;
 import nl.tudelft.asteroids.util.Logger.Level;
@@ -134,7 +139,7 @@ public class Player extends ExplodableEntity {
 			Input input = gc.getInput();
 			handleMovement(input, delta);
 			handleBullets(gc);
-			handlePowerUps(gc);
+			handlePowerUps();
 			LOGGER.update();
 		}
 	}
@@ -166,23 +171,26 @@ public class Player extends ExplodableEntity {
 	 * 
 	 * @param gc
 	 */
-	private void handlePowerUps(GameContainer gc) {
-		// default multiplier to 1
-		this.multiplier = 1;
-		if (powerUp == null)
-			return;
-		if (powerUp.creationTimeElapsed() > PowerUp.pickupDuration) {
+	private void handlePowerUps() {
+		if (powerUp == null) {
+			this.multiplier = 1;
+			this.invincible = false;
+		} else if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
 			powerUp = null;
-			return;
-		}
-		PowerUp.Type pType = powerUp.getType();
-		if (pType.equals(PowerUp.Type.BULLET)) {
-			bullets.forEach(b -> b.setScale(24)); // double bullets speed
-		} else if (pType.equals(PowerUp.Type.INVINCIBILITY)) {
-			// TODO: Implement invincibility
-			this.invincible = true;
-		} else if (pType.equals(PowerUp.Type.POINTS)) {
-			this.multiplier = 2; // double points
+		} else {
+			switch (powerUp.getType()) {
+			case BULLET:
+				bullets.forEach(b -> b.setScale(24));
+				break;
+
+			case INVINCIBILITY:
+				this.invincible = true;
+				break;
+
+			case POINTS:
+				this.multiplier = 2;
+				break;
+			}
 		}
 	}
 
@@ -335,6 +343,15 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
+
+		if (powerUp != null) {
+			Color clr = powerUp.getType().getColor();
+			getSprite().setImageColor(clr.r, clr.g, clr.b);
+		} else {
+			getSprite().setImageColor(1, 1, 1);
+		}
+		
+
 		getSprite().draw(getX(), getY());
 		g.drawString("SCORE: " + score, 8, 22); // location (x,y) is magic
 												// numbers for now

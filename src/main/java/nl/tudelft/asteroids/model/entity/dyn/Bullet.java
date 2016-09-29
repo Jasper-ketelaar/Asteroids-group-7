@@ -1,9 +1,11 @@
-package nl.tudelft.asteroids.model.entity;
+package nl.tudelft.asteroids.model.entity.dyn;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import nl.tudelft.asteroids.model.entity.Entity;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 import nl.tudelft.asteroids.util.Logger;
 
 /**

@@ -23,13 +23,10 @@ import nl.tudelft.asteroids.util.Logger.Level;
 public class Launch {
 	
 	private final static Logger LOGGER = Logger.getInstance(Launch.class.getName()); 
+	private AppGameContainer appgc;
+	private AsteroidsGame ag;
 	
-	/**
-	 * Main method for launching the game.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
+	public void launch(){
 		LOGGER.registerOutput(System.out);
 		try {
 			File file = new File(String.format("game%d.log", (int) System.currentTimeMillis()));
@@ -43,8 +40,8 @@ public class Launch {
 			LOGGER.log("IOException thrown", Level.ERROR, true);
 		}
 		try {
-			AppGameContainer appgc;
-			appgc = new AppGameContainer(new AsteroidsGame("Asteroids"));
+			ag =new AsteroidsGame("Asteroids");
+			appgc = new AppGameContainer(ag);
 			appgc.setDisplayMode(1200, 700, false);
 			appgc.setTargetFrameRate(100);
 			LOGGER.log("Game container fired up", Level.INFO, true);
@@ -53,6 +50,19 @@ public class Launch {
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}
+	}
+	
+	public AsteroidsGame getAsteroidsGame() {
+		return ag;
+	}
+	
+	/**
+	 * Main method for launching the game.
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		new Launch().launch();
 	}
 
 }

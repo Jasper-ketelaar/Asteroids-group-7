@@ -39,7 +39,7 @@ public class PlayState extends BasicGameState {
 	private Player player;
 
 	private List<Asteroid> asteroids = new ArrayList<>();
-	private List<PowerUp> powerUps = new ArrayList<>();
+	private PowerUp powerUp = null;
 	private final Image background;
 
 	/**
@@ -82,7 +82,8 @@ public class PlayState extends BasicGameState {
 		g.drawImage(background, 0, 0);
 		player.render(g);
 		asteroids.stream().forEach(e -> e.render(g));
-		powerUps.stream().forEach(p -> p.render(g));
+		if (powerUp != null)
+			powerUp.render(g);
 	}
 
 	/**
@@ -112,9 +113,8 @@ public class PlayState extends BasicGameState {
 		 * algorithm for randomly spawning in power ups when there are too
 		 * little asteroids on the screen
 		 */
-		int max_power_ups = (int) (1 + Math.floor(player.getScore() / 2000));
-		if (powerUps.size() < max_power_ups) {
-			powerUps.add(new PowerUp(Util.randomLocation(player, gc)));
+		if (powerUp == null && player.getPowerUp() == null) {
+			powerUp = new PowerUp(Util.randomLocation(player, gc));
 		}
 
 		/* update asteroids, play player explode animation, split asteroids, */
@@ -160,20 +160,18 @@ public class PlayState extends BasicGameState {
 		}
 
 		/* update power ups */
-		ListIterator<PowerUp> power_up_iterator = powerUps.listIterator();
-		while (power_up_iterator.hasNext()) {
-			PowerUp pUp = power_up_iterator.next();
-			if (player.collide(pUp)) {
-				pUp.setPickupTime();
-				player.getPowerUps().add(pUp);
-				power_up_iterator.remove();
-				LOGGER.log("Power up picked up and removed from screen");
-			}
-			else if(pUp.creationTimeElapsed() > pUp.creationDuration) {
-				power_up_iterator.remove();
-				LOGGER.log("Power up despawned after being on screen to long");
-			}
+		if (powerUp == null) {
+			//do nothing
+		} else if (player.collide(powerUp)) {
+			powerUp.setPickupTime();
+			player.setPowerUp(powerUp);
+			powerUp = null;
+			LOGGER.log("Power up picked up and removed from screen");
+		} else if (powerUp.creationTimeElapsed() > powerUp.creationDuration) {
+			powerUp = null;
+			LOGGER.log("Power up despawned after being on screen to long");
 		}
+
 		LOGGER.update();
 	}
 

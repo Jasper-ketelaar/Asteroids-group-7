@@ -2,7 +2,6 @@ package nl.tudelft.asteroids.model.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.stream.Collectors;
 
 import org.newdawn.slick.Animation;
@@ -35,8 +34,8 @@ public class Player extends ExplodableEntity {
 	private static final int BULLET_ADJUSTMENT = 35;
 
 	private List<Bullet> bullets = new ArrayList<>();
-	
-	private List<PowerUp> powerUps = new ArrayList<>();
+
+	private PowerUp powerUp = null;
 
 	private Vector2f direction;
 	private Vector2f movingDirection;
@@ -46,8 +45,8 @@ public class Player extends ExplodableEntity {
 	private Audio fire, thrust;
 
 	private int score;
-	private int multiplier; //used for power up
-	
+	private int multiplier; // used for power up
+
 	private boolean invincible;
 
 	private double velocity;
@@ -146,39 +145,46 @@ public class Player extends ExplodableEntity {
 	public List<Bullet> getFiredBullets() {
 		return bullets;
 	}
-	
+
 	/**
-	 * @return List containing all the picked up power ups
+	 * @return The current power up
 	 */
-	public List<PowerUp> getPowerUps() {
-		return powerUps;
+	public PowerUp getPowerUp() {
+		return powerUp;
 	}
-	
+
+	/**
+	 * @param The
+	 *            current power up
+	 */
+	public void setPowerUp(PowerUp powerUp) {
+		this.powerUp = powerUp;
+	}
+
 	/**
 	 * Handles the different power ups a player can pick up.
+	 * 
 	 * @param gc
 	 */
 	private void handlePowerUps(GameContainer gc) {
-		ListIterator<PowerUp> iterator = powerUps.listIterator();
-		while(iterator.hasNext()) {
-			PowerUp pUp = iterator.next();
-			if(pUp.creationTimeElapsed() > pUp.pickupDuration) {
-				iterator.remove();
-				continue;
-			}
-			
-			if(pUp.getType().equals(PowerUp.Type.BULLET)) {
-				bullets.forEach(b -> b.setScale(6)); //slow down bullets to half speed
-			}
-			else if(pUp.getType().equals(PowerUp.Type.INVINCIBILITY)) {
-				//TODO: Implement invincibility 
-				this.invincible = true;
-			}
-			else if(pUp.getType().equals(PowerUp.Type.POINTS)) {
-				this.multiplier = 2; //double points
-			}
+		// default multiplier to 1
+		this.multiplier = 1;
+		if(powerUp == null)
+			return;
+		if (powerUp.creationTimeElapsed() > powerUp.pickupDuration) {
+			powerUp = null;
+			return;
 		}
-		
+		PowerUp.Type pType = powerUp.getType();
+		if (pType.equals(PowerUp.Type.BULLET)) {
+			bullets.forEach(b -> b.setScale(6)); // slow down bullets to half
+													// speed
+		} else if (pType.equals(PowerUp.Type.INVINCIBILITY)) {
+			// TODO: Implement invincibility
+			this.invincible = true;
+		} else if (pType.equals(PowerUp.Type.POINTS)) {
+			this.multiplier = 2; // double points
+		}
 	}
 
 	/**
@@ -318,12 +324,14 @@ public class Player extends ExplodableEntity {
 	}
 
 	/**
-	 * @param points Amount of points with which the score is increased.
+	 * @param points
+	 *            Amount of points with which the score is increased.
 	 */
 	public void updateScore(int points) {
 		score += points * multiplier;
-		LOGGER.log(String.format("Gained %d points with multiplier %d", points, multiplier));	}
-	
+		LOGGER.log(String.format("Gained %d points with multiplier %d", points, multiplier));
+	}
+
 	/**
 	 * Renders the Player and Bullet sprites.
 	 */
@@ -332,15 +340,17 @@ public class Player extends ExplodableEntity {
 		g.drawString("SCORE: " + score, 8, 22); // location (x,y) is magic
 												// numbers for now
 		bullets.stream().forEach(e -> e.render(g));
-		//TODO: render picked up power ups in the right corner
+		// TODO: render picked up power ups in the right corner
 	}
-	
+
 	/**
 	 * Overrides collision of Entity to implement invincibility.
 	 */
 	@Override
 	public boolean collide(Entity entity) {
-		if(invincible && !entity.getClass().equals(PowerUp.class))
+		if(entity == null)
+			return false;
+		if (invincible && !entity.getClass().equals(PowerUp.class))
 			return false;
 		if (this.getBoundingBox() == null) {
 			return false;

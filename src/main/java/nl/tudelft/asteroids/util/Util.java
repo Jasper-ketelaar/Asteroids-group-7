@@ -46,6 +46,7 @@ public class Util {
 	
 	/**
 	 * Generates a random location vector based on the Players position.
+	 * 
 	 * @param player
 	 * @param gc
 	 * @return

@@ -19,7 +19,7 @@ public class Bullet extends Entity {
 	private final static Logger LOGGER = Logger.getInstance(Asteroid.class.getName());
 
 	private final Vector2f direction;
-	private static final float SCALE = 12;
+	private static float SCALE = 12;
 
 	/**
 	 * Constructor. The direction of the bullet is determined based on the 
@@ -37,6 +37,13 @@ public class Bullet extends Entity {
 		float yDelta = (float) Math.sin(rotationRadians);
 		this.direction = new Vector2f(xDelta, yDelta).normalise().scale(SCALE);
 		LOGGER.log(String.format("Bullet fired at (%dx, %dy) with a rotation of %d deg", (int) location.getX(), (int) location.getY(), (int) rotation));
+	}
+	
+	/**
+	 * @param SCALE The speed at which a bullet moves.
+	 */
+	public void setScale(float SCALE) {
+		this.SCALE = SCALE;
 	}
 
 	/**

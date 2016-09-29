@@ -1,11 +1,15 @@
 package nl.tudelft.asteroids.util;
 
 import java.io.IOException;
+import java.util.Random;
 
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
+
+import nl.tudelft.asteroids.model.entity.Player;
 
 /**
  * Methods that are often used, providing essential utility.
@@ -38,6 +42,23 @@ public class Util {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * Generates a random location vector based on the Players position.
+	 * @param player
+	 * @param gc
+	 * @return
+	 */
+	public static Vector2f randomLocation(Player player, GameContainer gc) {
+		Random random = new Random();
+		boolean playerLeft = player.getX() < gc.getWidth() / 2;
+		boolean playerTop = player.getY() < gc.getHeight() / 2;
+		
+		float randomX = playerLeft ? random.nextFloat() * (gc.getWidth() / 2) : random.nextFloat() * (gc.getWidth() / 2) + gc.getWidth() / 2;
+		float randomY = playerTop ? random.nextFloat() * (gc.getHeight() / 2) : random.nextFloat() * (gc.getHeight() / 2) + gc.getHeight() / 2;
+		
+		return new Vector2f(randomX, randomY);
 	}
 
 }

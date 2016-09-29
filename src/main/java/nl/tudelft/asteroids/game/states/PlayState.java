@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -21,25 +20,26 @@ import org.newdawn.slick.util.ResourceLoader;
 import nl.tudelft.asteroids.model.entity.Asteroid;
 import nl.tudelft.asteroids.model.entity.Bullet;
 import nl.tudelft.asteroids.model.entity.Player;
+import nl.tudelft.asteroids.model.entity.PowerUp;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
+import nl.tudelft.asteroids.util.Util;
 
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
  * state.
  * 
- * @author Leroy Velzel, Bernard Bot, 
- * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class PlayState extends BasicGameState {
 
 	private final static Logger LOGGER = Logger.getInstance(PlayState.class.getName());
-	
+
 	private Player player;
-	private Random random = new Random();
-	
+
 	private List<Asteroid> asteroids = new ArrayList<>();
+	private List<PowerUp> powerUps = new ArrayList<>();
 	private final Image background;
 
 	/**
@@ -69,7 +69,7 @@ public class PlayState extends BasicGameState {
 
 		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
 		this.player.init();
-		
+
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
 	}
 
@@ -82,6 +82,7 @@ public class PlayState extends BasicGameState {
 		g.drawImage(background, 0, 0);
 		player.render(g);
 		asteroids.stream().forEach(e -> e.render(g));
+		powerUps.stream().forEach(p -> p.render(g));
 	}
 
 	/**
@@ -97,20 +98,23 @@ public class PlayState extends BasicGameState {
 			LOGGER.log("Game over! The score was  " + player.getScore());
 			gc.exit();
 		}
-		
-		/* algorithm for randomly spawning in asteroids when there are too little asteroids on the screen */
+
+		/*
+		 * algorithm for randomly spawning in asteroids when there are too
+		 * little asteroids on the screen
+		 */
 		int max = (int) (2 + Math.floor(player.getScore() / 2000));
 		if (asteroids.size() < max) {
-			
-			boolean playerLeft = player.getX() < gc.getWidth() / 2;
-			boolean playerTop = player.getY() < gc.getHeight() / 2;
-			
-			float randomX = playerLeft ? random.nextFloat() * (gc.getWidth() / 2) : random.nextFloat() * (gc.getWidth() / 2) + gc.getWidth() / 2;
-			float randomY = playerTop ? random.nextFloat() * (gc.getHeight() / 2) : random.nextFloat() * (gc.getHeight() / 2) + gc.getHeight() / 2;
-			
-			Vector2f randomPosition = new Vector2f(randomX, randomY);
-			Asteroid asteroid = new Asteroid(randomPosition, 0, 1);
-			asteroids.add(asteroid);
+			asteroids.add(new Asteroid(Util.randomLocation(player, gc), 0, 1));
+		}
+
+		/*
+		 * algorithm for randomly spawning in power ups when there are too
+		 * little asteroids on the screen
+		 */
+		int max_power_ups = (int) (1 + Math.floor(player.getScore() / 2000));
+		if (powerUps.size() < max_power_ups) {
+			powerUps.add(new PowerUp(Util.randomLocation(player, gc)));
 		}
 
 		/* update asteroids, play player explode animation, split asteroids, */
@@ -123,18 +127,27 @@ public class PlayState extends BasicGameState {
 				iterator.remove();
 				continue;
 			}
-			
-			/* if the asteroid explosion is playing, don't make any further calculations with this asteroid */
-			if (asteroid.getExplosion().getFrame() > 0) 
+
+			/*
+			 * if the asteroid explosion is playing, don't make any further
+			 * calculations with this asteroid
+			 */
+			if (asteroid.getExplosion().getFrame() > 0)
 				continue;
 
-			/* if the player is colliding with the asteroid or the explosion was already playing, continue playing the explosion */
+			/*
+			 * if the player is colliding with the asteroid or the explosion was
+			 * already playing, continue playing the explosion
+			 */
 			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
 				player.playExplosion();
 				continue;
 			}
 
-			/* iterate over the bullets and remove them; iterator used to prevent ConcurrentModificationException */
+			/*
+			 * iterate over the bullets and remove them; iterator used to
+			 * prevent ConcurrentModificationException
+			 */
 			Iterator<Bullet> bullets = player.getFiredBullets().iterator();
 			while (bullets.hasNext()) {
 				Bullet b = bullets.next();
@@ -143,6 +156,17 @@ public class PlayState extends BasicGameState {
 					asteroid.splitAsteroid(iterator);
 					bullets.remove();
 				}
+			}
+		}
+
+		/* update power ups */
+		ListIterator<PowerUp> power_up_iterator = powerUps.listIterator();
+		while (power_up_iterator.hasNext()) {
+			PowerUp pUp = power_up_iterator.next();
+			if (player.collide(pUp)) {
+				player.getPowerUps().add(pUp);
+				power_up_iterator.remove();
+				LOGGER.log("Power up picked up and removed from screen");
 			}
 		}
 		LOGGER.update();

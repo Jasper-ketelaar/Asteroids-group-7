@@ -1,5 +1,11 @@
 package nl.tudelft.asteroids.model.entity;
 
-public class AsteroidTest {
+import org.junit.Test;
 
+public class AsteroidTest {
+	@Test
+	public void testAsteroidConstructor() {
+
+	}
 }
+

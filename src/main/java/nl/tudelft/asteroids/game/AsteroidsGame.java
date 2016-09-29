@@ -5,31 +5,35 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
-import nl.tudelft.asteroids.game.states.PlayState;
+import nl.tudelft.asteroids.game.states.MultiPlayState;
+import nl.tudelft.asteroids.game.states.SinglePlayState;
 import nl.tudelft.asteroids.util.Logger;
 
 /**
  * Asteroids game with multiple states.
- * @author Leroy Velzel, Bernard Bot, 
- * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * 
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class AsteroidsGame extends StateBasedGame {
-	
+
 	private final static Logger LOGGER = Logger.getInstance(AsteroidsGame.class.getName());
-	
+
 	private final static String BACKGROUND = "BG4.jpg";
-	
+
+	private final boolean multiplayer;
+
 	/**
 	 * Constructor; specifying the title of the game.
 	 * 
-	 * @param	title 
-	 * 			Title of the game, in this case "Asteroids"
+	 * @param title
+	 *            Title of the game, in this case "Asteroids"
 	 */
-	public AsteroidsGame(String title) {
+	public AsteroidsGame(String title, boolean multiplayer) {
 		super(title);
+		this.multiplayer = multiplayer;
 	}
-	
+
 	/**
 	 * Initializes the states of the game, and sets the background sprite.
 	 */
@@ -37,8 +41,11 @@ public class AsteroidsGame extends StateBasedGame {
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		Image background = new Image(BACKGROUND);
 		LOGGER.log("Background image loaded");
-		//addState(new MenuState(background));
-		addState(new PlayState(background));
+		if (multiplayer)
+			addState(new MultiPlayState(background));
+		else
+			addState(new SinglePlayState(background));
+
 	}
 
 }

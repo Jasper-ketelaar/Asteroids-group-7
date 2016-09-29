@@ -42,6 +42,8 @@ public class Player extends ExplodableEntity {
 
 	private List<Bullet> bullets = new ArrayList<>();
 
+	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
+	
 	private Vector2f direction;
 	private Vector2f movingDirection;
 
@@ -152,7 +154,7 @@ public class Player extends ExplodableEntity {
 	 * @param gc
 	 */
 	private void handleBullets(GameContainer gc) {
-		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+		if (gc.getInput().isKeyPressed(shoot)) {
 			fire.playAsSoundEffect(1, 1, false);
 			try {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
@@ -190,7 +192,7 @@ public class Player extends ExplodableEntity {
 			}
 		}
 
-		if (input.isKeyDown(Input.KEY_UP)) {
+		if (input.isKeyDown(up)) {
 			setAnimation(moving); // sprite with thrusters
 
 			if (!thrust.isPlaying())
@@ -262,11 +264,11 @@ public class Player extends ExplodableEntity {
 	 * @return
 	 */
 	private boolean updateRotation(Input input) {
-		if (input.isKeyDown(Input.KEY_RIGHT)) {
+		if (input.isKeyDown(right)) {
 			moving.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			still.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			return true;
-		} else if (input.isKeyDown(Input.KEY_LEFT)) {
+		} else if (input.isKeyDown(left)) {
 			moving.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
 			still.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
 			return true;
@@ -288,6 +290,13 @@ public class Player extends ExplodableEntity {
 	public void updateScore(int points) {
 		score += points;
 		LOGGER.log(String.format("Gained %d points", points));
+	}
+	
+	public void bindKeys(int up, int left, int right, int shoot) {
+		this.up = up;
+		this.left = left;
+		this.right = right;
+		this.shoot = shoot;
 	}
 
 	/**

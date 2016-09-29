@@ -162,7 +162,7 @@ public class Player extends ExplodableEntity {
 		ListIterator<PowerUp> iterator = powerUps.listIterator();
 		while(iterator.hasNext()) {
 			PowerUp pUp = iterator.next();
-			if(pUp.creationTimeElapsed() > pUp.creationDuration || pUp.creationTimeElapsed() > pUp.pickupDuration) {
+			if(pUp.creationTimeElapsed() > pUp.pickupDuration) {
 				iterator.remove();
 				continue;
 			}
@@ -340,7 +340,7 @@ public class Player extends ExplodableEntity {
 	 */
 	@Override
 	public boolean collide(Entity entity) {
-		if(invincible)
+		if(invincible && !entity.getClass().equals(PowerUp.class))
 			return false;
 		if (this.getBoundingBox() == null) {
 			return false;

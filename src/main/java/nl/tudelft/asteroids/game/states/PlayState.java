@@ -164,9 +164,14 @@ public class PlayState extends BasicGameState {
 		while (power_up_iterator.hasNext()) {
 			PowerUp pUp = power_up_iterator.next();
 			if (player.collide(pUp)) {
+				pUp.setPickupTime();
 				player.getPowerUps().add(pUp);
 				power_up_iterator.remove();
 				LOGGER.log("Power up picked up and removed from screen");
+			}
+			else if(pUp.creationTimeElapsed() > pUp.creationDuration) {
+				iterator.remove();
+				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}
 		LOGGER.update();

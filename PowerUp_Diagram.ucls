@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <class-diagram version="1.1.10" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
   associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
-  <class id="1" language="java" name="nl.tudelft.asteroids.game.states.PlayState" project="Asteroids-group-7" 
-    file="/Asteroids-group-7/src/main/java/nl/tudelft/asteroids/game/states/PlayState.java" binary="false" 
+  <class id="1" language="java" name="nl.tudelft.asteroids.model.entity.Player" project="Asteroids-group-7" 
+    file="/Asteroids-group-7/src/main/java/nl/tudelft/asteroids/model/entity/Player.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="355" y="-6"/>    
+    <position height="-1" width="-1" x="350" y="447"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -14,7 +14,7 @@
   <enumeration id="2" language="java" name="nl.tudelft.asteroids.model.entity.PowerUp.Type" project="Asteroids-group-7" 
     file="/Asteroids-group-7/src/main/java/nl/tudelft/asteroids/model/entity/PowerUp.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="615" y="488"/>    
+    <position height="-1" width="-1" x="866" y="660"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
@@ -24,41 +24,49 @@
   <class id="3" language="java" name="nl.tudelft.asteroids.model.entity.PowerUp" project="Asteroids-group-7" 
     file="/Asteroids-group-7/src/main/java/nl/tudelft/asteroids/model/entity/PowerUp.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="341" y="295"/>    
+    <position height="-1" width="-1" x="649" y="472"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="4" language="java" name="nl.tudelft.asteroids.model.entity.Player" project="Asteroids-group-7" 
-    file="/Asteroids-group-7/src/main/java/nl/tudelft/asteroids/model/entity/Player.java" binary="false" 
+  <class id="4" language="java" name="nl.tudelft.asteroids.game.states.PlayState" project="Asteroids-group-7" 
+    file="/Asteroids-group-7/src/main/java/nl/tudelft/asteroids/game/states/PlayState.java" binary="false" 
     corner="BOTTOM_RIGHT">    
-    <position height="610" width="247" x="797" y="-116"/>    
+    <position height="-1" width="-1" x="726" y="236"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <nesting id="5">    
+  <association id="5">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="6" name="player"/>      
+      <multiplicity id="7" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="8">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="9" name="type"/>      
+      <multiplicity id="10" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <nesting id="11">    
     <end type="SOURCE" refId="3"/>    
     <end type="TARGET" refId="2"/>  
   </nesting>  
-  <association id="6">    
+  <association id="12">    
     <end type="SOURCE" refId="1" navigable="false">      
-      <attribute id="7" name="player"/>      
-      <multiplicity id="8" minimum="0" maximum="1"/>    
+      <attribute id="13" name="powerUp"/>      
+      <multiplicity id="14" minimum="0" maximum="1"/>    
     </end>    
-    <end type="TARGET" refId="4" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="9">    
-    <end type="SOURCE" refId="3" navigable="false">      
-      <attribute id="10" name="type"/>      
-      <multiplicity id="11" minimum="0" maximum="1"/>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -39,7 +40,7 @@ public class PlayState extends BasicGameState {
 	private Player player;
 
 	private List<Asteroid> asteroids = new ArrayList<>();
-	private PowerUp powerUp = null;
+	private List<PowerUp> powerUps = new ArrayList<>();
 	private final Image background;
 
 	/**
@@ -82,8 +83,7 @@ public class PlayState extends BasicGameState {
 		g.drawImage(background, 0, 0);
 		player.render(g);
 		asteroids.stream().forEach(e -> e.render(g));
-		if (powerUp != null)
-			powerUp.render(g);
+		powerUps.forEach(p -> p.render(g));
 	}
 
 	/**
@@ -107,14 +107,19 @@ public class PlayState extends BasicGameState {
 		int max = (int) (2 + Math.floor(player.getScore() / 2000));
 		if (asteroids.size() < max) {
 			asteroids.add(new Asteroid(Util.randomLocation(player, gc), 0, 1));
+			LOGGER.log("A new asteroid is spawned");
 		}
 
 		/*
 		 * algorithm for randomly spawning in power ups when there are too
 		 * little asteroids on the screen
 		 */
-		if (powerUp == null && player.getPowerUp() == null) {
-			powerUp = new PowerUp(Util.randomLocation(player, gc));
+		if (powerUps.size() < 3 && new Random().nextInt(666) == 1) { // magic
+																		// numbers
+																		// for
+																		// spawning
+			powerUps.add(new PowerUp(Util.randomLocation(player, gc)));
+			LOGGER.log("A new power up is spawned");
 		}
 
 		/* update asteroids, play player explode animation, split asteroids, */
@@ -160,18 +165,19 @@ public class PlayState extends BasicGameState {
 		}
 
 		/* update power ups */
-		if (powerUp == null) {
-			//do nothing
-		} else if (player.collide(powerUp)) {
-			powerUp.setPickupTime();
-			player.setPowerUp(powerUp);
-			powerUp = null;
-			LOGGER.log("Power up picked up and removed from screen");
-		} else if (powerUp.creationTimeElapsed() > powerUp.creationDuration) {
-			powerUp = null;
-			LOGGER.log("Power up despawned after being on screen to long");
+		Iterator<PowerUp> power_up_it = powerUps.listIterator();
+		while (power_up_it.hasNext()) {
+			PowerUp powerUp = power_up_it.next();
+			if (player.collide(powerUp)) {
+				powerUp.setPickupTime();
+				player.setPowerUp(powerUp);
+				power_up_it.remove();
+				LOGGER.log("Power up picked up and removed from screen");
+			} else if (powerUp.creationTimeElapsed() > PowerUp.creationDuration) {
+				power_up_it.remove();
+				LOGGER.log("Power up despawned after being on screen to long");
+			}
 		}
-
 		LOGGER.update();
 	}
 

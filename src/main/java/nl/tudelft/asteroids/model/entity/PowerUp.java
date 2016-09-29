@@ -24,8 +24,8 @@ public class PowerUp extends Entity {
 	 * The time in milliseconds that the power up stays on the screen and is
 	 * active when picked up.
 	 */
-	public final long creationDuration = 10_000;
-	public final long pickupDuration = 10_000;
+	public static final long creationDuration = 10_000;
+	public static final long pickupDuration = 10_000;
 	
 	private final Type type;
 	

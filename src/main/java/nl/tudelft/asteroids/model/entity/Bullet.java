@@ -43,7 +43,7 @@ public class Bullet extends Entity {
 	 * @param SCALE The speed at which a bullet moves.
 	 */
 	public void setScale(float SCALE) {
-		this.SCALE = SCALE;
+		Bullet.SCALE = SCALE;
 	}
 
 	/**

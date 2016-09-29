@@ -169,16 +169,15 @@ public class Player extends ExplodableEntity {
 	private void handlePowerUps(GameContainer gc) {
 		// default multiplier to 1
 		this.multiplier = 1;
-		if(powerUp == null)
+		if (powerUp == null)
 			return;
-		if (powerUp.creationTimeElapsed() > powerUp.pickupDuration) {
+		if (powerUp.creationTimeElapsed() > PowerUp.pickupDuration) {
 			powerUp = null;
 			return;
 		}
 		PowerUp.Type pType = powerUp.getType();
 		if (pType.equals(PowerUp.Type.BULLET)) {
-			bullets.forEach(b -> b.setScale(6)); // slow down bullets to half
-													// speed
+			bullets.forEach(b -> b.setScale(24)); // double bullets speed
 		} else if (pType.equals(PowerUp.Type.INVINCIBILITY)) {
 			// TODO: Implement invincibility
 			this.invincible = true;
@@ -348,7 +347,7 @@ public class Player extends ExplodableEntity {
 	 */
 	@Override
 	public boolean collide(Entity entity) {
-		if(entity == null)
+		if (entity == null)
 			return false;
 		if (invincible && !entity.getClass().equals(PowerUp.class))
 			return false;

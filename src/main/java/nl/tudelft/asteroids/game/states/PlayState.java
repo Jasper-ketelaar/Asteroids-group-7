@@ -170,7 +170,7 @@ public class PlayState extends BasicGameState {
 				LOGGER.log("Power up picked up and removed from screen");
 			}
 			else if(pUp.creationTimeElapsed() > pUp.creationDuration) {
-				iterator.remove();
+				power_up_iterator.remove();
 				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}

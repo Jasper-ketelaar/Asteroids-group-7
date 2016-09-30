@@ -1,6 +1,5 @@
 package nl.tudelft.asteroids.game.states;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -13,17 +12,14 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
-import org.newdawn.slick.util.ResourceLoader;
-
 import nl.tudelft.asteroids.factory.PowerupFactory;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 
 import nl.tudelft.asteroids.util.Logger;
-import nl.tudelft.asteroids.util.Logger.Level;
+import nl.tudelft.asteroids.util.Util;
 
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
@@ -36,7 +32,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 	protected final static Logger LOGGER = Logger.getInstance(DefaultPlayState.class.getName());
 
-	private final static String MUSIC_LOOP = "sfx/music_loop.wav";
+	private final static String MUSIC_LOOP = "music_loop.wav";
 
 	private final static Vector2f SCORE_LOCATION = new Vector2f(8, 22);
 
@@ -64,13 +60,9 @@ public abstract class DefaultPlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		long curr = System.currentTimeMillis(); // measure load time
-		try {
-			Audio audio = AudioLoader.getAudio("WAV", ResourceLoader.getResourceAsStream(MUSIC_LOOP));
-			audio.playAsMusic(1, 1, true);
-			LOGGER.log("Background music loaded");
-		} catch (IOException e) {
-			LOGGER.log("IOException occured: music loop file", Level.ERROR, true);
-		}
+		Audio audio = Util.loadAudio(MUSIC_LOOP);
+		audio.playAsMusic(1, 1, true);
+		LOGGER.log("Background music loaded");
 
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
 	}

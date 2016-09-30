@@ -34,7 +34,6 @@ public class Player extends ExplodableEntity {
 
 	private final static String FIRE_WAV = "fire.wav";
 	private final static String THRUST_WAV = "thrust.wav";
-	private final static String WAV = "WAV";
 
 	private final static String PLANE = "Plane.png";
 	private final static String EXHAUST = "Exhaust.png";
@@ -75,8 +74,8 @@ public class Player extends ExplodableEntity {
 	public Player(Vector2f position) throws SlickException {
 		super(position);
 		this.direction = new Vector2f(0, -1);
-		this.fire = Util.load(WAV, FIRE_WAV);
-		this.thrust = Util.load(WAV, THRUST_WAV);
+		this.fire = Util.loadAudio(FIRE_WAV);
+		this.thrust = Util.loadAudio(THRUST_WAV);
 		this.score = 0;
 		this.multiplier = 1;
 		this.invincible = false;

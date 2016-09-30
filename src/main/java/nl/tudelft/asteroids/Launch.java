@@ -43,12 +43,12 @@ public class Launch {
 			LOGGER.log("IOException thrown", Level.ERROR, true);
 		}
 		try {
+
 			if (args.length > 0) {
 				System.out.println(args[0]);
 			}
 			boolean multiplayer = args.length > 0 && args[0].equals("-mp");
-			AppGameContainer appgc;
-			appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
+			AppGameContainer appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
 			appgc.setDisplayMode(1200, 700, false);
 			appgc.setTargetFrameRate(100);
 			LOGGER.log("Game container fired up", Level.INFO, true);
@@ -57,6 +57,7 @@ public class Launch {
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}
+
 	}
 
 }

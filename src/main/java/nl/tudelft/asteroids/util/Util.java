@@ -1,9 +1,7 @@
 package nl.tudelft.asteroids.util;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -55,7 +53,8 @@ public class Util {
 		if (AUDIO_CACHE.containsKey(name)) {
 			return AUDIO_CACHE.get(name);
 		} else {
-			String format = name.split(".")[1].toUpperCase();
+			System.out.println(name);
+			String format = name.split("\\.")[1].toUpperCase();
 			try {
 				AUDIO_CACHE.put(name, AudioLoader.getAudio(format, ResourceLoader.getResourceAsStream(AUDIO_BASE + name)));
 				return AUDIO_CACHE.get(name);

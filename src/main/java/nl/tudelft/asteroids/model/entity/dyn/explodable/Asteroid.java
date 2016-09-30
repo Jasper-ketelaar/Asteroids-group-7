@@ -1,4 +1,4 @@
-package nl.tudelft.asteroids.model.entity;
+package nl.tudelft.asteroids.model.entity.dyn.explodable;
 
 import org.newdawn.slick.geom.Vector2f;
 

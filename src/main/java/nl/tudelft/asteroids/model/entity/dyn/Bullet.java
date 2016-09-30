@@ -1,9 +1,11 @@
-package nl.tudelft.asteroids.model.entity;
+package nl.tudelft.asteroids.model.entity.dyn;
 
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import nl.tudelft.asteroids.model.entity.Entity;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 import nl.tudelft.asteroids.util.Logger;
 
 /**
@@ -21,7 +23,7 @@ public class Bullet extends Entity {
 	private final static String BULLET = "Bullet.png";
 
 	private final Vector2f direction;
-	private static final float SCALE = 12;
+	private static float SCALE = 12;
 
 	/**
 	 * Constructor. The direction of the bullet is determined based on the 
@@ -39,6 +41,13 @@ public class Bullet extends Entity {
 		float yDelta = (float) Math.sin(rotationRadians);
 		this.direction = new Vector2f(xDelta, yDelta).normalise().scale(SCALE);
 		LOGGER.log(String.format("Bullet fired at (%dx, %dy) with a rotation of %d deg", (int) location.getX(), (int) location.getY(), (int) rotation));
+	}
+	
+	/**
+	 * @param SCALE The speed at which a bullet moves.
+	 */
+	public void setScale(float SCALE) {
+		Bullet.SCALE = SCALE;
 	}
 
 	/**

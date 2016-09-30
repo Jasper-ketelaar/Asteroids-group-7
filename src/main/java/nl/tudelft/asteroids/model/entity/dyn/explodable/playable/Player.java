@@ -1,10 +1,11 @@
-package nl.tudelft.asteroids.model.entity;
+package nl.tudelft.asteroids.model.entity.dyn.explodable.playable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -13,6 +14,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
 
+import nl.tudelft.asteroids.model.entity.Entity;
+import nl.tudelft.asteroids.model.entity.dyn.Bullet;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.ExplodableEntity;
+import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Util;
 import nl.tudelft.asteroids.util.Logger.Level;
@@ -42,6 +47,10 @@ public class Player extends ExplodableEntity {
 
 	private List<Bullet> bullets = new ArrayList<>();
 
+	private PowerUp powerUp = null;
+	
+	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
+
 	private Vector2f direction;
 	private Vector2f movingDirection;
 
@@ -50,6 +59,9 @@ public class Player extends ExplodableEntity {
 	private Audio fire, thrust;
 
 	private int score;
+	private int multiplier; // used for power up
+
+	private boolean invincible;
 
 	private double velocity;
 
@@ -66,6 +78,8 @@ public class Player extends ExplodableEntity {
 		this.fire = Util.load(WAV, FIRE_WAV);
 		this.thrust = Util.load(WAV, THRUST_WAV);
 		this.score = 0;
+		this.multiplier = 1;
+		this.invincible = false;
 		LOGGER.log("Player initialized", Level.INFO, true);
 	}
 
@@ -134,6 +148,7 @@ public class Player extends ExplodableEntity {
 			Input input = gc.getInput();
 			handleMovement(input, delta);
 			handleBullets(gc);
+			handlePowerUps();
 			LOGGER.update();
 		}
 	}
@@ -146,13 +161,56 @@ public class Player extends ExplodableEntity {
 	}
 
 	/**
+	 * @return The current power up
+	 */
+	public PowerUp getPowerUp() {
+		return powerUp;
+	}
+
+	/**
+	 * @param The
+	 *            current power up
+	 */
+	public void setPowerUp(PowerUp powerUp) {
+		this.powerUp = powerUp;
+	}
+
+	/**
+	 * Handles the different power ups a player can pick up.
+	 * 
+	 * @param gc
+	 */
+	private void handlePowerUps() {
+		if (powerUp == null) {
+			this.multiplier = 1;
+			this.invincible = false;
+		} else if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
+			powerUp = null;
+		} else {
+			switch (powerUp.getType()) {
+			case BULLET:
+				bullets.forEach(b -> b.setScale(24));
+				break;
+
+			case INVINCIBILITY:
+				this.invincible = true;
+				break;
+
+			case POINTS:
+				this.multiplier = 2;
+				break;
+			}
+		}
+	}
+
+	/**
 	 * Handles the input and movement of the Players bullets. Deletes bullets
 	 * when they go out of the screen.
 	 * 
 	 * @param gc
 	 */
 	private void handleBullets(GameContainer gc) {
-		if (gc.getInput().isKeyPressed(Input.KEY_SPACE)) {
+		if (gc.getInput().isKeyPressed(shoot)) {
 			fire.playAsSoundEffect(1, 1, false);
 			try {
 				double rotationRadians = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
@@ -190,7 +248,7 @@ public class Player extends ExplodableEntity {
 			}
 		}
 
-		if (input.isKeyDown(Input.KEY_UP)) {
+		if (input.isKeyDown(up)) {
 			setAnimation(moving); // sprite with thrusters
 
 			if (!thrust.isPlaying())
@@ -262,11 +320,11 @@ public class Player extends ExplodableEntity {
 	 * @return
 	 */
 	private boolean updateRotation(Input input) {
-		if (input.isKeyDown(Input.KEY_RIGHT)) {
+		if (input.isKeyDown(right)) {
 			moving.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			still.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			return true;
-		} else if (input.isKeyDown(Input.KEY_LEFT)) {
+		} else if (input.isKeyDown(left)) {
 			moving.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
 			still.getCurrentFrame().setRotation(getRotation() - ROTATION_SPEED);
 			return true;
@@ -286,8 +344,15 @@ public class Player extends ExplodableEntity {
 	 *            Amount of points with which the score is increased.
 	 */
 	public void updateScore(int points) {
-		score += points;
-		LOGGER.log(String.format("Gained %d points", points));
+		score += points * multiplier;
+		LOGGER.log(String.format("Gained %d points with multiplier %d", points, multiplier));
+	}
+
+	public void bindKeys(int up, int left, int right, int shoot) {
+		this.up = up;
+		this.left = left;
+		this.right = right;
+		this.shoot = shoot;
 	}
 
 	/**
@@ -295,9 +360,32 @@ public class Player extends ExplodableEntity {
 	 */
 	public void render(Graphics g) {
 
+		if (powerUp != null) {
+			Color clr = powerUp.getType().getColor();
+			getSprite().setImageColor(clr.r, clr.g, clr.b);
+		} else {
+			getSprite().setImageColor(1, 1, 1);
+		}
+
 		getSprite().draw(getX(), getY());
 
 		bullets.stream().forEach(e -> e.render(g));
+		// TODO: render picked up power ups in the right corner
+	}
+
+	/**
+	 * Overrides collision of Entity to implement invincibility.
+	 */
+	@Override
+	public boolean collide(Entity entity) {
+		if (entity == null)
+			return false;
+		if (invincible && !entity.getClass().equals(PowerUp.class))
+			return false;
+		if (this.getBoundingBox() == null) {
+			return false;
+		}
+		return this.getBoundingBox().intersects(entity.getBoundingBox());
 	}
 
 }

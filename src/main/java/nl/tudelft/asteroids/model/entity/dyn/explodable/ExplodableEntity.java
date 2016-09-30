@@ -59,7 +59,7 @@ public class ExplodableEntity extends Entity {
 		super(sprite, pos, rotation);
 		explosion = new Animation(big, EXPLOSION_SPEED);
 		explosion.setLooping(false);
-		this.explosionAudio = Util.load("WAV", EXPLOSION_AUDIO_FILE);
+		this.explosionAudio = Util.loadAudio(EXPLOSION_AUDIO_FILE);
 	}
 
 	public ExplodableEntity(Image sprite, Vector2f pos, float rotation, int size) throws SlickException {
@@ -77,7 +77,7 @@ public class ExplodableEntity extends Entity {
 			break;
 		}
 		explosion.setLooping(false);
-		this.explosionAudio = Util.load("WAV", EXPLOSION_AUDIO_FILE);
+		this.explosionAudio = Util.loadAudio(EXPLOSION_AUDIO_FILE);
 	}
 
 	/**

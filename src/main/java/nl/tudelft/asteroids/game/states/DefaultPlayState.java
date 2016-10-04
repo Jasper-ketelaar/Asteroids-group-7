@@ -3,8 +3,6 @@ package nl.tudelft.asteroids.game.states;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Random;
-
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -23,7 +21,8 @@ import nl.tudelft.asteroids.util.Util;
 
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
- * state.
+ * state. This is an abstract class extended by the multiplayer and single
+ * player play states.
  * 
  * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
@@ -31,17 +30,15 @@ import nl.tudelft.asteroids.util.Util;
 public abstract class DefaultPlayState extends BasicGameState {
 
 	protected final static Logger LOGGER = Logger.getInstance(DefaultPlayState.class.getName());
-
+	
 	private final static String MUSIC_LOOP = "music_loop.wav";
-
 	private final static Vector2f SCORE_LOCATION = new Vector2f(8, 22);
-
-	private Random random = new Random();
 
 	private PowerupFactory powerupFactory = new PowerupFactory();
 
 	protected final List<Asteroid> asteroids = new ArrayList<>();
 	protected final List<PowerUp> powerUps = new ArrayList<>();
+	
 	private final Image background;
 
 	/**
@@ -60,6 +57,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		long curr = System.currentTimeMillis(); // measure load time
+		
+		//Load audio
 		Audio audio = Util.loadAudio(MUSIC_LOOP);
 		audio.playAsMusic(1, 1, true);
 		LOGGER.log("Background music loaded");
@@ -73,14 +72,16 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
+		// draw background
 		g.drawImage(background, 0, 0);
-		g.setColor(Color.white);
-		asteroids.stream().forEach(e -> e.render(g));
+
+		// render Asteroids, PowerUps
 		powerUps.forEach(p -> p.render(g));
+		asteroids.forEach(a -> a.render(g));
+
+		// set color of font and draw SCORE
+		g.setColor(Color.white);
 		g.drawString("SCORE: " + getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
-		asteroids.forEach(e -> {
-			e.render(g);
-		});
 	}
 
 	/**
@@ -91,57 +92,40 @@ public abstract class DefaultPlayState extends BasicGameState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 
 		/*
-		 * algorithm for randomly spawning in power ups when there are too
-		 * little asteroids on the screen
+		 * Algorithm for randomly spawning in power ups when there are too
+		 * little power ups on the screen.
 		 */
 		if (powerUps.size() < 3 && powerupFactory.requiresPowerup()) {
 			powerUps.add(powerupFactory.create(gc));
-			LOGGER.log("A new power up is spawned");
-		}
-
-		int max = (int) (2 + Math.floor(getScore() / 2000));
-		if (asteroids.size() < max) {
-			float randomX = random.nextBoolean() ? random.nextFloat() * (gc.getWidth() / 2)
-					: random.nextFloat() * (gc.getWidth() / 2) + gc.getWidth() / 2;
-			float randomY = random.nextBoolean() ? random.nextFloat() * (gc.getHeight() / 2)
-					: random.nextFloat() * (gc.getHeight() / 2) + gc.getHeight() / 2;
-
-			Vector2f randomPosition = new Vector2f(randomX, randomY);
-			Asteroid asteroid = new Asteroid(randomPosition, 0, 1);
-			asteroids.add(asteroid);
+			LOGGER.log("A new PowerUp spawned");
 		}
 
 		/*
-		 * update asteroids, play player explode animation, split asteroids,
+		 * Algorithm for randomly spawning in asteroids when there are too
+		 * little asteroids on the screen. A higher score means that more
+		 * asteroids can be spawned.
+		 */
+		int max = (int) (2 + Math.floor(getScore() / 2000));
+		if (asteroids.size() < max) {
+			asteroids.add(new Asteroid(Util.randomLocation(gc), 0, 1));
+		}
+
+		/*
+		 * Update asteroids
 		 */
 		ListIterator<Asteroid> iterator = asteroids.listIterator();
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
 			asteroid.update(gc);
+			
+			//remove asteroid when it has exploded
 			if (asteroid.getExplosion().isStopped()) {
-				LOGGER.log("Asteroid destroyed and instance removed from the game");
 				iterator.remove();
+				LOGGER.log("Asteroid destroyed and instance removed from the game");
 				continue;
 			}
-
-			/*
-			 * if the asteroid explosion is playing, don't make any further
-			 * calculations with this asteroid
-			 */
-			if (asteroid.getExplosion().getFrame() > 0)
-				continue;
-
-			/*
-			 * if the asteroid explosion is playing, don't make any further
-			 * calculations with this asteroid
-			 */
-			if (asteroid.getExplosion().getFrame() > 0)
-				continue;
-
 		}
-
 		LOGGER.update();
-
 	}
 
 	public abstract int getScore();

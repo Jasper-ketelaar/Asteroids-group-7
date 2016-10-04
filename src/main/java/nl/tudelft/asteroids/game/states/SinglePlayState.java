@@ -54,10 +54,12 @@ public class SinglePlayState extends DefaultPlayState {
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		super.render(gc, arg1, g);
 		player.render(g);
+		
+		//Update PowerUps
 		if (player.getPowerUp() != null) {
 			PowerUp pw = player.getPowerUp();
-			g.setColor(pw.getType().getColor());
-			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10);
+			g.setColor(pw.getType().getColor()); //set color of PowerUp
+			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); //draw PowerUp name 
 		}
 	}
 
@@ -111,9 +113,11 @@ public class SinglePlayState extends DefaultPlayState {
 				powerUp.setPickupTime();
 				player.setPowerUp(powerUp);
 				power_up_it.remove();
+				
 				LOGGER.log("Power up picked up and removed from screen");
 			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
 				power_up_it.remove();
+				
 				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}
@@ -129,6 +133,9 @@ public class SinglePlayState extends DefaultPlayState {
 		return 0;
 	}
 
+	/**
+	 * @return The score of the Player
+	 */
 	@Override
 	public int getScore() {
 		return player.getScore();

@@ -37,7 +37,6 @@ public abstract class Entity {
 			this.sprite.getCurrentFrame().setRotation(rotation);
 		}
 		this.pos = pos;
-
 	}
 
 	/**

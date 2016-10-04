@@ -13,20 +13,20 @@ import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
 
 /**
- * Launcher for the game Asteroids.
- * Defines the screen height and width, and sets the target frame rate.
+ * Launcher for the game Asteroids. Defines the screen height and width, and
+ * sets the target frame rate.
  * 
- * @author Leroy Velzel, Bernard Bot, 
- * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class Launch {
-	
-	private final static Logger LOGGER = Logger.getInstance(Launch.class.getName()); 
-	
+
+	private final static Logger LOGGER = Logger.getInstance(Launch.class.getName());
+
 	/**
-	 * Main method for launching the game.
-	 * 
+	 * Main method for launching the game. The multiplayer flag can be passed to
+	 * this method to initialize a multiplayer game.
+
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -43,7 +43,6 @@ public class Launch {
 			LOGGER.log("IOException thrown", Level.ERROR, true);
 		}
 		try {
-
 			if (args.length > 0) {
 				System.out.println(args[0]);
 			}
@@ -53,7 +52,7 @@ public class Launch {
 			appgc.setTargetFrameRate(100);
 			LOGGER.log("Game container fired up", Level.INFO, true);
 			appgc.start();
-			
+
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}

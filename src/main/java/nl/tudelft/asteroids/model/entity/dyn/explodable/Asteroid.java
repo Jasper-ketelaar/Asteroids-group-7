@@ -3,6 +3,7 @@ package nl.tudelft.asteroids.model.entity.dyn.explodable;
 import org.newdawn.slick.geom.Vector2f;
 
 import nl.tudelft.asteroids.util.Logger;
+import nl.tudelft.asteroids.util.Util;
 
 import java.util.ListIterator;
 import java.util.Random;
@@ -20,7 +21,7 @@ import org.newdawn.slick.SlickException;
 public class Asteroid extends ExplodableEntity {
 
 	private final static Logger LOGGER = Logger.getInstance(Asteroid.class.getName());
-	
+
 	private final static String ASTEROID_F = "asteroid/asteroid_%d.png";
 
 	private static final float SPEED = 2f;
@@ -44,16 +45,11 @@ public class Asteroid extends ExplodableEntity {
 	 */
 	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
 		super(new Image(String.format(ASTEROID_F, size)), position, rotation, size);
+
 		this.size = size;
 
-		double radian = Math.toRadians(rotation + MAX_DEGREES * new Random().nextFloat());
-		float xDelta = (float) Math.cos(radian);
-		float yDelta = (float) Math.sin(radian);
-		Vector2f direction = new Vector2f(xDelta, yDelta);
-		if (direction.length() > 0) {
-			direction = direction.normalise();
-		}
-		velocity = new Vector2f(direction.x * SPEED, direction.y * SPEED);
+		velocity = Util.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED);
+
 		LOGGER.log(String.format("Asteroid spawned in at: (%dx, %dy) with %d deg as rotation and size %d",
 				(int) position.getX(), (int) position.getY(), (int) rotation, size));
 	}
@@ -65,8 +61,10 @@ public class Asteroid extends ExplodableEntity {
 	 * @param gc
 	 */
 	public void update(GameContainer gc) {
-		setRotation(getRotation() + ROTATION_SPEED);
 		super.setPosition(getPosition().add(velocity));
+		super.setRotation(getRotation() + ROTATION_SPEED);
+
+		//logic for moving through screen borders
 		if (getMaxX() < 0 && getMinX() < 0) {
 			setPosition(new Vector2f(gc.getWidth(), getY()));
 		} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {

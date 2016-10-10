@@ -4,3 +4,7 @@ jdk:
   - oraclejdk8
 script:
   mvn test
+cache:
+  directories:
+  - .autoconf
+  - $HOME/.m2

@@ -27,7 +27,6 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 public class MultiPlayState extends DefaultPlayState {
 
 	private List<Player> players = new ArrayList<>();
-	
 
 	/**
 	 * Constructor; sets background sprite.
@@ -64,15 +63,18 @@ public class MultiPlayState extends DefaultPlayState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		super.render(gc, arg1, g);
-		players.forEach(e -> {
-			e.render(g);
-		});
+		
+		players.forEach(e -> e.render(g));
+		
+		//Handle PowerUps, draw name of PowerUp
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
 			if (player.getPowerUp() != null) {
 				PowerUp pw = player.getPowerUp();
+				
+				//Set color and draw String
 				g.setColor(pw.getType().getColor());
-				g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + i * 10);
+				g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + i * 10); //magic numbers
 			}
 		}
 	}
@@ -89,8 +91,9 @@ public class MultiPlayState extends DefaultPlayState {
 			Player player = playerIterator.next();
 			player.update(gc, delta);
 			if (player.getExplosion().isStopped()) {
-				LOGGER.log("Player collided with asteroid and died");
 				playerIterator.remove();
+				LOGGER.log("Player collided with asteroid and died");
+				
 				if (players.size() == 0) {
 					LOGGER.log("Game over! The score was  " + player.getScore());
 					gc.exit();
@@ -98,13 +101,14 @@ public class MultiPlayState extends DefaultPlayState {
 			}
 
 			/*
-			 * update asteroids, play player explode animation, split asteroids,
+			 * Update asteroids, play player explode animation, split asteroids,
 			 */
 			ListIterator<Asteroid> iterator = asteroids.listIterator();
 			while (iterator.hasNext()) {
 				Asteroid asteroid = iterator.next();
+				
 				/*
-				 * if the player is colliding with the asteroid or the explosion
+				 * If the player is colliding with the asteroid or the explosion
 				 * was already playing, continue playing the explosion
 				 */
 				if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
@@ -113,7 +117,7 @@ public class MultiPlayState extends DefaultPlayState {
 				}
 
 				/*
-				 * iterate over the bullets and remove them; iterator used to
+				 * Iterate over the bullets and remove them; iterator used to
 				 * prevent ConcurrentModificationException
 				 */
 				Iterator<Bullet> bullets = player.getFiredBullets().iterator();
@@ -135,9 +139,11 @@ public class MultiPlayState extends DefaultPlayState {
 					powerUp.setPickupTime();
 					player.setPowerUp(powerUp);
 					power_up_it.remove();
+					
 					LOGGER.log("Power up picked up and removed from screen");
 				} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
 					power_up_it.remove();
+					
 					LOGGER.log("Power up despawned after being on screen to long");
 				}
 			}
@@ -156,6 +162,9 @@ public class MultiPlayState extends DefaultPlayState {
 		return 0;
 	}
 
+	/**
+	 * @return The sum of both Players scores.
+	 */
 	@Override
 	public int getScore() {
 		return players.stream().mapToInt(e -> e.getScore()).sum();

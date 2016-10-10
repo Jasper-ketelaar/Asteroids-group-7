@@ -12,7 +12,6 @@ import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.util.ResourceLoader;
 
 import nl.tudelft.asteroids.game.states.DefaultPlayState;
-import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 import nl.tudelft.asteroids.util.Logger.Level;
 
 /**
@@ -66,23 +65,32 @@ public class Util {
 	}
 
 	/**
-	 * Generates a random location vector based on the Players position.
+	 * Generates a random location vector.
 	 * 
-	 * @param player
 	 * @param gc
 	 * @return
 	 */
-	public static Vector2f randomLocation(Player player, GameContainer gc) {
+	public static Vector2f randomLocation(GameContainer gc) {
 		Random random = new Random();
-		boolean playerLeft = player.getX() < gc.getWidth() / 2;
-		boolean playerTop = player.getY() < gc.getHeight() / 2;
 
-		float randomX = playerLeft ? random.nextFloat() * (gc.getWidth() / 2)
+		float randomX = random.nextBoolean() ? random.nextFloat() * (gc.getWidth() / 2)
 				: random.nextFloat() * (gc.getWidth() / 2) + gc.getWidth() / 2;
-		float randomY = playerTop ? random.nextFloat() * (gc.getHeight() / 2)
+		float randomY = random.nextBoolean() ? random.nextFloat() * (gc.getHeight() / 2)
 				: random.nextFloat() * (gc.getHeight() / 2) + gc.getHeight() / 2;
 
 		return new Vector2f(randomX, randomY);
 	}
-
+	
+	/**
+	 * Generate a direction vector based on the rotation of the Entity.
+	 * 
+	 * @param rotation The rotation of the Entity
+	 * @return direction vector
+	 */
+	public static Vector2f generateDirection(float rotation, int DEGREE_ADJUSTMENT, float SCALE) {
+		double rotationRadians = Math.toRadians(rotation - DEGREE_ADJUSTMENT);
+		float xDelta = (float) Math.cos(rotationRadians);
+		float yDelta = (float) Math.sin(rotationRadians);
+		return new Vector2f(xDelta, yDelta).normalise().scale(SCALE);
+	}
 }

@@ -36,6 +36,8 @@ public class AsteroidsGame extends StateBasedGame {
 
 	/**
 	 * Initializes the states of the game, and sets the background sprite.
+	 * Checks if a multi player or single player game (PlayState) needs to bes
+	 * started.
 	 */
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {

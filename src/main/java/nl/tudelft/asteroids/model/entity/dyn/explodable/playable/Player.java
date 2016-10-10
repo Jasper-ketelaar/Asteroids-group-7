@@ -47,7 +47,7 @@ public class Player extends ExplodableEntity {
 	private List<Bullet> bullets = new ArrayList<>();
 
 	private PowerUp powerUp = null;
-	
+
 	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
 
 	private Vector2f direction;
@@ -132,6 +132,7 @@ public class Player extends ExplodableEntity {
 			getAnimation().update(delta);
 		} else {
 
+			// logic for moving through screen borders
 			if (getMaxX() < 0 && getMinX() < 0) {
 				setPosition(new Vector2f(gc.getWidth(), getY()));
 			} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
@@ -223,7 +224,7 @@ public class Player extends ExplodableEntity {
 
 		bullets = bullets.stream().filter(e -> !(e.getX() < 0 || e.getX() > gc.getScreenWidth() || e.getY() < 0
 				|| e.getY() > gc.getScreenHeight())).collect(Collectors.toList());
-		bullets.stream().forEach(e -> e.move());
+		bullets.forEach(e -> e.move());
 	}
 
 	/**
@@ -347,6 +348,14 @@ public class Player extends ExplodableEntity {
 		LOGGER.log(String.format("Gained %d points with multiplier %d", points, multiplier));
 	}
 
+	/**
+	 * Binds keys to the 4 actions of the Player.
+	 * 
+	 * @param up
+	 * @param left
+	 * @param right
+	 * @param shoot
+	 */
 	public void bindKeys(int up, int left, int right, int shoot) {
 		this.up = up;
 		this.left = left;
@@ -358,7 +367,6 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-
 		if (powerUp != null) {
 			Color clr = powerUp.getType().getColor();
 			getSprite().setImageColor(clr.r, clr.g, clr.b);
@@ -368,7 +376,7 @@ public class Player extends ExplodableEntity {
 
 		getSprite().draw(getX(), getY());
 
-		bullets.stream().forEach(e -> e.render(g));
+		bullets.forEach(e -> e.render(g));
 		// TODO: render picked up power ups in the right corner
 	}
 
@@ -379,9 +387,9 @@ public class Player extends ExplodableEntity {
 	public boolean collide(Entity entity) {
 		if (entity == null)
 			return false;
-		if (invincible && !entity.getClass().equals(PowerUp.class))
+		else if (invincible && !entity.getClass().equals(PowerUp.class))
 			return false;
-		if (this.getBoundingBox() == null) {
+		else if (this.getBoundingBox() == null) {
 			return false;
 		}
 		return this.getBoundingBox().intersects(entity.getBoundingBox());

@@ -19,7 +19,7 @@ public abstract class Entity {
 	protected static final int DEGREE_ADJUSTMENT = 90;
 
 	private Vector2f pos;
-	private Animation sprite;
+	private Animation animation;
 
 	/**
 	 * Constructor.
@@ -33,8 +33,8 @@ public abstract class Entity {
 	 */
 	public Entity(Image sprite, Vector2f pos, float rotation) {
 		if (sprite != null) {
-			this.sprite = new Animation(new Image[] { sprite }, 200);
-			this.sprite.getCurrentFrame().setRotation(rotation);
+			this.animation = new Animation(new Image[] { sprite }, 200);
+			this.animation.getCurrentFrame().setRotation(rotation);
 		}
 		this.pos = pos;
 	}
@@ -80,21 +80,21 @@ public abstract class Entity {
 	 * @return The rotation of the Entity
 	 */
 	public float getRotation() {
-		return sprite.getCurrentFrame().getRotation();
+		return animation.getCurrentFrame().getRotation();
 	}
 
 	/**
 	 * @return The sprite of the Entity
 	 */
 	public Image getSprite() {
-		return sprite.getCurrentFrame();
+		return animation.getCurrentFrame();
 	}
 
 	/**
 	 * @param rotation The rotation of the Entity
 	 */
 	public void setRotation(float rotation) {
-		sprite.getCurrentFrame().setRotation(rotation);
+		animation.getCurrentFrame().setRotation(rotation);
 	}
 
 	/**
@@ -102,14 +102,14 @@ public abstract class Entity {
 	 * 			The animation of the sprite
 	 */
 	public void setAnimation(Animation animation) {
-		this.sprite = animation;
+		this.animation = animation;
 	}
 
 	/**
 	 * @return The animation of the sprite
 	 */
 	public Animation getAnimation() {
-		return sprite;
+		return animation;
 	}
 
 	/**
@@ -118,8 +118,8 @@ public abstract class Entity {
 	 * @param g
 	 */
 	public void render(Graphics g) {
-		if (sprite != null)
-			sprite.draw(getX(), getY());
+		if (animation != null)
+			animation.draw(getX(), getY());
 	}
 
 	/**

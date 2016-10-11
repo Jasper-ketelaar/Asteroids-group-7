@@ -159,6 +159,28 @@
 		</pluginManagement>
 	</build>
 
+	<profiles>
+		<profile>
+			<!-- Disable unit tests that require a display when run under Travis CI -->
+			<activation>
+				<property>
+					<name>env.TRAVIS_CI</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludedGroups>nl.tudelft.asteroids.TestWithDisplay</excludedGroups>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 	<reporting>
 		<plugins>
 			<plugin>

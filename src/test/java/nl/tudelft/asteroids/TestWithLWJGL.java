@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 public class TestWithLWJGL {
 
 	@BeforeClass
-	public static void addLibraryPath() throws Exception{
+	public static void addLibraryPath() throws Exception {
 		String pathToAdd = new File("lwjgl/native").getAbsolutePath();
 	    final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
 	    usrPathsField.setAccessible(true);

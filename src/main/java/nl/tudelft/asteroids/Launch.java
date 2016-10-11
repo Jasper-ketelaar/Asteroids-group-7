@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 
 import org.newdawn.slick.AppGameContainer;
 import org.newdawn.slick.SlickException;
@@ -31,7 +33,9 @@ public class Launch {
 	 */
 	public static void main(String[] args) {
 		LOGGER.registerOutput(System.out);
+		
 		try {
+			addLibraryPath();
 			File file = new File(String.format("game%d.log", (int) System.currentTimeMillis()));
 			if (!file.exists()) {
 				file.createNewFile();
@@ -41,6 +45,8 @@ public class Launch {
 			LOGGER.log("FileNotFoundException thrown", Level.ERROR, true);
 		} catch (IOException e) {
 			LOGGER.log("IOException thrown", Level.ERROR, true);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		try {
 			if (args.length > 0) {
@@ -57,6 +63,27 @@ public class Launch {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}
 
+	}
+	
+	public static void addLibraryPath() throws Exception {
+		String pathToAdd = new File("lwjgl/native").getAbsolutePath();
+	    final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
+	    usrPathsField.setAccessible(true);
+	 
+	    //get array of paths
+	    final String[] paths = (String[])usrPathsField.get(null);
+	 
+	    //check if the path to add is already present
+	    for(String path : paths) {
+	        if(path.equals(pathToAdd)) {
+	            return;
+	        }
+	    }
+	 
+	    //add the new path
+	    final String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
+	    newPaths[newPaths.length-1] = pathToAdd;
+	    usrPathsField.set(null, newPaths);
 	}
 
 }

@@ -11,9 +11,13 @@ public class TestWithLWJGL {
 		if (System.getProperty("os.name").contains("Windows")) {
 			System.setProperty("org.lwjgl.librarypath",
 					new File(".", "lwjgl" + File.separator + "native" + File.separator + "windows").getAbsolutePath());
+			System.setProperty("org.lwjgl64.librarypath",
+					new File(".", "lwjgl" + File.separator + "native" + File.separator + "windows").getAbsolutePath());
 		} else {
 			System.setProperty("org.lwjgl.librarypath",
 					new File(".", "lwjgl" + File.separator + "native" + File.separator + "linux").getAbsolutePath());
+			System.setProperty("org.lwjgl64.librarypath",
+					new File(".", "lwjgl" + File.separator + "native" + File.separator + "windows").getAbsolutePath());
 		}
 	
 	}

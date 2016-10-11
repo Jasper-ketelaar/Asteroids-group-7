@@ -152,7 +152,7 @@
 					<artifactId>maven-surefire-plugin</artifactId>
 					<configuration>
 						<forkMode>once</forkMode>
-						<argLine>-Djava.library.path=target/natives</argLine>
+						<argLine>-Djava.library.path=lwjgl/native</argLine>
 					</configuration>
 				</plugin>
 			</plugins>

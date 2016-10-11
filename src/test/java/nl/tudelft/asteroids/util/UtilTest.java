@@ -18,13 +18,4 @@ public class UtilTest {
 		Assert.assertTrue((float) Math.sin(radian) == decomposed.y);
 	}
 
-	/**
-	 * Tests audio cache loading
-	 */
-	@Test
-	public void testLoadAudio() {
-		Audio audio = Util.loadAudio("explode.wav");
-		Assert.assertEquals(audio, Util.loadAudio("explode.wav"));
-
-	}
 }

@@ -28,6 +28,7 @@ public class LoggerTest {
 	@Before
 	public void init() {
 		this.logger = Logger.getInstance(LoggerTest.class.getName());
+		this.logger.update();
 	}
 	
 	/**

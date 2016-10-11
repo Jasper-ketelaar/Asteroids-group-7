@@ -6,7 +6,7 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-public class TestWithDisplay {
+public class TestWithDisplay extends TestWithLWJGL {
 
 	@BeforeClass
     public static void createDisplay() throws LWJGLException {

@@ -28,6 +28,7 @@ public class LoggerTest {
 	@Before
 	public void init() {
 		this.logger = Logger.getInstance(LoggerTest.class.getName());
+		this.logger.update();
 	}
 	
 	/**
@@ -75,8 +76,8 @@ public class LoggerTest {
 		logger.log("Test");
 		logger.update();
 		try {
-			String message = stream.toString(StandardCharsets.UTF_8.name());
-			Assert.assertEquals("[INFO 00:00] (LoggerTest#testOutputStandardUpdate) - Test\r\n", message);;
+			String message = stream.toString(StandardCharsets.UTF_8.name()).trim();
+			Assert.assertEquals("[INFO 00:00] (LoggerTest#testOutputStandardUpdate) - Test", message);;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -92,8 +93,8 @@ public class LoggerTest {
 		logger.registerOutput(stream);
 		logger.log("Test", Level.WARNING, true);
 		try {
-			String message = stream.toString(StandardCharsets.UTF_8.name());
-			Assert.assertEquals("[WARNING 00:00] (LoggerTest#testOutputWarning) - Test\r\n", message);;
+			String message = stream.toString(StandardCharsets.UTF_8.name()).trim();
+			Assert.assertEquals("[WARNING 00:00] (LoggerTest#testOutputWarning) - Test", message);;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
@@ -108,8 +109,8 @@ public class LoggerTest {
 		logger.registerOutput(stream);
 		logger.log("Test", Level.ERROR, true);
 		try {
-			String message = stream.toString(StandardCharsets.UTF_8.name());
-			Assert.assertEquals("[ERROR 00:00] (LoggerTest#testOutputError) - Test\r\n", message);;
+			String message = stream.toString(StandardCharsets.UTF_8.name()).trim();
+			Assert.assertEquals("[ERROR 00:00] (LoggerTest#testOutputError) - Test", message);;
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

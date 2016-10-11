@@ -1,3 +1,4 @@
+![build-status](https://travis-ci.org/Jasper-ketelaar/Asteroids-group-7.svg?branch=master)
 # Asteroids Group 7
 
 For TI2206 Software Engineering Methods.

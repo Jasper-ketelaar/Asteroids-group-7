@@ -103,5 +103,13 @@ public class Asteroid extends ExplodableEntity {
 	public int getPoints() {
 		return size * BASE_POINTS;
 	}
+	
+	/**
+	 * 
+	 * @return The size of the Asteroid
+	 */
+	public int getSize(){
+		return size;
+	}
 
 }

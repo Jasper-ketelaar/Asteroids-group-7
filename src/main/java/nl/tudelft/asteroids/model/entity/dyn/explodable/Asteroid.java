@@ -61,8 +61,8 @@ public class Asteroid extends ExplodableEntity {
 	 * @param gc
 	 */
 	public void update(GameContainer gc) {
-		super.setPosition(getPosition().add(velocity));
-		super.setRotation(getRotation() + ROTATION_SPEED);
+		setPosition(getPosition().add(velocity));
+		setRotation(getRotation() + ROTATION_SPEED);
 
 		//logic for moving through screen borders
 		if (getMaxX() < 0 && getMinX() < 0) {

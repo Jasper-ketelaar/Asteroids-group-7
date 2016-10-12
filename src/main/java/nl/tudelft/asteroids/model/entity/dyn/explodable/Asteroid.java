@@ -24,11 +24,11 @@ public class Asteroid extends ExplodableEntity {
 
 	private final static String ASTEROID_F = "asteroid/asteroid_%d.png";
 
-	private static final float SPEED = 2f;
-	private static final float ROTATION_SPEED = 1.75f;
+	protected static final float SPEED = 2f;
+	protected static final float ROTATION_SPEED = 1.75f;
 
 	private static final int MAX_DEGREES = 360;
-	private static final int BASE_POINTS = 100;
+	protected static final int BASE_POINTS = 100;
 
 	private final Vector2f velocity;
 
@@ -102,6 +102,14 @@ public class Asteroid extends ExplodableEntity {
 	 */
 	public int getPoints() {
 		return size * BASE_POINTS;
+	}
+	
+	/**
+	 * 
+	 * @return The size of the Asteroid
+	 */
+	public int getSize(){
+		return size;
 	}
 
 }

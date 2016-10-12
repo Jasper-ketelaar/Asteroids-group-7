@@ -12,6 +12,6 @@ public class AsteroidsGameTest {
 	
 	@Test
 	public void setup(){
-
+		
 	}
 }

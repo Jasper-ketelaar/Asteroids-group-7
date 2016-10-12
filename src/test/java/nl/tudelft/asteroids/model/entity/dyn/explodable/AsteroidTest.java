@@ -1,4 +1,4 @@
-package nl.tudelft.asteroid.model.entity.dyn;
+package nl.tudelft.asteroids.model.entity.dyn.explodable;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -16,30 +16,41 @@ import org.mockito.Mockito;
 import nl.tudelft.asteroids.TestWithDisplay;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 
+/**
+ * TODO: COMMENTS
+ * 
+ * @author Leroy
+ *
+ */
 @Category(nl.tudelft.asteroids.TestWithDisplay.class)
 public class AsteroidTest extends TestWithDisplay {
 
 	private Asteroid testBigAsteroid;
 	// private Asteroid testNormalAsteroid;
 	private Asteroid testSmallAsteroid;
-	
+
 	private ListIterator<Asteroid> mockedIterator;
 
 	private Vector2f testVector = new Vector2f(2, 7);
 
+	/**
+	 * TODO: COMMENTS
+	 * 
+	 * @throws SlickException
+	 */
 	@Before
 	public void setUp() throws SlickException {
 
 		testBigAsteroid = new Asteroid(testVector, 7.f, 1);
 		// testNormalAsteroid = new Asteroid(testVector, 7.f, 2);
 		testSmallAsteroid = new Asteroid(testVector, 7.f, 3);
-		
+
 		mockedIterator = Mockito.mock(ListIterator.class);
 
 	}
 
 	/**
-	 * Check if the Asteroid moves after the update
+	 * TODO: COMMENTS
 	 */
 	@Test
 	public void testUpdate() {
@@ -53,36 +64,42 @@ public class AsteroidTest extends TestWithDisplay {
 	}
 
 	/**
-	 * @throws SlickException 
-	 * Check if the Asteroid is splitted into to Asteroids
+	 * @throws SlickException
+	 *             Check if the Asteroid is splitted into to Asteroids
 	 */
 	@Test
 	public void testSplitBigAsteroid() throws SlickException {
-		
+
 		testBigAsteroid.splitAsteroid(mockedIterator);
-		
+
 		Mockito.verify(mockedIterator, Mockito.times(2)).add(Mockito.anyObject());
 
 	}
-	
+
 	/**
-	 * @throws SlickException 
-	 * Check if the Asteroid is not splitted into to Asteroids
+	 * @throws SlickException
+	 *             Check if the Asteroid is not splitted into to Asteroids
 	 */
 	@Test
-	public void testSplitSmallAsteroid() throws SlickException {		
-		
+	public void testSplitSmallAsteroid() throws SlickException {
+
 		testSmallAsteroid.splitAsteroid(mockedIterator);
-		
+
 		Mockito.verify(mockedIterator, Mockito.times(0)).add(Mockito.anyObject());
 
 	}
 
+	/**
+	 * TODO: COMMENTS
+	 */
 	@Test
 	public void testGetPoints() {
 		assertEquals(testBigAsteroid.getPoints(), 100);
 	}
 
+	/**
+	 * TODO: COMMENTS
+	 */
 	@Test
 	public void testGetSize() {
 		assertEquals(testBigAsteroid.getSize(), 1);

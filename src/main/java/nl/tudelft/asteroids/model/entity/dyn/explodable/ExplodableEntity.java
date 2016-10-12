@@ -90,6 +90,23 @@ public class ExplodableEntity extends Entity {
 	public ExplodableEntity(Vector2f pos) throws SlickException {
 		this(null, pos, 0);
 	}
+	
+	/**
+	 * Custom Constructor, only takes a vector and 
+	 *  a Animation
+	 * 
+	 * @param pos
+	 *            The position of the Entity
+	 * @throws SlickException
+	 */
+	protected ExplodableEntity(Vector2f pos, Animation animation) throws SlickException {
+		super(null, pos, 0);
+		
+		explosion = animation;
+		explosion.setLooping(false);
+		this.explosionAudio = Util.loadAudio(EXPLOSION_AUDIO_FILE);
+		
+	}
 
 	/**
 	 * Plays the explosion animation and sound.

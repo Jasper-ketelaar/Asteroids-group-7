@@ -1,5 +1,7 @@
 package nl.tudelft.asteroids.model.entity.dyn;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -39,14 +41,17 @@ public class BulletTest extends TestWithDisplay {
 	 */
 	@Test
 	public void testMove() {
-		
 		Vector2f startPos = testBullet.getPosition();
-		
 		testBullet.move();
-
 		Vector2f newPos = testBullet.getPosition();
-		
-		//assertNotEquals(startPos, newPos);
+		// assertNotEquals(startPos, newPos);
+	}
+	
+	@Test
+	public void testSetScale() {
+		float newScale = 0.f;
+		testBullet.setScale(newScale);
+		assertEquals(0.f, testBullet.getScale(), 0);
 	}
 
 

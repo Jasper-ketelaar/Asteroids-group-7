@@ -18,8 +18,7 @@ import nl.tudelft.asteroids.game.states.menu.Menu;
  */
 public class MenuState extends BasicGameState {
 
-	private Menu menu;
-	
+
 	private final Image background;
 
 	/**
@@ -36,7 +35,7 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
-		this.menu = new Menu(gc);
+	
 	}
 
 	/**

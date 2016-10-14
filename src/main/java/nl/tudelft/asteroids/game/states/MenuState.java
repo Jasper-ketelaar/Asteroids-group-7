@@ -7,6 +7,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.tudelft.asteroids.game.states.menu.Menu;
+
 /**
  * The menu state of the Asteroids game.
  * 
@@ -16,6 +18,8 @@ import org.newdawn.slick.state.StateBasedGame;
  */
 public class MenuState extends BasicGameState {
 
+	private Menu menu;
+	
 	private final Image background;
 
 	/**
@@ -31,8 +35,8 @@ public class MenuState extends BasicGameState {
 	 * Empty override method.
 	 */
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
-
+	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
+		this.menu = new Menu(gc);
 	}
 
 	/**

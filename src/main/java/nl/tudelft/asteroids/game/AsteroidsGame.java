@@ -5,6 +5,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.tudelft.asteroids.game.states.MenuState;
 import nl.tudelft.asteroids.game.states.MultiPlayState;
 import nl.tudelft.asteroids.game.states.SinglePlayState;
 import nl.tudelft.asteroids.util.Logger;
@@ -43,11 +44,12 @@ public class AsteroidsGame extends StateBasedGame {
 	public void initStatesList(GameContainer arg0) throws SlickException {
 		Image background = new Image(BACKGROUND);
 		LOGGER.log("Background image loaded");
-		if (multiplayer)
+		/*if (multiplayer)
 			addState(new MultiPlayState(background));
 		else
-			addState(new SinglePlayState(background));
+			addState(new SinglePlayState(background));*/
 
+		addState(new MenuState(background));
 	}
 
 }

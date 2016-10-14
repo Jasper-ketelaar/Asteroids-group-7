@@ -1,4 +1,4 @@
-package nl.tudelft.asteroids.game.states.menu;
+package nl.tudelft.asteroids.game.menu.components;
 
 import org.newdawn.slick.gui.GUIContext;
 

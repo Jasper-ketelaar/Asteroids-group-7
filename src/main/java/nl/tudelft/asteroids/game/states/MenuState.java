@@ -7,17 +7,14 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import nl.tudelft.asteroids.game.states.menu.Menu;
 
 /**
  * The menu state of the Asteroids game.
  * 
- * @author Leroy Velzel, Bernard Bot, 
- * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class MenuState extends BasicGameState {
-
 
 	private final Image background;
 
@@ -35,7 +32,7 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
-	
+
 	}
 
 	/**

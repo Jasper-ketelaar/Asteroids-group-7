@@ -1,5 +1,6 @@
 package nl.tudelft.asteroids.game.menu.input.interfaces;
 
+import nl.tudelft.asteroids.game.menu.input.events.MouseEvent;
 
 /**
  * Interface that allows elements to be clickable
@@ -8,32 +9,5 @@ package nl.tudelft.asteroids.game.menu.input.interfaces;
  */
 public interface MouseListener extends Listener {
 
-    /**
-     * @param button
-     * @param x
-     * @param y
-     */
-    public void mouseClicked(int button, int x, int y, int clickCount);
-
-    /**
-     * @param button
-     * @param x
-     * @param y
-     */
-    public void mousePressed(int button, int x, int y);
-
-    /**
-     * @param button
-     * @param x
-     * @param y
-     */
-    public void mouseReleased(int button, int x, int y);
-    
-    /**
-     * @param oldx
-     * @param oldy
-     * @param newx
-     * @param newy
-     */
-    public void mouseMoved(int oldx, int oldy, int newx, int newy);
+    public void update(MouseEvent event);
 }

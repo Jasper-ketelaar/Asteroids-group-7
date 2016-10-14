@@ -10,4 +10,6 @@ import nl.tudelft.asteroids.game.menu.input.events.MouseEvent;
 public interface MouseListener extends Listener {
 
     public void update(MouseEvent event);
+    
+   
 }

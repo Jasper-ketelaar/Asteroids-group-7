@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 public class Menu extends MenuComponent {
 	
 	public Menu(int x, int y, int width, int height) throws SlickException  {
-		super(x, y, width, height);
+		super(null, x, y, width, height);
 	}
 
 	@Override

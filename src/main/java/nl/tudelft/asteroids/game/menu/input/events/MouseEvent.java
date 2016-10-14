@@ -1,10 +1,12 @@
 package nl.tudelft.asteroids.game.menu.input.events;
 
+import org.newdawn.slick.state.StateBasedGame;
+
 public class MouseEvent {
 
 	private int x, y, prevX, prevY;
 	private boolean left, middle, right;
-
+	
 	private MouseEvent() {
 	}
 
@@ -66,6 +68,7 @@ public class MouseEvent {
 	public boolean isMiddleMouseDown() {
 		return middle;
 	}
+	
 
 	@Override
 	public boolean equals(Object other) {

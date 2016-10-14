@@ -96,7 +96,8 @@ public class MultiPlayState extends DefaultPlayState {
 				
 				if (players.size() == 0) {
 					LOGGER.log("Game over! The score was  " + player.getScore());
-					gc.exit();
+					asteroids.clear();
+					sbg.enterState(0);
 				}
 			}
 
@@ -159,7 +160,7 @@ public class MultiPlayState extends DefaultPlayState {
 	 */
 	@Override
 	public int getID() {
-		return 0;
+		return 2;
 	}
 
 	/**

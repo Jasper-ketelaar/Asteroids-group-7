@@ -74,7 +74,8 @@ public class SinglePlayState extends DefaultPlayState {
 		if (player.getExplosion().isStopped()) {
 			LOGGER.log("Player collided with asteroid and died");
 			LOGGER.log("Game over! The score was  " + player.getScore());
-			gc.exit();
+			asteroids.clear();
+			sbg.enterState(0);
 		}
 
 		/* update asteroids, play player explode animation, split asteroids, */
@@ -130,7 +131,7 @@ public class SinglePlayState extends DefaultPlayState {
 	 */
 	@Override
 	public int getID() {
-		return 0;
+		return 1;
 	}
 
 	/**

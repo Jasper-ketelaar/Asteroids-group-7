@@ -3,12 +3,11 @@ package nl.tudelft.asteroids.game.menu.components;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.gui.AbstractComponent;
-import org.newdawn.slick.gui.GUIContext;
+import org.newdawn.slick.geom.Rectangle;
+import org.newdawn.slick.geom.Shape;
 
 /**
  * Menu component of the Asteroids game. Makes use of the composite pattern by
@@ -29,14 +28,17 @@ public abstract class MenuComponent {
 	protected final int width;
 	protected final int height;
 
+	private final MenuComponent parent;
+
 	protected final Image canvas;
 
-	public MenuComponent(Image image, int x, int y) {
+	public MenuComponent(MenuComponent parent, Image image, int x, int y) {
 		this.x = x;
 		this.y = y;
 		this.width = image.getWidth();
 		this.height = image.getHeight();
 		this.canvas = image;
+		this.parent = parent;
 	}
 
 	/**
@@ -44,12 +46,13 @@ public abstract class MenuComponent {
 	 * 
 	 * @throws SlickException
 	 */
-	public MenuComponent(int x, int y, int width, int height) throws SlickException {
+	public MenuComponent(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
 		this.canvas = new Image(width, height);
+		this.parent = parent;
 	}
 
 	/**
@@ -64,6 +67,28 @@ public abstract class MenuComponent {
 	 */
 	public int getWidth() {
 		return width;
+	}
+
+	/**
+	 * Gets absolute x value
+	 */
+	public int getAbsoluteX() {
+		if (parent == null) {
+			return getX();
+		} else {
+			return getX() + parent.getAbsoluteX();
+		}
+	}
+
+	/**
+	 * Gets absolute y value
+	 */
+	public int getAbsoluteY() {
+		if (parent == null) {
+			return getY();
+		} else {
+			return getY() + parent.getAbsoluteY();
+		}
 	}
 
 	/**
@@ -132,6 +157,13 @@ public abstract class MenuComponent {
 	 */
 	public Image getCanvas() {
 		return canvas;
+	}
+
+	/**
+	 * Returns bounding box
+	 */
+	public Shape getBoundingBox() {
+		return new Rectangle(getAbsoluteX(), getAbsoluteY(), width, height);
 	}
 
 	/**

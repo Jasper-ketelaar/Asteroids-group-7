@@ -7,9 +7,11 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.game.menu.components.Menu;
 import nl.tudelft.asteroids.game.menu.components.MenuButton;
 import nl.tudelft.asteroids.game.menu.input.InputHandler;
+import nl.tudelft.asteroids.util.Logger;
 
 /**
  * The menu state of the Asteroids game.
@@ -19,7 +21,11 @@ import nl.tudelft.asteroids.game.menu.input.InputHandler;
  */
 public class MenuState extends BasicGameState {
 
-	private final Image background;
+	private final static String BACKGROUND = "BG4.jpg";
+	private final static Logger LOGGER = Logger.getInstance(MenuState.class.getName());
+
+	private static Image background;
+
 	private Menu menu;
 	private InputHandler inputHandler;
 
@@ -27,24 +33,50 @@ public class MenuState extends BasicGameState {
 	 * Constructor; sets background sprite.
 	 * 
 	 * @param background
+	 * @throws SlickException
 	 */
-	public MenuState(Image background) {
-		this.background = background;
+	public MenuState() throws SlickException {
+		if (background == null)
+			background = new Image(BACKGROUND);
+		LOGGER.log("Background image loaded");
 	}
 
 	/**
 	 * Empty override method.
 	 */
 	@Override
-	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
+	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
+		this.menu = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
 
-		MenuButton singlePlayer = new MenuButton(new Image("menu/SinglePlayerButton.png"), 0, 0);
-		this.menu = new Menu(gc.getWidth() / 2 - singlePlayer.getWidth() / 2, 150, 500, 500);
+		MenuButton singlePlayer = new MenuButton(menu, singlePlayerImg, 0, 0);
+		singlePlayer.setAction(() -> {
+			try {
+				sbg.enterState(1);
+				sbg.getState(1).init(gc, sbg);
+			} catch (SlickException e) {
+				e.printStackTrace();
+			}
+
+		});
+
+		MenuButton multiPlayer = new MenuButton(menu, new Image("menu/MultiPlayerButton.png"), 0, 100);
+		multiPlayer.setAction(() -> {
+			sbg.enterState(2);
+			try {
+				sbg.getState(2).init(gc, sbg);
+			} catch (SlickException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+
 		this.menu.append(singlePlayer);
-		this.menu.append(new MenuButton(new Image("menu/MultiPlayerButton.png"), 0, 100));
+		this.menu.append(multiPlayer);
 
-		this.inputHandler = new InputHandler(gc);
+		this.inputHandler = new InputHandler(sbg);
 		this.inputHandler.listen(singlePlayer);
+		this.inputHandler.listen(multiPlayer);
 	}
 
 	/**
@@ -70,8 +102,11 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public Menu getMenu() {
+		return menu;
 	}
 
 }

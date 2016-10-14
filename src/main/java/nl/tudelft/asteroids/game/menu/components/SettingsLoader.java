@@ -16,18 +16,20 @@ import nl.tudelft.asteroids.util.Logger;
  *
  */
 public class SettingsLoader {
-	
+
 	/**
 	 * Name of the Property file
 	 */
 	private static final String PROP_FILE_NAME = "game.ini";
 	private Properties props;
-	
+
 	private final static Logger LOGGER = Logger.getInstance(SettingsLoader.class.getName());
-	
+
 	/**
 	 * Constructor
-	 * @param props The properties of this SettingsLoader
+	 * 
+	 * @param props
+	 *            The properties of this SettingsLoader
 	 */
 	public SettingsLoader() {
 		this.props = new Properties();
@@ -35,37 +37,37 @@ public class SettingsLoader {
 
 	/**
 	 * @return Properties from the property file
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public Properties loadProps() throws IOException {
 		InputStream is = null;
 		try {
 			is = getClass().getResourceAsStream(PROP_FILE_NAME);
 			props.load(is);
-			
+
 			is.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return props;
 	}
-	
+
 	/**
-	 * @param properties Map of properties that need to be saved
+	 * @param properties
+	 *            Map of properties that need to be saved
 	 */
 	public void saveProps(Map<String, String> properties) {
-	    try {
-	        for(Map.Entry<String, String> p : properties.entrySet()) {
-	        	props.setProperty(p.getKey(), p.getValue());
-	        }
-	        OutputStream out = new FileOutputStream(PROP_FILE_NAME);
-	        props.store(out, "Asteroids settings");
-	        
-	        out.close();
-	    }
-	    catch (Exception e ) {
-	        e.printStackTrace();
-	    }
+		try {
+			for (Map.Entry<String, String> p : properties.entrySet()) {
+				props.setProperty(p.getKey(), p.getValue());
+			}
+			OutputStream out = new FileOutputStream(PROP_FILE_NAME);
+			props.store(out, "Asteroids settings");
+
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

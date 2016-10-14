@@ -6,7 +6,7 @@ package nl.tudelft.asteroids.game.menu.input.interfaces;
  * @author Jasper
  *
  */
-public interface Clickable {
+public interface MouseListener extends Listener {
 
     /**
      * @param button

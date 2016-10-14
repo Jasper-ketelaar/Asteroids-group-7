@@ -4,53 +4,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.gui.AbstractComponent;
 import org.newdawn.slick.gui.GUIContext;
 
 /**
- * Menu component of the Asteroids game.
- * Makes use of the composite pattern by allowing children to be instance of it's own class.
- * This way we could for example have a MenuItem containing a Menu (which is impractical but as
- * we add more classes to this the use stays simpler).
+ * Menu component of the Asteroids game. Makes use of the composite pattern by
+ * allowing children to be instance of it's own class. This way we could for
+ * example have a MenuItem containing a Menu (which is impractical but as we add
+ * more classes to this the use stays simpler).
  * 
  * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
-public abstract class MenuComponent extends AbstractComponent {
+public abstract class MenuComponent {
 
 	private final ArrayList<MenuComponent> children = new ArrayList<>();
 	private final MenuComponent parent;
-	
-	private int x;
-	private int y;
-	
-	private final int width;
-	private final int height;
+
+	protected int x;
+	protected int y;
+
+	protected final int width;
+	protected final int height;
+
+	protected final Image canvas;
 
 	/**
 	 * Constructor without parent.
+	 * 
+	 * @throws SlickException
 	 */
-	public MenuComponent(GUIContext container, int x, int y, int width, int height) {
-		this(container, null, x, y, width, height);
+	public MenuComponent(int x, int y, int width, int height) throws SlickException {
+		this(null, x, y, width, height);
 	}
-	
+
 	/**
 	 * Constructor with parent
+	 * 
+	 * @throws SlickException
 	 */
-	public MenuComponent(GUIContext container, MenuComponent parent, int x, int y, int width, int height) {
-		super(container);
+	public MenuComponent(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
 		this.parent = parent;
 		this.x = x;
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.canvas = new Image(width, height);
 	}
 
 	/**
 	 * @return The height of the menu
 	 */
-	@Override
 	public int getHeight() {
 		return height;
 	}
@@ -58,7 +64,6 @@ public abstract class MenuComponent extends AbstractComponent {
 	/**
 	 * @return The width of the menu
 	 */
-	@Override
 	public int getWidth() {
 		return width;
 	}
@@ -66,7 +71,6 @@ public abstract class MenuComponent extends AbstractComponent {
 	/**
 	 * @return The 'starting' x-coordinate of the menu
 	 */
-	@Override
 	public int getX() {
 		return x;
 	}
@@ -74,14 +78,14 @@ public abstract class MenuComponent extends AbstractComponent {
 	/**
 	 * @return The 'starting' y-coordinate of the menu
 	 */
-	@Override
 	public int getY() {
 		return y;
 	}
-	
+
 	/**
-	 * Returns the absolute x value (so the value on the game container and 
-	 * not the value that this component has within a certain other component)
+	 * Returns the absolute x value (so the value on the game container and not
+	 * the value that this component has within a certain other component)
+	 * 
 	 * @return absolute value of x
 	 */
 	public int getAbsoluteX() {
@@ -91,10 +95,11 @@ public abstract class MenuComponent extends AbstractComponent {
 			return x + parent.getAbsoluteX();
 		}
 	}
-	
+
 	/**
-	 * Returns the absolute y value (so the value on the game container and 
-	 * not the value that this component has within a certain other component)
+	 * Returns the absolute y value (so the value on the game container and not
+	 * the value that this component has within a certain other component)
+	 * 
 	 * @return absolute value of y
 	 */
 	public int getAbsoluteY() {
@@ -106,38 +111,64 @@ public abstract class MenuComponent extends AbstractComponent {
 	}
 
 	/**
-	 * Renders the different MenuItems.
+	 * Renders the different MenuItems. Final because overriding render is not
+	 * what this design pattern is meant to do.
 	 */
-	@Override
-	public void render(GUIContext c, Graphics g) throws SlickException {
-		for (MenuComponent comp : children) {
-			comp.render(c, g);
+	public final void render(Graphics g) throws SlickException {
+
+		Graphics canvasGraphics = canvas.getGraphics();
+		process(canvasGraphics);
+
+		for (MenuComponent child : children) {
+			child.render(canvasGraphics);
 		}
+
+		canvasGraphics.flush();
+		g.drawImage(canvas, x, y);
 	}
 
 	/**
-	 * Empty override method.
+	 * Change location of component
 	 */
-	@Override
 	public void setLocation(int x, int y) {
 		this.x = x;
 		this.y = y;
 	}
-	
+
 	/**
-	 * Appends a child to list of children 
-	 * @param comp the child component to append
+	 * Appends a child to list of children
+	 * 
+	 * @param comp
+	 *            the child component to append
 	 */
 	public void append(MenuComponent comp) {
 		this.children.add(comp);
 	}
-	
+
 	/**
-	 * Returns the list of children currently contained by the children ArrayList
+	 * Returns the list of children currently contained by the children
+	 * ArrayList
+	 * 
 	 * @return a List containing all the component's children components.
 	 */
 	public List<MenuComponent> getChildren() {
 		return this.children;
 	}
+
+	/**
+	 * Returns the canvas image
+	 * 
+	 * @return canvas image
+	 */
+	public Image getCanvas() {
+		return canvas;
+	}
+
+	/**
+	 * Performs component related actions to the graphics instance. Flusing is
+	 * performed by render so flushing operations need not to be done within
+	 * this method.
+	 */
+	public abstract void process(Graphics graphics);
 
 }

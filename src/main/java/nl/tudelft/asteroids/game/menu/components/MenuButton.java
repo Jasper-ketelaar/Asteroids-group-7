@@ -3,25 +3,24 @@ package nl.tudelft.asteroids.game.menu.components;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.gui.GUIContext;
 
 public class MenuButton extends MenuComponent {
 
 	private final Image button;
-	
-	public MenuButton(GUIContext container, int x, int y, Image button) {
-		this(container, null, x, y, button);
+
+	public MenuButton(int x, int y, Image button) throws SlickException {
+		this(null, x, y, button);
 	}
-	
-	public MenuButton(GUIContext container, MenuComponent parent, int x, int y, Image button) {
-		super(container, parent, x, y, button.getWidth(), button.getHeight());
+
+	public MenuButton(MenuComponent parent, int x, int y, Image button) throws SlickException {
+		super(parent, x, y, button.getWidth(), button.getHeight());
 		this.button = button;
 	}
-	
+
 	@Override
-	public void render(GUIContext c, Graphics g) throws SlickException {
-		super.render(c, g);
-	
+	public void process(Graphics graphics) {
+		//graphics.drawImage(image, x, y, x2, y2, srcx, srcy, srcx2, srcy2, col);
+		
 	}
 
 }

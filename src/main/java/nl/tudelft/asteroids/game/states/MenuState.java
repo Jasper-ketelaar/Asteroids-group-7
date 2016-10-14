@@ -38,6 +38,7 @@ public class MenuState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		this.menu = new Menu(100, 100, 500, 500);
 		this.menu.append(new MenuButton(0, 0, new Image("menu/ExitButton.png")));
+		this.menu.append(new MenuButton(0, 50, new Image("menu/ExitButton.png")));
 	}
 
 	/**

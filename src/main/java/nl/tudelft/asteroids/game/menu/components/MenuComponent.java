@@ -3,6 +3,7 @@ package nl.tudelft.asteroids.game.menu.components;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
@@ -21,7 +22,6 @@ import org.newdawn.slick.gui.GUIContext;
 public abstract class MenuComponent {
 
 	private final ArrayList<MenuComponent> children = new ArrayList<>();
-	private final MenuComponent parent;
 
 	protected int x;
 	protected int y;
@@ -31,13 +31,13 @@ public abstract class MenuComponent {
 
 	protected final Image canvas;
 
-	/**
-	 * Constructor without parent.
-	 * 
-	 * @throws SlickException
-	 */
-	public MenuComponent(int x, int y, int width, int height) throws SlickException {
-		this(null, x, y, width, height);
+	
+	public MenuComponent(Image image, int x, int y) {
+		this.x = x;
+		this.y = y;
+		this.width = image.getWidth();
+		this.height = image.getHeight();
+		this.canvas = image;
 	}
 
 	/**
@@ -45,8 +45,7 @@ public abstract class MenuComponent {
 	 * 
 	 * @throws SlickException
 	 */
-	public MenuComponent(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
-		this.parent = parent;
+	public MenuComponent(int x, int y, int width, int height) throws SlickException {
 		this.x = x;
 		this.y = y;
 		this.width = width;
@@ -83,47 +82,22 @@ public abstract class MenuComponent {
 	}
 
 	/**
-	 * Returns the absolute x value (so the value on the game container and not
-	 * the value that this component has within a certain other component)
-	 * 
-	 * @return absolute value of x
-	 */
-	public int getAbsoluteX() {
-		if (parent == null) {
-			return x;
-		} else {
-			return x + parent.getAbsoluteX();
-		}
-	}
-
-	/**
-	 * Returns the absolute y value (so the value on the game container and not
-	 * the value that this component has within a certain other component)
-	 * 
-	 * @return absolute value of y
-	 */
-	public int getAbsoluteY() {
-		if (parent == null) {
-			return y;
-		} else {
-			return y + parent.getAbsoluteY();
-		}
-	}
-
-	/**
 	 * Renders the different MenuItems.
 	 */
 	public void render(Graphics g) throws SlickException {
-
 		Graphics canvasGraphics = canvas.getGraphics();
-		process(canvasGraphics);
+		//Canvas is not an actual image before processing.
+		if (canvasGraphics.getColor().equals(new Color(0, 0, 0))) {
+			process(canvasGraphics);
 
-		for (MenuComponent child : children) {
-			child.render(canvasGraphics);
+			for (MenuComponent child : children) {
+				child.render(canvasGraphics);
+			}
+
+			canvasGraphics.flush();
+
+			g.drawImage(canvas, x, y);
 		}
-
-		canvasGraphics.flush();
-		g.drawImage(canvas, x, y);
 	}
 
 	/**

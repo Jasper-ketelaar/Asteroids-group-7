@@ -78,6 +78,32 @@ public abstract class MenuComponent extends AbstractComponent {
 	public int getY() {
 		return y;
 	}
+	
+	/**
+	 * Returns the absolute x value (so the value on the game container and 
+	 * not the value that this component has within a certain other component)
+	 * @return absolute value of x
+	 */
+	public int getAbsoluteX() {
+		if (parent == null) {
+			return x;
+		} else {
+			return x + parent.getAbsoluteX();
+		}
+	}
+	
+	/**
+	 * Returns the absolute y value (so the value on the game container and 
+	 * not the value that this component has within a certain other component)
+	 * @return absolute value of y
+	 */
+	public int getAbsoluteY() {
+		if (parent == null) {
+			return y;
+		} else {
+			return y + parent.getAbsoluteY();
+		}
+	}
 
 	/**
 	 * Renders the different MenuItems.

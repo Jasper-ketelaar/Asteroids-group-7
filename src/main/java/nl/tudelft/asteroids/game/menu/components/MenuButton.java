@@ -10,14 +10,18 @@ public class MenuButton extends MenuComponent {
 	private final Image button;
 	
 	public MenuButton(GUIContext container, int x, int y, Image button) {
-		super(container, x, y, button.getWidth(), button.getHeight());
+		this(container, null, x, y, button);
+	}
+	
+	public MenuButton(GUIContext container, MenuComponent parent, int x, int y, Image button) {
+		super(container, parent, x, y, button.getWidth(), button.getHeight());
 		this.button = button;
 	}
 	
 	@Override
 	public void render(GUIContext c, Graphics g) throws SlickException {
 		super.render(c, g);
-		g.drawImage(button, );
+	
 	}
 
 }

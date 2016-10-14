@@ -1,4 +1,4 @@
-package nl.tudelft.asteroids.game.menu.interfaces;
+package nl.tudelft.asteroids.game.menu.input.interfaces;
 
 
 /**

@@ -6,13 +6,13 @@ import org.newdawn.slick.SlickException;
 public class Menu extends MenuComponent {
 	
 	public Menu(int x, int y, int width, int height) throws SlickException  {
-		super(null, x, y, width, height);
+		super(x, y, width, height);
 	}
 
 	@Override
 	public void process(Graphics graphics) {
 		//To show menu, not displayed in release
-		graphics.drawRect(0, 0, width - 1, height - 1);
+		
 	}
 	
 	

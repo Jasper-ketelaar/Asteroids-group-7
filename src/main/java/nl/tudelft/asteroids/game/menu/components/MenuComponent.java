@@ -31,7 +31,6 @@ public abstract class MenuComponent {
 
 	protected final Image canvas;
 
-	
 	public MenuComponent(Image image, int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -86,18 +85,16 @@ public abstract class MenuComponent {
 	 */
 	public void render(Graphics g) throws SlickException {
 		Graphics canvasGraphics = canvas.getGraphics();
-		//Canvas is not an actual image before processing.
-		if (canvasGraphics.getColor().equals(new Color(0, 0, 0))) {
-			process(canvasGraphics);
+		process(canvasGraphics);
 
-			for (MenuComponent child : children) {
-				child.render(canvasGraphics);
-			}
-
-			canvasGraphics.flush();
-
-			g.drawImage(canvas, x, y);
+		for (MenuComponent child : children) {
+			child.render(canvasGraphics);
 		}
+
+		canvasGraphics.flush();
+
+		g.drawImage(canvas, x, y);
+
 	}
 
 	/**

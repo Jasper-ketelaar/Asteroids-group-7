@@ -4,24 +4,16 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-import nl.tudelft.asteroids.game.menu.input.interfaces.MenuItem;
+public class MenuButton extends MenuComponent {
 
-public class MenuButton extends MenuComponent implements MenuItem {
-
-	private final Image button;
-
-	public MenuButton(int x, int y, Image button) throws SlickException {
-		this(null, x, y, button);
-	}
-
-	public MenuButton(MenuComponent parent, int x, int y, Image button) throws SlickException {
-		super(parent, x, y, button.getWidth(), button.getHeight());
-		this.button = button;
+	public MenuButton(Image button, int x, int y) throws SlickException {
+		super(button, x, y);
 	}
 
 	@Override
 	public void process(Graphics graphics) {
-		graphics.drawImage(button, x, y);
+		// TODO Auto-generated method stub
+		
 	}
 
 }

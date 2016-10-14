@@ -36,9 +36,11 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
-		this.menu = new Menu(100, 100, 500, 500);
-		this.menu.append(new MenuButton(0, 0, new Image("menu/ExitButton.png")));
-		this.menu.append(new MenuButton(0, 50, new Image("menu/ExitButton.png")));
+		
+		MenuButton singlePlayer = new MenuButton(new Image("menu/SinglePlayerButton.png"), 0, 0);
+		this.menu = new Menu(gc.getWidth() / 2 - singlePlayer.getWidth() / 2, 150, 500, 500);
+		this.menu.append(new MenuButton(new Image("menu/SinglePlayerButton.png"), 0, 0));
+		this.menu.append(new MenuButton(new Image("menu/MultiPlayerButton.png"), 0, 100));
 	}
 
 	/**

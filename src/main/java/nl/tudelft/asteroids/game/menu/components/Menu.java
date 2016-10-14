@@ -16,11 +16,6 @@ public class Menu extends MenuComponent {
 		
 		
 	}
-
-	@Override
-	public void append(MenuComponent comp) {
-		
-	}
 	
 	
 

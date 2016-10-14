@@ -111,10 +111,9 @@ public abstract class MenuComponent {
 	}
 
 	/**
-	 * Renders the different MenuItems. Final because overriding render is not
-	 * what this design pattern is meant to do.
+	 * Renders the different MenuItems.
 	 */
-	public final void render(Graphics g) throws SlickException {
+	public void render(Graphics g) throws SlickException {
 
 		Graphics canvasGraphics = canvas.getGraphics();
 		process(canvasGraphics);

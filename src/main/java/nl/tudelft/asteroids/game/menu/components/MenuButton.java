@@ -4,7 +4,9 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
-public class MenuButton extends MenuComponent {
+import nl.tudelft.asteroids.game.menu.input.interfaces.MenuItem;
+
+public class MenuButton extends MenuComponent implements MenuItem {
 
 	private final Image button;
 
@@ -19,8 +21,7 @@ public class MenuButton extends MenuComponent {
 
 	@Override
 	public void process(Graphics graphics) {
-		//graphics.drawImage(image, x, y, x2, y2, srcx, srcy, srcx2, srcy2, col);
-		
+		graphics.drawImage(button, x, y);
 	}
 
 }

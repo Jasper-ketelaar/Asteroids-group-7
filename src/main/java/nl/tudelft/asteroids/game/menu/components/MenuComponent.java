@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.util.InputAdapter;
 
 /**
  * Menu component of the Asteroids game. Makes use of the composite pattern by
@@ -18,7 +19,7 @@ import org.newdawn.slick.geom.Shape;
  * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
-public abstract class MenuComponent {
+public abstract class MenuComponent extends InputAdapter {
 
 	private final ArrayList<MenuComponent> children = new ArrayList<>();
 
@@ -102,13 +103,13 @@ public abstract class MenuComponent {
 	public void render(Graphics g) throws SlickException {
 		Graphics canvasGraphics = canvas.getGraphics();
 		canvasGraphics.clear();
-		
+
 		process(canvasGraphics);
 
 		for (MenuComponent child : children) {
 			child.render(canvasGraphics);
 		}
-		
+
 		canvasGraphics.flush();
 		g.drawImage(canvas, x, y);
 
@@ -157,7 +158,7 @@ public abstract class MenuComponent {
 	public Shape getBoundingBox() {
 		return new Rectangle(getAbsoluteX(), getAbsoluteY(), width, height);
 	}
-	
+
 	/**
 	 * 
 	 */

@@ -18,6 +18,11 @@ import nl.tudelft.asteroids.util.Logger;
  */
 public class AsteroidsGame extends StateBasedGame {
 
+	public final static int STATE_MENU_MAIN = 0;
+	public final static int STATE_PLAY_SINGLE = 1;
+	public final static int STATE_PLAY_MULTI = 2;
+	
+	
 	private final static Logger LOGGER = Logger.getInstance(AsteroidsGame.class.getName());
 
 	private final static String BACKGROUND = "BG4.jpg";

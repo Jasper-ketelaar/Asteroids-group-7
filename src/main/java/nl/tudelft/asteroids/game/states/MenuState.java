@@ -3,6 +3,7 @@ package nl.tudelft.asteroids.game.states;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
@@ -10,8 +11,8 @@ import org.newdawn.slick.state.StateBasedGame;
 import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.game.menu.components.Menu;
 import nl.tudelft.asteroids.game.menu.components.MenuButton;
-import nl.tudelft.asteroids.game.menu.input.ButtonListener;
 import nl.tudelft.asteroids.util.Logger;
+import nl.tudelft.asteroids.util.Logger.Level;
 
 /**
  * The menu state of the Asteroids game.
@@ -45,19 +46,44 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
-		main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
-
-		MenuButton singlePlayer = new MenuButton(menu, singlePlayerImg, 0, 0);
-		MenuButton multiPlayer = new MenuButton(menu, new Image("menu/MultiPlayerButton.png"), 0, 100);
+		main = createMainMenu(gc, sbg);
+		menu = main;
+	}
 	
+	public Menu createMainMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
+		Menu main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
+
+		Input input = gc.getInput();
+		
+		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 0);
+		singlePlayer.setOnClick(() -> {
+			sbg.enterState(AsteroidsGame.STATE_PLAY_SINGLE);
+			try {
+				sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE).init(gc, sbg);;
+			} catch (SlickException e) {
+				LOGGER.log("Initialization failed", Level.ERROR, true);
+			}
+		});
+		input.addMouseListener(singlePlayer);
+		
+		
+		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), 0, 100);
+		multiPlayer.setOnClick(() -> {
+			sbg.enterState(AsteroidsGame.STATE_PLAY_MULTI);
+			try {
+				sbg.getState(AsteroidsGame.STATE_PLAY_MULTI).init(gc, sbg);
+			} catch (SlickException e) {
+				LOGGER.log("Initialization failed", Level.ERROR, true);
+			}
+		});
+		input.addMouseListener(multiPlayer);
+		
 		main.append(singlePlayer);
 		main.append(multiPlayer);
-		
-		menu = main;
-		
-		gc.getInput().addMouseListener(new ButtonListener(singlePlayer));
+		return main;
 	}
+	
 
 	/**
 	 * Draws the background image.
@@ -73,10 +99,8 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException {
-		
 
 	}
-	
 
 	/**
 	 * Initial state

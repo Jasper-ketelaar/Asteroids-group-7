@@ -29,7 +29,6 @@ public class MenuLabel extends MenuComponent {
 	 */
 	public MenuLabel(MenuComponent parent, String label, int x, int y, int width, int height) throws SlickException {
 		this(parent, label, DEFAULT, x, y, width, height);
-
 	}
 	
 	/**

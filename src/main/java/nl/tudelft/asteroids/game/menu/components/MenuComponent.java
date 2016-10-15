@@ -19,6 +19,7 @@ import org.newdawn.slick.util.InputAdapter;
  * An example of this being a Menu that has multiple children of which one is a {@link MenuLabel}
  * and of which multiple are {@link MenuButton}'s to create a titled Menu.</p>
  * 
+ * <p>This class extends InputAdapter 
  * @author Jasper Ketelaar
  *
  */

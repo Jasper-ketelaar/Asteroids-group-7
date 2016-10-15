@@ -10,7 +10,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.game.menu.components.Menu;
 import nl.tudelft.asteroids.game.menu.components.MenuButton;
-import nl.tudelft.asteroids.game.menu.input.InputHandler;
+import nl.tudelft.asteroids.game.menu.input.ButtonListener;
 import nl.tudelft.asteroids.util.Logger;
 
 /**
@@ -26,8 +26,7 @@ public class MenuState extends BasicGameState {
 
 	private static Image background;
 
-	private Menu menu;
-	private InputHandler inputHandler;
+	private Menu menu, main, options;
 
 	/**
 	 * Constructor; sets background sprite.
@@ -47,36 +46,17 @@ public class MenuState extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
-		this.menu = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
+		main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
 
 		MenuButton singlePlayer = new MenuButton(menu, singlePlayerImg, 0, 0);
-		singlePlayer.setAction(() -> {
-			try {
-				sbg.enterState(1);
-				sbg.getState(1).init(gc, sbg);
-			} catch (SlickException e) {
-				e.printStackTrace();
-			}
-
-		});
-
 		MenuButton multiPlayer = new MenuButton(menu, new Image("menu/MultiPlayerButton.png"), 0, 100);
-		multiPlayer.setAction(() -> {
-			sbg.enterState(2);
-			try {
-				sbg.getState(2).init(gc, sbg);
-			} catch (SlickException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		});
-
-		this.menu.append(singlePlayer);
-		this.menu.append(multiPlayer);
-
-		this.inputHandler = new InputHandler(sbg);
-		this.inputHandler.listen(singlePlayer);
-		this.inputHandler.listen(multiPlayer);
+	
+		main.append(singlePlayer);
+		main.append(multiPlayer);
+		
+		menu = main;
+		
+		gc.getInput().addMouseListener(new ButtonListener(singlePlayer));
 	}
 
 	/**
@@ -93,12 +73,13 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException {
-		inputHandler.update();
+		
 
 	}
+	
 
 	/**
-	 * Empty override method.
+	 * Initial state
 	 */
 	@Override
 	public int getID() {

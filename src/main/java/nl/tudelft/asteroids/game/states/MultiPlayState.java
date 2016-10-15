@@ -98,6 +98,7 @@ public class MultiPlayState extends DefaultPlayState {
 					LOGGER.log("Game over! The score was  " + player.getScore());
 					asteroids.clear();
 					sbg.enterState(0);
+					
 				}
 			}
 

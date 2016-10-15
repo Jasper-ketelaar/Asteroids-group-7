@@ -32,15 +32,6 @@ public abstract class MenuComponent {
 
 	protected final Image canvas;
 
-	public MenuComponent(MenuComponent parent, Image image, int x, int y) {
-		this.x = x;
-		this.y = y;
-		this.width = image.getWidth();
-		this.height = image.getHeight();
-		this.canvas = image;
-		this.parent = parent;
-	}
-
 	/**
 	 * Constructor with parent
 	 * 
@@ -110,14 +101,15 @@ public abstract class MenuComponent {
 	 */
 	public void render(Graphics g) throws SlickException {
 		Graphics canvasGraphics = canvas.getGraphics();
+		canvasGraphics.clear();
+		
 		process(canvasGraphics);
 
 		for (MenuComponent child : children) {
 			child.render(canvasGraphics);
 		}
-
+		
 		canvasGraphics.flush();
-
 		g.drawImage(canvas, x, y);
 
 	}
@@ -164,6 +156,13 @@ public abstract class MenuComponent {
 	 */
 	public Shape getBoundingBox() {
 		return new Rectangle(getAbsoluteX(), getAbsoluteY(), width, height);
+	}
+	
+	/**
+	 * 
+	 */
+	public boolean contains(float x, float y) {
+		return getBoundingBox().contains(x, y);
 	}
 
 	/**

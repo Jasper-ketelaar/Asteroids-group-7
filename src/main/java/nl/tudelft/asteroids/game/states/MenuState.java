@@ -11,6 +11,7 @@ import org.newdawn.slick.state.StateBasedGame;
 import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.game.menu.components.Menu;
 import nl.tudelft.asteroids.game.menu.components.MenuButton;
+import nl.tudelft.asteroids.game.menu.components.MenuLabel;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
 
@@ -22,6 +23,9 @@ import nl.tudelft.asteroids.util.Logger.Level;
  */
 public class MenuState extends BasicGameState {
 
+	
+	private final static String MAIN_MENU = "Main menu";
+	
 	private final static String BACKGROUND = "BG4.jpg";
 	private final static Logger LOGGER = Logger.getInstance(MenuState.class.getName());
 
@@ -59,6 +63,12 @@ public class MenuState extends BasicGameState {
 		Menu main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
 
 		Input input = gc.getInput();
+		
+		System.out.println(main.getWidth());
+		
+		MenuLabel label = new MenuLabel(main, MAIN_MENU, 0, 0, MenuLabel.CENTER,
+				main.getWidth(), gc.getDefaultFont().getHeight(MAIN_MENU));
+		main.append(label);
 
 		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 0);
 		singlePlayer.setOnClick(() -> {
@@ -93,10 +103,10 @@ public class MenuState extends BasicGameState {
 			System.exit(0);
 		});
 
-		main.append(singlePlayer);
+		/*main.append(singlePlayer);
 		main.append(multiPlayer);
 		main.append(exit);
-		main.append(options);
+		main.append(options);*/
 
 		input.addMouseListener(main);
 		return main;

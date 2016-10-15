@@ -21,7 +21,7 @@ import org.newdawn.slick.util.InputAdapter;
  */
 public abstract class MenuComponent extends InputAdapter {
 
-	private final ArrayList<MenuComponent> children = new ArrayList<>();
+	protected final ArrayList<MenuComponent> children = new ArrayList<>();
 
 	protected int x;
 	protected int y;
@@ -160,10 +160,38 @@ public abstract class MenuComponent extends InputAdapter {
 	}
 
 	/**
-	 * 
+	 * Check if this component contains a certain point
 	 */
 	public boolean contains(float x, float y) {
 		return getBoundingBox().contains(x, y);
+	}
+	
+	/**
+	 * Overrides to check parent as well
+	 */
+	@Override
+	public boolean isAcceptingInput() {
+		return super.isAcceptingInput() && (parent == null || parent.isAcceptingInput());
+	}
+	
+	/**
+	 * If no mouse pressed method is overridden delegate to children.
+	 */
+	@Override
+	public void mousePressed(int button, int x, int y) {
+		for (MenuComponent child : children) {
+			child.mousePressed(button, x, y);
+		}
+	}
+	
+	/**
+	 * If no mouse moved method is overridden delegate to children.
+	 */
+	@Override
+	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		for (MenuComponent child : children) {
+			child.mouseMoved(oldx, oldy, newx, newy);
+		}
 	}
 
 	/**

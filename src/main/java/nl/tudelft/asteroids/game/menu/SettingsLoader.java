@@ -1,4 +1,4 @@
-package nl.tudelft.asteroids.game.menu.components;
+package nl.tudelft.asteroids.game.menu;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

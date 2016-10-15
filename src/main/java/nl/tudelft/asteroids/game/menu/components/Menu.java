@@ -12,10 +12,5 @@ public class Menu extends MenuComponent {
 	@Override
 	public void process(Graphics graphics) {
 		//To show menu, not displayed in release
-		
 	}
-	
-	
-
-	
 }

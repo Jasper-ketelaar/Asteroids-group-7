@@ -8,13 +8,14 @@ import org.newdawn.slick.SlickException;
 public class MenuButton extends MenuComponent implements MouseListener {
 
 	private final static float HOVER = 0.9f;
+	private final static float STANDARD = 1f;
 
 	private boolean hovered;
 	private Image button;
 	private Runnable action;
 
 	public MenuButton(MenuComponent parent, Image button, int x, int y) throws SlickException {
-		super(parent, x, y, button.getWidth(), button.getHeight());
+		super(parent, x - 1, y - 1, button.getWidth() + 1, button.getHeight() + 1);
 		this.button = button;
 	}
 
@@ -23,7 +24,7 @@ public class MenuButton extends MenuComponent implements MouseListener {
 		if (hovered)
 			button.setAlpha(HOVER);
 		else
-			button.setAlpha(1);
+			button.setAlpha(STANDARD);
 
 		graphics.drawImage(button, 0, 0);
 	}
@@ -31,7 +32,6 @@ public class MenuButton extends MenuComponent implements MouseListener {
 	@Override
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
 		hovered = contains(newx, newy);
-		System.out.println(newx + ", " + newy + ", " + getAbsoluteX() + ", " + getAbsoluteY());
 	}
 
 	@Override

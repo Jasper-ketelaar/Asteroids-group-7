@@ -27,7 +27,7 @@ public class MenuState extends BasicGameState {
 
 	private static Image background;
 
-	private Menu menu, main, options;
+	private Menu menu, main, opt;
 
 	/**
 	 * Constructor; sets background sprite.
@@ -46,28 +46,31 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		opt = createOptionsMenu(gc, sbg);
 		main = createMainMenu(gc, sbg);
 		menu = main;
 	}
-	
+
+	/**
+	 * Initializes the main menu
+	 */
 	public Menu createMainMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
 		Menu main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
 
 		Input input = gc.getInput();
-		
+
 		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 0);
 		singlePlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_SINGLE);
 			try {
-				sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE).init(gc, sbg);;
+				sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE).init(gc, sbg);
+				;
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
-		input.addMouseListener(singlePlayer);
-		
-		
+
 		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), 0, 100);
 		multiPlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_MULTI);
@@ -77,13 +80,45 @@ public class MenuState extends BasicGameState {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
-		input.addMouseListener(multiPlayer);
-		
+
+		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 200);
+		options.setOnClick(() -> {
+			input.removeMouseListener(main);
+			input.addMouseListener(opt);
+			menu = this.opt;
+		});
+		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), 0, 300);
+		exit.setOnClick(() -> {
+			LOGGER.log("Game exited by user", Level.INFO, true);
+			System.exit(0);
+		});
+
 		main.append(singlePlayer);
 		main.append(multiPlayer);
+		main.append(exit);
+		main.append(options);
+
+		input.addMouseListener(main);
 		return main;
 	}
-	
+
+	/**
+	 * Initializes the options menu
+	 */
+	public Menu createOptionsMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Image retImage = new Image("menu/ReturnButton.png");
+		Menu options = new Menu(gc.getWidth() / 2 - retImage.getWidth() / 2, 150, 500, 500);
+
+		MenuButton ret = new MenuButton(options, retImage, 0, 200);
+		ret.setOnClick(() -> {
+			gc.getInput().removeMouseListener(opt);
+			gc.getInput().addMouseListener(main);
+			menu = this.main;
+		});
+
+		options.append(ret);
+		return options;
+	}
 
 	/**
 	 * Draws the background image.

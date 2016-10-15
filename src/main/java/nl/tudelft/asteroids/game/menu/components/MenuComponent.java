@@ -11,12 +11,15 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.util.InputAdapter;
 
 /**
- * Menu component of the Asteroids game. Makes use of the composite pattern by
- * allowing children to be instance of it's own class. This way we could for
- * example have a MenuItem containing a Menu (which is impractical but as we add
- * more classes to this the use stays simpler).
+ * <p>This class is designed using the Composite pattern. Basically a MenuComponent can
+ * have a parent and/or children which are of the same type. We then have multiple subclasses
+ * of this MenuComponent to create different Menu items. </p>
  * 
- * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * <p>Using the composite pattern we can allow for a tree like structure in our menu.
+ * An example of this being a Menu that has multiple children of which one is a {@link MenuLabel}
+ * and of which multiple are {@link MenuButton}'s to create a titled Menu.</p>
+ * 
+ * @author Jasper Ketelaar
  *
  */
 public abstract class MenuComponent extends InputAdapter {
@@ -34,9 +37,26 @@ public abstract class MenuComponent extends InputAdapter {
 	protected final Image canvas;
 
 	/**
-	 * Constructor with parent
+	 * Simple constructor which sets x and y to 0 initially. 
+	 * A constructor like this is necessary for positioning by layout.
 	 * 
-	 * @throws SlickException
+	 * @see #MenuComponent(MenuComponent, int, int, int, int) for further information.
+	 */
+	public MenuComponent(MenuComponent parent, int width, int height) throws SlickException {
+		this(parent, 0, 0, width, height);
+	}
+	
+	/**
+	 * Constructor with parent and width/height. 
+	 * Coordinates are relative to the parent component, so if for example
+	 * the parent component is a Menu with a width of 100 and a height of 100
+	 * then the x and y value are inside this component. This means that the actual on screen
+	 * x value is all the parent x values summed.
+	 * 
+	 * If the total bounding box of the component extends the area of the parent component
+	 * the component will not be seen.
+	 * 
+	 * @throws SlickException can be thrown when instantiating an {@link Image}
 	 */
 	public MenuComponent(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
 		this.x = x;

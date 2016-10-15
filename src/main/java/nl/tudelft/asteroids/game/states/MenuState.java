@@ -63,10 +63,7 @@ public class MenuState extends BasicGameState {
 		Menu main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
 
 		Input input = gc.getInput();
-		
-		System.out.println(main.getWidth());
-		
-		MenuLabel label = new MenuLabel(main, MAIN_MENU, 0, 0, MenuLabel.CENTER,
+		MenuLabel label = new MenuLabel(main, MAIN_MENU, MenuLabel.CENTER, 0, 0,
 				main.getWidth(), gc.getDefaultFont().getHeight(MAIN_MENU));
 		main.append(label);
 
@@ -103,10 +100,10 @@ public class MenuState extends BasicGameState {
 			System.exit(0);
 		});
 
-		/*main.append(singlePlayer);
+		main.append(singlePlayer);
 		main.append(multiPlayer);
 		main.append(exit);
-		main.append(options);*/
+		main.append(options);
 
 		input.addMouseListener(main);
 		return main;

@@ -2,10 +2,9 @@ package nl.tudelft.asteroids.game.menu.components;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
-import org.newdawn.slick.MouseListener;
 import org.newdawn.slick.SlickException;
 
-public class MenuButton extends MenuComponent implements MouseListener {
+public class MenuButton extends MenuComponent {
 
 	private final static float HOVER = 0.9f;
 	private final static float STANDARD = 1f;

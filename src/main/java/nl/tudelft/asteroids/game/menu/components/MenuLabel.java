@@ -1,8 +1,10 @@
 package nl.tudelft.asteroids.game.menu.components;
 
-import org.newdawn.slick.Font;
+import java.awt.Font;
+
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.TrueTypeFont;
 
 public class MenuLabel extends MenuComponent {
 
@@ -19,25 +21,45 @@ public class MenuLabel extends MenuComponent {
 
 	private final String label;
 	private final int align;
+	private final TrueTypeFont font;
 
+	
+	/**
+	 * Constructor where everything is default
+	 */
 	public MenuLabel(MenuComponent parent, String label, int x, int y, int width, int height) throws SlickException {
 		this(parent, label, DEFAULT, x, y, width, height);
 
 	}
-
+	
+	/**
+	 * Constructor where the font is default
+	 */
 	public MenuLabel(MenuComponent parent, String label, int align, int x, int y, int width, int height)
 			throws SlickException {
+		this(parent, label, new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true), align, x, y, width, height);
+	}
+
+	/**
+	 * Constructor with no defaults
+	 */
+	public MenuLabel(MenuComponent parent, String label, TrueTypeFont font, int align, int x, int y, int width,
+			int height) throws SlickException {
 		super(parent, x, y, width, height);
 		this.label = label;
 		this.align = align;
+		this.font = font;
 	}
 
 	@Override
 	public void process(Graphics graphics) {
-			graphics.drawString(label, getDrawX(graphics.getFont()), getDrawY(graphics.getFont()));
+		font.drawString(getDrawX(), getDrawY(), label);
 	}
 
-	public int getDrawX(Font font) {
+	/**
+	 * Gets the draw x coordinate based on the alignment
+	 */
+	public int getDrawX() {
 		switch (align) {
 
 		// Left alignment
@@ -63,7 +85,10 @@ public class MenuLabel extends MenuComponent {
 		}
 	}
 
-	public int getDrawY(Font font) {
+	/**
+	 * Gets the draw y coordinate based on allignment
+	 */
+	public int getDrawY() {
 		switch (align) {
 
 		// Top alignment
@@ -76,13 +101,13 @@ public class MenuLabel extends MenuComponent {
 		case CENTER_LEFT:
 		case CENTER:
 		case CENTER_RIGHT:
-			return height - font.getHeight(label) / 2;
+			return (height - font.getHeight(label)) / 2;
 
 		// Bottom alignment
 		case BOTTOM_LEFT:
 		case BOTTOM_CENTER:
 		case BOTTOM_RIGHT:
-			return height - font.getHeight(label);
+			return (height - font.getHeight(label));
 
 		default:
 			return 0;

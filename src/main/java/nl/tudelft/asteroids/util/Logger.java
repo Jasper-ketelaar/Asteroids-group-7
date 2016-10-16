@@ -64,7 +64,7 @@ public class Logger {
 	 * @param className class name which is required for storing data in the data map.
 	 * @return instance of the Logger class.
 	 */
-	public static Logger getInstance(String className) {
+	public synchronized static Logger getInstance(String className) {
 		if (instance == null) {
 			instance = new Logger();
 		}

@@ -30,7 +30,7 @@ import nl.tudelft.asteroids.util.Util;
 public abstract class DefaultPlayState extends BasicGameState {
 
 	protected final static Logger LOGGER = Logger.getInstance(DefaultPlayState.class.getName());
-	
+
 	private final static String MUSIC_LOOP = "music_loop.wav";
 	private final static Vector2f SCORE_LOCATION = new Vector2f(8, 22);
 
@@ -38,7 +38,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 	protected final List<Asteroid> asteroids = new ArrayList<>();
 	protected final List<PowerUp> powerUps = new ArrayList<>();
-	
+
 	private final Image background;
 
 	/**
@@ -57,10 +57,13 @@ public abstract class DefaultPlayState extends BasicGameState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		long curr = System.currentTimeMillis(); // measure load time
-		
-		//Load audio
+
 		Audio audio = Util.loadAudio(MUSIC_LOOP);
-		audio.playAsMusic(1, 1, true);
+		System.out.println(arg1.getCurrentStateID());
+		if (!audio.isPlaying())
+			audio.playAsMusic(1, 1, true);
+		System.out.println("True");
+
 		LOGGER.log("Background music loaded");
 
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
@@ -82,6 +85,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 		// set color of font and draw SCORE
 		g.setColor(Color.white);
 		g.drawString("SCORE: " + getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
+
 	}
 
 	/**
@@ -117,8 +121,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
 			asteroid.update(gc);
-			
-			//remove asteroid when it has exploded
+
+			// remove asteroid when it has exploded
 			if (asteroid.getExplosion().isStopped()) {
 				iterator.remove();
 				LOGGER.log("Asteroid destroyed and instance removed from the game");

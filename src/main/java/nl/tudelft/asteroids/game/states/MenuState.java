@@ -3,36 +3,130 @@ package nl.tudelft.asteroids.game.states;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
+import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.tudelft.asteroids.game.AsteroidsGame;
+import nl.tudelft.asteroids.game.menu.components.Menu;
+import nl.tudelft.asteroids.game.menu.components.MenuButton;
+import nl.tudelft.asteroids.game.menu.components.MenuLabel;
+import nl.tudelft.asteroids.game.menu.components.MenuSlider;
+import nl.tudelft.asteroids.util.Logger;
+import nl.tudelft.asteroids.util.Logger.Level;
+
 /**
  * The menu state of the Asteroids game.
  * 
- * @author Leroy Velzel, Bernard Bot, 
- * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public class MenuState extends BasicGameState {
 
-	private final Image background;
+	
+	private final static String MAIN_MENU = "Main menu";
+	
+	private final static String BACKGROUND = "BG4.jpg";
+	private final static Logger LOGGER = Logger.getInstance(MenuState.class.getName());
+
+	private static Image background;
+
+	private Menu menu, main, opt;
 
 	/**
 	 * Constructor; sets background sprite.
 	 * 
 	 * @param background
+	 * @throws SlickException
 	 */
-	public MenuState(Image background) {
-		this.background = background;
+	public MenuState() throws SlickException {
+		if (background == null)
+			background = new Image(BACKGROUND);
+		LOGGER.log("Background image loaded");
 	}
 
 	/**
 	 * Empty override method.
 	 */
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1) throws SlickException {
+	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		opt = createOptionsMenu(gc, sbg);
+		main = createMainMenu(gc, sbg);
+		menu = main;
+	}
 
+	/**
+	 * Initializes the main menu
+	 */
+	public Menu createMainMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
+		Menu main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
+
+		Input input = gc.getInput();
+
+		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 0);
+		singlePlayer.setOnClick(() -> {
+			sbg.enterState(AsteroidsGame.STATE_PLAY_SINGLE);
+			try {
+				sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE).init(gc, sbg);
+				;
+			} catch (SlickException e) {
+				LOGGER.log("Initialization failed", Level.ERROR, true);
+			}
+		});
+
+		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), 0, 100);
+		multiPlayer.setOnClick(() -> {
+			sbg.enterState(AsteroidsGame.STATE_PLAY_MULTI);
+			try {
+				sbg.getState(AsteroidsGame.STATE_PLAY_MULTI).init(gc, sbg);
+			} catch (SlickException e) {
+				LOGGER.log("Initialization failed", Level.ERROR, true);
+			}
+		});
+
+		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 200);
+		options.setOnClick(() -> {
+			input.removeMouseListener(main);
+			input.addMouseListener(opt);
+			menu = this.opt;
+		});
+		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), 0, 300);
+		exit.setOnClick(() -> {
+			LOGGER.log("Game exited by user", Level.INFO, true);
+			System.exit(0);
+		});
+
+		main.append(singlePlayer);
+		main.append(multiPlayer);
+		main.append(exit);
+		main.append(options);
+
+		input.addMouseListener(main);
+		return main;
+	}
+
+	/**
+	 * Initializes the options menu
+	 */
+	public Menu createOptionsMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		Image retImage = new Image("menu/ReturnButton.png");
+		Menu options = new Menu(gc.getWidth() / 2 - retImage.getWidth() / 2, 150, 500, 500);
+
+		MenuSlider slider = new MenuSlider(options, 50, 50, 100, 20, 0, 100);
+		System.out.println(slider.getAbsoluteX() + ", " + slider.getAbsoluteY());
+		options.append(slider);
+		
+		MenuButton ret = new MenuButton(options, retImage, 0, 200);
+		ret.setOnClick(() -> {
+			gc.getInput().removeMouseListener(opt);
+			gc.getInput().addMouseListener(main);
+			menu = this.main;
+		});
+
+		options.append(ret);
+		return options;
 	}
 
 	/**
@@ -41,7 +135,7 @@ public class MenuState extends BasicGameState {
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {
 		g.drawImage(background, 0, 0);
-
+		menu.render(g);
 	}
 
 	/**
@@ -49,17 +143,19 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException {
-		// TODO Auto-generated method stub
 
 	}
 
 	/**
-	 * Empty override method.
+	 * Initial state
 	 */
 	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public Menu getMenu() {
+		return menu;
 	}
 
 }

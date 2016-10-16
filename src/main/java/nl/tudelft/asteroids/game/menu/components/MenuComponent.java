@@ -25,16 +25,39 @@ import org.newdawn.slick.util.InputAdapter;
  */
 public abstract class MenuComponent extends InputAdapter {
 
+	/**
+	 * An {@link ArrayList} containing the children components of this component
+	 */
 	protected final ArrayList<MenuComponent> children = new ArrayList<>();
 
+	/**
+	 * The relative x location
+	 */
 	protected int x;
+	
+	/**
+	 * The relative y location
+	 */
 	protected int y;
 
+	/**
+	 * The width of the canvas of this component
+	 */
 	protected final int width;
+	
+	/**
+	 * The height of the canvas of this component
+	 */
 	protected final int height;
 
+	/**
+	 * The parent of this component
+	 */
 	private final MenuComponent parent;
 
+	/**
+	 * An {@link Image} representing the canvas on which the component is drawn
+	 */
 	protected final Image canvas;
 
 	/**
@@ -69,21 +92,24 @@ public abstract class MenuComponent extends InputAdapter {
 	}
 
 	/**
-	 * @return The height of the menu
+	 * @return the {@link #height} attribute of this component
 	 */
 	public int getHeight() {
 		return height;
 	}
 
 	/**
-	 * @return The width of the menu
+	 * @return the {@link #width} attribute of this component
 	 */
 	public int getWidth() {
 		return width;
 	}
 
 	/**
-	 * Gets absolute x value
+	 * The absolute x value is the x value of this component and all it's parents component's x values </br>
+	 * thus creating the x value where this element is painted on the display.
+	 * 
+	 * @return the absolute x value
 	 */
 	public int getAbsoluteX() {
 		if (parent == null) {
@@ -94,7 +120,10 @@ public abstract class MenuComponent extends InputAdapter {
 	}
 
 	/**
-	 * Gets absolute y value
+	 * The absolute y value is the y value of this component and all it's parents component's y values </br>
+	 * thus creating the y value where this element is painted on the display.
+	 * 
+	 * @return the absolute y value
 	 */
 	public int getAbsoluteY() {
 		if (parent == null) {
@@ -105,21 +134,34 @@ public abstract class MenuComponent extends InputAdapter {
 	}
 
 	/**
-	 * @return The 'starting' x-coordinate of the menu
+	 * @return the {@link #x} attribute of this component
 	 */
 	public int getX() {
 		return x;
 	}
 
 	/**
-	 * @return The 'starting' y-coordinate of the menu
+	 * @return the {@link #y} attribute of this component
 	 */
 	public int getY() {
 		return y;
 	}
 
 	/**
-	 * Renders the different MenuItems.
+	 * <p>Requests the {@link Graphics} from the {@link #canvas} instance of this component and 
+	 * clears it before calling {@link #process(Graphics)}.</p>
+	 * 
+	 * <p>Then the child components of this component are rendered by calling this 
+	 * method ({@link #render(Graphics)}) so this causes a recursive loop of rendering
+	 * on the canvas. At the end the {@link Graphics} operations are flushed to push the operations to 
+	 * the {@link #canvas}.</p> 
+	 * 
+	 * <p>This {@link Image} is then drawn on the {@link Graphics} instance provided
+	 * in the parameters. This means it is recursively drawn and in the end drawn by the 
+	 * caller</p>
+	 * 
+	 * @param g the {@link Graphics} instance for this component to be rendered on.
+	 * @throws SlickException for requesting {@link Image} graphics.
 	 */
 	public void render(Graphics g) throws SlickException {
 		Graphics canvasGraphics = canvas.getGraphics();
@@ -133,11 +175,13 @@ public abstract class MenuComponent extends InputAdapter {
 
 		canvasGraphics.flush();
 		g.drawImage(canvas, x, y);
-
 	}
 
 	/**
-	 * Change location of component
+	 * Changes the location of the component to the specified arguments
+	 * 
+	 * @param x the {@link #x} attribute to be updated to
+	 * @param y the {@link #y} attribute to be updated to
 	 */
 	public void setLocation(int x, int y) {
 		this.x = x;

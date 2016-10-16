@@ -12,6 +12,7 @@ import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.game.menu.components.Menu;
 import nl.tudelft.asteroids.game.menu.components.MenuButton;
 import nl.tudelft.asteroids.game.menu.components.MenuLabel;
+import nl.tudelft.asteroids.game.menu.components.MenuSlider;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
 
@@ -63,9 +64,6 @@ public class MenuState extends BasicGameState {
 		Menu main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
 
 		Input input = gc.getInput();
-		MenuLabel label = new MenuLabel(main, MAIN_MENU, MenuLabel.CENTER, 0, 0,
-				main.getWidth(), gc.getDefaultFont().getHeight(MAIN_MENU));
-		main.append(label);
 
 		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 0);
 		singlePlayer.setOnClick(() -> {
@@ -116,6 +114,10 @@ public class MenuState extends BasicGameState {
 		Image retImage = new Image("menu/ReturnButton.png");
 		Menu options = new Menu(gc.getWidth() / 2 - retImage.getWidth() / 2, 150, 500, 500);
 
+		MenuSlider slider = new MenuSlider(options, 50, 50, 100, 20, 0, 100);
+		System.out.println(slider.getAbsoluteX() + ", " + slider.getAbsoluteY());
+		options.append(slider);
+		
 		MenuButton ret = new MenuButton(options, retImage, 0, 200);
 		ret.setOnClick(() -> {
 			gc.getInput().removeMouseListener(opt);

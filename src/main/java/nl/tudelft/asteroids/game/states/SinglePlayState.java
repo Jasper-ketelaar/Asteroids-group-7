@@ -53,8 +53,10 @@ public class SinglePlayState extends DefaultPlayState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		super.init(gc, arg1);
 
-		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
-		this.player.init();
+		if (player == null) {
+			this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
+			this.player.init();
+		}
 	}
 
 	/**

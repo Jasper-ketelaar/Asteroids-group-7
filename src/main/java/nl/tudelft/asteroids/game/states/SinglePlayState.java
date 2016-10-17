@@ -79,6 +79,19 @@ public class SinglePlayState extends DefaultPlayState {
 
 		/* update asteroids, play player explode animation, split asteroids, */
 		ListIterator<Asteroid> iterator = asteroids.listIterator();
+		updateAsteroids(iterator);
+		
+		/* update power ups */
+		Iterator<PowerUp> power_up_it = powerUps.listIterator();
+		updatePowerUp(power_up_it);
+		
+		super.update(gc, sbg, delta);
+		LOGGER.update();
+	}
+	
+	
+	
+	private void updateAsteroids(ListIterator<Asteroid> iterator) throws SlickException{
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
 			/*
@@ -104,9 +117,9 @@ public class SinglePlayState extends DefaultPlayState {
 				}
 			}
 		}
-		
-		/* update power ups */
-		Iterator<PowerUp> power_up_it = powerUps.listIterator();
+	}
+	
+	private void updatePowerUp(Iterator<PowerUp> power_up_it) {
 		while (power_up_it.hasNext()) {
 			PowerUp powerUp = power_up_it.next();
 			if (player.collide(powerUp)) {
@@ -121,8 +134,8 @@ public class SinglePlayState extends DefaultPlayState {
 				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}
-		super.update(gc, sbg, delta);
-		LOGGER.update();
+
+		
 	}
 
 	/**

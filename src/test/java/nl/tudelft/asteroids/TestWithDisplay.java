@@ -12,6 +12,7 @@ public class TestWithDisplay extends TestWithLWJGL {
     public static void createDisplay() throws LWJGLException {
         Display.setDisplayMode(new DisplayMode(1, 1));
         Display.create();
+        
     }
 
     @AfterClass

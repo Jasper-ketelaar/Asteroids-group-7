@@ -35,6 +35,17 @@ public class SinglePlayState extends DefaultPlayState {
 	}
 
 	/**
+	 * Constructor; sets background sprite.
+	 * 
+	 * @param background
+	 * @param player
+	 */
+	public SinglePlayState(Image background, Player player) {
+		super(background);
+		this.player = player;
+	}
+
+	/**
 	 * Initializes the PlayState. The Player, Asteroids and sound are added to
 	 * the game. Prints load time to console.
 	 */
@@ -54,12 +65,14 @@ public class SinglePlayState extends DefaultPlayState {
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		super.render(gc, arg1, g);
 		player.render(g);
-		
-		//Update PowerUps
+
+		// Update PowerUps
 		if (player.getPowerUp() != null) {
 			PowerUp pw = player.getPowerUp();
-			g.setColor(pw.getType().getColor()); //set color of PowerUp
-			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); //draw PowerUp name 
+			g.setColor(pw.getType().getColor()); // set color of PowerUp
+			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); // draw
+																				// PowerUp
+																				// name
 		}
 	}
 
@@ -80,18 +93,16 @@ public class SinglePlayState extends DefaultPlayState {
 		/* update asteroids, play player explode animation, split asteroids, */
 		ListIterator<Asteroid> iterator = asteroids.listIterator();
 		updateAsteroids(iterator);
-		
+
 		/* update power ups */
 		Iterator<PowerUp> power_up_it = powerUps.listIterator();
 		updatePowerUp(power_up_it);
-		
+
 		super.update(gc, sbg, delta);
 		LOGGER.update();
 	}
-	
-	
-	
-	private void updateAsteroids(ListIterator<Asteroid> iterator) throws SlickException{
+
+	private void updateAsteroids(ListIterator<Asteroid> iterator) throws SlickException {
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
 			/*
@@ -118,25 +129,24 @@ public class SinglePlayState extends DefaultPlayState {
 			}
 		}
 	}
-	
+
 	private void updatePowerUp(Iterator<PowerUp> power_up_it) {
-		
+
 		while (power_up_it.hasNext()) {
 			PowerUp powerUp = power_up_it.next();
 			if (player.collide(powerUp)) {
 				powerUp.setPickupTime();
 				player.setPowerUp(powerUp);
 				power_up_it.remove();
-				
+
 				LOGGER.log("Power up picked up and removed from screen");
 			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
 				power_up_it.remove();
-				
+
 				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}
 
-		
 	}
 
 	/**

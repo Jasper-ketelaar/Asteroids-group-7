@@ -2,8 +2,10 @@ package nl.tudelft.asteroids;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-public class LaunchTest {
+@Category(nl.tudelft.asteroids.TestWithDisplay.class)
+public class LaunchTest extends TestWithDisplay {
 
 	private Launch launcher;
 	

@@ -25,6 +25,8 @@ public class Launch {
 
 	private final static Logger LOGGER = Logger.getInstance(Launch.class.getName());
 
+	
+	private AppGameContainer appgc;
 	/**
 	 * Main method for launching the game. The multiplayer flag can be passed to
 	 * this method to initialize a multiplayer game.
@@ -59,18 +61,21 @@ public class Launch {
 				System.out.println(args[0]);
 			}
 			boolean multiplayer = args.length > 0 && args[0].equals("-mp");
-			AppGameContainer appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
+			appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
 			appgc.setDisplayMode(1200, 700, false);
 			appgc.setTargetFrameRate(100);
 			LOGGER.log("Game container fired up", Level.INFO, true);
 			appgc.start();
+			
 
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}
+		
 	}
 
 	public void addLibraryPath() throws Exception {
+		
 		String pathToAdd = new File("lwjgl/native").getAbsolutePath();
 		final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
 		usrPathsField.setAccessible(true);
@@ -91,4 +96,8 @@ public class Launch {
 		usrPathsField.set(null, newPaths);
 	}
 
+	
+	public AppGameContainer getGame() {
+		return this.appgc;
+	}
 }

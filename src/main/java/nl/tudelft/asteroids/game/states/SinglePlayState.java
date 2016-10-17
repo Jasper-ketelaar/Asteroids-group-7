@@ -120,6 +120,7 @@ public class SinglePlayState extends DefaultPlayState {
 	}
 	
 	private void updatePowerUp(Iterator<PowerUp> power_up_it) {
+		
 		while (power_up_it.hasNext()) {
 			PowerUp powerUp = power_up_it.next();
 			if (player.collide(powerUp)) {

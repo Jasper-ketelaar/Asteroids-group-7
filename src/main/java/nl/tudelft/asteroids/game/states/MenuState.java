@@ -1,5 +1,6 @@
 package nl.tudelft.asteroids.game.states;
 
+import nl.tudelft.asteroids.game.menu.components.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,10 +10,6 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.tudelft.asteroids.game.AsteroidsGame;
-import nl.tudelft.asteroids.game.menu.components.Menu;
-import nl.tudelft.asteroids.game.menu.components.MenuButton;
-import nl.tudelft.asteroids.game.menu.components.MenuLabel;
-import nl.tudelft.asteroids.game.menu.components.MenuSlider;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
 
@@ -114,10 +111,10 @@ public class MenuState extends BasicGameState {
 		Image retImage = new Image("menu/ReturnButton.png");
 		Menu options = new Menu(gc.getWidth() / 2 - retImage.getWidth() / 2, 150, 500, 500);
 
-		MenuSlider slider = new MenuSlider(options, 50, 50, 100, 20, 0, 100);
-		System.out.println(slider.getAbsoluteX() + ", " + slider.getAbsoluteY());
-		options.append(slider);
-		
+		MenuSelector<String> selector = new MenuSelector<String>(options, 0, 100, 200, 20);
+		selector.addItem("Test");
+		options.append(selector);
+
 		MenuButton ret = new MenuButton(options, retImage, 0, 200);
 		ret.setOnClick(() -> {
 			gc.getInput().removeMouseListener(opt);

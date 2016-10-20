@@ -45,9 +45,9 @@ public class PowerupFactory {
 	 * 
 	 * @return Boolean indicating if a new PowerUp needs to be spawned
 	 */
-	public boolean requiresPowerup() {
+	public boolean requiresPowerup(int difficulty) {
 		long time = System.currentTimeMillis() - last;
-		if (last != 0 && time > 15000) {
+		if (last != 0 && time > 7500 * difficulty) {
 			return true;
 		} else {
 			float rand = random.nextFloat();

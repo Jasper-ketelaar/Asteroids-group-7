@@ -41,6 +41,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 	private final Image background;
 
+	private int difficulty = 2;
+
 	/**
 	 * Constructor; sets background sprite.
 	 * 
@@ -99,7 +101,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 		 * Algorithm for randomly spawning in power ups when there are too
 		 * little power ups on the screen.
 		 */
-		if (powerUps.size() < 3 && powerupFactory.requiresPowerup()) {
+		if (powerUps.size() < 3 && powerupFactory.requiresPowerup(difficulty)) {
 			powerUps.add(powerupFactory.create(gc));
 			LOGGER.log("A new PowerUp spawned");
 		}
@@ -109,9 +111,9 @@ public abstract class DefaultPlayState extends BasicGameState {
 		 * little asteroids on the screen. A higher score means that more
 		 * asteroids can be spawned.
 		 */
-		int max = (int) (2 + Math.floor(getScore() / 2000));
+		int max = (int) (difficulty + Math.floor(getScore() / 2000));
 		if (asteroids.size() < max) {
-			asteroids.add(new Asteroid(Util.randomLocation(gc), 0, 1));
+			asteroids.add(new Asteroid(Util.randomLocation(gc), 0, 1, difficulty));
 		}
 
 		/*
@@ -130,6 +132,14 @@ public abstract class DefaultPlayState extends BasicGameState {
 			}
 		}
 		LOGGER.update();
+	}
+
+	public void setDifficulty(int difficulty) {
+		this.difficulty = difficulty;
+	}
+
+	public int getDifficulty() {
+		return difficulty;
 	}
 
 	public abstract int getScore();

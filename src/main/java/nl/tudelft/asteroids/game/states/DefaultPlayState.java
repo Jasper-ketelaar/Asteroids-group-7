@@ -3,6 +3,8 @@ package nl.tudelft.asteroids.game.states;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
+import nl.tudelft.asteroids.game.Difficulty;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -41,7 +43,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 	private final Image background;
 
-	private int difficulty = 2;
+	private Difficulty difficulty = Difficulty.MEDIUM;
 
 	/**
 	 * Constructor; sets background sprite.
@@ -80,6 +82,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 		// draw background
 		g.drawImage(background, 0, 0);
 
+		g.drawString(difficulty.toString(), gc.getWidth() - g.getFont().getWidth(difficulty.toString()), 0);
+
 		// render Asteroids, PowerUps
 		powerUps.forEach(p -> p.render(g));
 		asteroids.forEach(a -> a.render(g));
@@ -101,7 +105,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 		 * Algorithm for randomly spawning in power ups when there are too
 		 * little power ups on the screen.
 		 */
-		if (powerUps.size() < 3 && powerupFactory.requiresPowerup(difficulty)) {
+		if (powerUps.size() < 3 && powerupFactory.requiresPowerup(difficulty.getDifficulty())) {
 			powerUps.add(powerupFactory.create(gc));
 			LOGGER.log("A new PowerUp spawned");
 		}
@@ -111,9 +115,9 @@ public abstract class DefaultPlayState extends BasicGameState {
 		 * little asteroids on the screen. A higher score means that more
 		 * asteroids can be spawned.
 		 */
-		int max = (int) (difficulty + Math.floor(getScore() / 2000));
+		int max = (int) (difficulty.getDifficulty() + Math.floor(getScore() / 2000));
 		if (asteroids.size() < max) {
-			asteroids.add(new Asteroid(Util.randomLocation(gc), 0, 1, difficulty));
+			asteroids.add(new Asteroid(Util.randomLocation(gc), 0, 1, difficulty.getDifficulty()));
 		}
 
 		/*
@@ -134,11 +138,11 @@ public abstract class DefaultPlayState extends BasicGameState {
 		LOGGER.update();
 	}
 
-	public void setDifficulty(int difficulty) {
+	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
 	}
 
-	public int getDifficulty() {
+	public Difficulty getDifficulty() {
 		return difficulty;
 	}
 

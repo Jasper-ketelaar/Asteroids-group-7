@@ -58,6 +58,10 @@ public class SinglePlayState extends DefaultPlayState {
 			this.player.init();
 		}
 	}
+	
+	public Player getPlayer(){
+		return player;
+	}
 
 	/**
 	 * Renders the Player (Bullets are rendered in the Player Class), Asteroids

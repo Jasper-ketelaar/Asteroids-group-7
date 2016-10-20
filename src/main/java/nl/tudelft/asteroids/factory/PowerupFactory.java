@@ -41,7 +41,7 @@ public class PowerupFactory {
 	}
 
 	/**
-	 * Algorithm if a new PowerUp needs to be spawned.
+	 * Algorithm to check if a new PowerUp needs to be spawned.
 	 * 
 	 * @return Boolean indicating if a new PowerUp needs to be spawned
 	 */

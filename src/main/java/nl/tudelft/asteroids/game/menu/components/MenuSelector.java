@@ -24,10 +24,25 @@ public class MenuSelector<T> extends MenuComponent {
     private boolean rightHovered;
     private int current;
 
+    /**
+     * Default super class constuctor.
+     */
     public MenuSelector(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
         this(parent, x, y, width, height, new ArrayList<>());
     }
 
+    /**
+     * Constructor which also initializes the right/left arrow icon 
+     * and the list of selectable items.
+     * 
+     * @param parent
+     * @param x
+     * @param y
+     * @param width
+     * @param height
+     * @param items
+     * @throws SlickException
+     */
     public MenuSelector(MenuComponent parent, int x, int y, int width, int height, List<T> items) throws SlickException {
         super(parent, x, y, width, height + 5);
         this.items = items;
@@ -39,6 +54,9 @@ public class MenuSelector<T> extends MenuComponent {
 
     }
 
+    /**
+     * Draw currently selected item and left/right arrows.
+     */
     @Override
     public void process(Graphics graphics) {
         T item = items.get(current);
@@ -47,14 +65,24 @@ public class MenuSelector<T> extends MenuComponent {
         right.draw(width - right.getWidth(), 5);
     }
 
+    /**
+     * @param item Item added to the selector.
+     */
     public void addItem(T item) {
         items.add(item);
     }
 
+    /**
+     * @return Currently displayed item.
+     */
     public T getItem() {
         return items.get(current);
     }
 
+    /**
+     * Changes current item when left/right arrow is pressed.
+     * Makes the items 'loop around' by checking the size of the list.
+     */
     @Override
     public void mousePressed(int button, int x, int y) {
         if (leftHovered) {
@@ -72,6 +100,10 @@ public class MenuSelector<T> extends MenuComponent {
         }
     }
 
+    /**
+     * Checks if the mouse hovers over the left/right arrow 
+     * after it is moved.
+     */
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         Rectangle left = new Rectangle(getAbsoluteX(), getAbsoluteY(), this.left.getWidth(), this.left.getHeight());

@@ -138,14 +138,24 @@ public abstract class DefaultPlayState extends BasicGameState {
 		LOGGER.update();
 	}
 
+	/**
+	 * @param difficulty
+	 *            The difficulty to which the game is set (MEDIUM or HARD)
+	 */
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
 	}
 
+	/**
+	 * @return The games difficulty (MEDIUM or HARD)
+	 */
 	public Difficulty getDifficulty() {
 		return difficulty;
 	}
 
+	/**
+	 * @return The players score.
+	 */
 	public abstract int getScore();
 
 	/**

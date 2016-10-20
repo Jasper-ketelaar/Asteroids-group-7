@@ -65,6 +65,12 @@ public class Launch {
 
 	}
 	
+	/**
+	 * Used to set the native library for the project.
+	 * This way the game can run out-of-the-box.
+	 * 
+	 * @throws Exception
+	 */
 	public static void addLibraryPath() throws Exception {
 		String pathToAdd = new File("lwjgl/native").getAbsolutePath();
 	    final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");

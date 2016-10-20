@@ -25,9 +25,8 @@ import java.util.List;
  */
 public class MenuState extends BasicGameState {
 
-	
 	private final static String MAIN_MENU = "Main menu";
-	
+
 	private final static String BACKGROUND = "BG4.jpg";
 	private final static Logger LOGGER = Logger.getInstance(MenuState.class.getName());
 
@@ -66,44 +65,51 @@ public class MenuState extends BasicGameState {
 
 		Input input = gc.getInput();
 
+		// Difficulty selector
 		List<Difficulty> values = Arrays.asList(Difficulty.values());
 		MenuSelector<Difficulty> selector = new MenuSelector<>(main, 45, 0, 200, 20, values);
 		main.append(selector);
 
+		// Single player button
 		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 50);
 		singlePlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_SINGLE);
 			try {
 				sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE).init(gc, sbg);
-				((DefaultPlayState)sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE)).setDifficulty(selector.getItem());
+				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE)).setDifficulty(selector.getItem());
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
 
+		// Multi player button
 		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), 0, 150);
 		multiPlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_MULTI);
 			try {
 				sbg.getState(AsteroidsGame.STATE_PLAY_MULTI).init(gc, sbg);
-				((DefaultPlayState)sbg.getState(AsteroidsGame.STATE_PLAY_MULTI)).setDifficulty(selector.getItem());
+				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY_MULTI)).setDifficulty(selector.getItem());
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
 
+		// Options button
 		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 250);
 		options.setOnClick(() -> {
 			input.removeMouseListener(main);
 			input.addMouseListener(opt);
 			menu = this.opt;
 		});
+
+		// Exit button
 		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), 0, 350);
 		exit.setOnClick(() -> {
 			LOGGER.log("Game exited by user", Level.INFO, true);
 			System.exit(0);
 		});
 
+		// Append all MenuComponents to the main menu
 		main.append(singlePlayer);
 		main.append(multiPlayer);
 		main.append(exit);
@@ -157,6 +163,9 @@ public class MenuState extends BasicGameState {
 		return 0;
 	}
 
+	/**
+	 * @return The menu MenoComponent.
+	 */
 	public Menu getMenu() {
 		return menu;
 	}

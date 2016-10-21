@@ -77,51 +77,15 @@ public class SinglePlayState extends DefaultPlayState {
 			asteroids.clear();
 			sbg.enterState(0);
 		}
-
-		/* update asteroids, play player explode animation, split asteroids, */
-		ListIterator<Asteroid> iterator = asteroids.listIterator();
-		while (iterator.hasNext()) {
-			Asteroid asteroid = iterator.next();
-			/*
-			 * if the player is colliding with the asteroid or the explosion was
-			 * already playing, continue playing the explosion
-			 */
-			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
-				player.playExplosion();
-				continue;
-			}
-
-			/*
-			 * iterate over the bullets and remove them; iterator used to
-			 * prevent ConcurrentModificationException
-			 */
-			Iterator<Bullet> bullets = player.getFiredBullets().iterator();
-			while (bullets.hasNext()) {
-				Bullet b = bullets.next();
-				if (b.collide(asteroid) && asteroid.getExplosion().getFrame() == 0) {
-					player.updateScore(asteroid.getPoints());
-					asteroid.splitAsteroid(iterator);
-					bullets.remove();
-				}
-			}
-		}
+		
+		/*
+		 * Update asteroids, play player explode animation, split asteroids,
+		 */
+		updateAsteroids(asteroids, player);
 		
 		/* update power ups */
-		Iterator<PowerUp> power_up_it = powerUps.listIterator();
-		while (power_up_it.hasNext()) {
-			PowerUp powerUp = power_up_it.next();
-			if (player.collide(powerUp)) {
-				powerUp.setPickupTime();
-				player.setPowerUp(powerUp);
-				power_up_it.remove();
-				
-				LOGGER.log("Power up picked up and removed from screen");
-			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
-				power_up_it.remove();
-				
-				LOGGER.log("Power up despawned after being on screen to long");
-			}
-		}
+		updatePowerups(powerUps, player);
+		
 		super.update(gc, sbg, delta);
 		LOGGER.update();
 	}

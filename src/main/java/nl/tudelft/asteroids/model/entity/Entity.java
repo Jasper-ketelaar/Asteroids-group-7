@@ -184,9 +184,6 @@ public abstract class Entity {
 	 * @return True if the sprite collides
 	 */
 	public boolean collide(Entity entity) {
-		if (this.getBoundingBox() == null) {
-			return false;
-		}
-		return this.getBoundingBox().intersects(entity.getBoundingBox());
+		return (this.getBoundingBox() != null) && this.getBoundingBox().intersects(entity.getBoundingBox());
 	}
 }

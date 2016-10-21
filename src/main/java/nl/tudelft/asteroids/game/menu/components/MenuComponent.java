@@ -11,15 +11,22 @@ import org.newdawn.slick.geom.Shape;
 import org.newdawn.slick.util.InputAdapter;
 
 /**
- * <p>This class is designed using the Composite pattern. Basically a MenuComponent can
- * have a parent and/or children which are of the same type. We then have multiple subclasses
- * of this MenuComponent to create different Menu items. </p>
+ * <p>
+ * This class is designed using the Composite pattern. Basically a MenuComponent
+ * can have a parent and/or children which are of the same type. We then have
+ * multiple subclasses of this MenuComponent to create different Menu items.
+ * </p>
  * 
- * <p>Using the composite pattern we can allow for a tree like structure in our menu.
- * An example of this being a Menu that has multiple children of which one is a {@link MenuLabel}
- * and of which multiple are {@link MenuButton}'s to create a titled Menu.</p>
+ * <p>
+ * Using the composite pattern we can allow for a tree like structure in our
+ * menu. An example of this being a Menu that has multiple children of which one
+ * is a {@link MenuLabel} and of which multiple are {@link MenuButton}'s to
+ * create a titled Menu.
+ * </p>
  * 
- * <p>This class extends InputAdapter 
+ * <p>
+ * This class extends InputAdapter
+ * 
  * @author Jasper Ketelaar
  *
  */
@@ -34,7 +41,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 * The relative x location
 	 */
 	protected int x;
-	
+
 	/**
 	 * The relative y location
 	 */
@@ -44,7 +51,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 * The width of the canvas of this component
 	 */
 	protected final int width;
-	
+
 	/**
 	 * The height of the canvas of this component
 	 */
@@ -61,26 +68,28 @@ public abstract class MenuComponent extends InputAdapter {
 	protected final Image canvas;
 
 	/**
-	 * Simple constructor which sets x and y to 0 initially. 
-	 * A constructor like this is necessary for positioning by layout.
+	 * Simple constructor which sets x and y to 0 initially. A constructor like
+	 * this is necessary for positioning by layout.
 	 * 
-	 * @see #MenuComponent(MenuComponent, int, int, int, int) for further information.
+	 * @see #MenuComponent(MenuComponent, int, int, int, int) for further
+	 *      information.
 	 */
 	public MenuComponent(MenuComponent parent, int width, int height) throws SlickException {
 		this(parent, 0, 0, width, height);
 	}
-	
+
 	/**
-	 * Constructor with parent and width/height. 
-	 * Coordinates are relative to the parent component, so if for example
-	 * the parent component is a Menu with a width of 100 and a height of 100
-	 * then the x and y value are inside this component. This means that the actual on screen
-	 * x value is all the parent x values summed.
+	 * Constructor with parent and width/height. Coordinates are relative to the
+	 * parent component, so if for example the parent component is a Menu with a
+	 * width of 100 and a height of 100 then the x and y value are inside this
+	 * component. This means that the actual on screen x value is all the parent
+	 * x values summed.
 	 * 
-	 * If the total bounding box of the component extends the area of the parent component
-	 * the component will not be seen.
+	 * If the total bounding box of the component extends the area of the parent
+	 * component the component will not be seen.
 	 * 
-	 * @throws SlickException can be thrown when instantiating an {@link Image}
+	 * @throws SlickException
+	 *             can be thrown when instantiating an {@link Image}
 	 */
 	public MenuComponent(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
 		this.x = x;
@@ -106,31 +115,37 @@ public abstract class MenuComponent extends InputAdapter {
 	}
 
 	/**
-	 * The absolute x value is the x value of this component and all it's parents component's x values </br>
+	 * The absolute x value is the x value of this component and all it's
+	 * parents component's x values </br>
 	 * thus creating the x value where this element is painted on the display.
 	 * 
 	 * @return the absolute x value
 	 */
 	public int getAbsoluteX() {
-		if (parent == null) {
-			return getX();
-		} else {
-			return getX() + parent.getAbsoluteX();
-		}
+
+		return getX() + parent.getAbsoluteX();
+
 	}
 
 	/**
-	 * The absolute y value is the y value of this component and all it's parents component's y values </br>
+	 * The absolute y value is the y value of this component and all it's
+	 * parents component's y values </br>
 	 * thus creating the y value where this element is painted on the display.
 	 * 
 	 * @return the absolute y value
 	 */
 	public int getAbsoluteY() {
-		if (parent == null) {
-			return getY();
-		} else {
-			return getY() + parent.getAbsoluteY();
-		}
+
+		return getY() + parent.getAbsoluteY();
+
+	}
+
+	/**
+	 * Overrides to check parent as well
+	 */
+	@Override
+	public boolean isAcceptingInput() {
+		return super.isAcceptingInput() && parent.isAcceptingInput();
 	}
 
 	/**
@@ -148,20 +163,29 @@ public abstract class MenuComponent extends InputAdapter {
 	}
 
 	/**
-	 * <p>Requests the {@link Graphics} from the {@link #canvas} instance of this component and 
-	 * clears it before calling {@link #process(Graphics)}.</p>
+	 * <p>
+	 * Requests the {@link Graphics} from the {@link #canvas} instance of this
+	 * component and clears it before calling {@link #process(Graphics)}.
+	 * </p>
 	 * 
-	 * <p>Then the child components of this component are rendered by calling this 
-	 * method ({@link #render(Graphics)}) so this causes a recursive loop of rendering
-	 * on the canvas. At the end the {@link Graphics} operations are flushed to push the operations to 
-	 * the {@link #canvas}.</p> 
+	 * <p>
+	 * Then the child components of this component are rendered by calling this
+	 * method ({@link #render(Graphics)}) so this causes a recursive loop of
+	 * rendering on the canvas. At the end the {@link Graphics} operations are
+	 * flushed to push the operations to the {@link #canvas}.
+	 * </p>
 	 * 
-	 * <p>This {@link Image} is then drawn on the {@link Graphics} instance provided
-	 * in the parameters. This means it is recursively drawn and in the end drawn by the 
-	 * caller</p>
+	 * <p>
+	 * This {@link Image} is then drawn on the {@link Graphics} instance
+	 * provided in the parameters. This means it is recursively drawn and in the
+	 * end drawn by the caller
+	 * </p>
 	 * 
-	 * @param g the {@link Graphics} instance for this component to be rendered on.
-	 * @throws SlickException for requesting {@link Image} graphics.
+	 * @param g
+	 *            the {@link Graphics} instance for this component to be
+	 *            rendered on.
+	 * @throws SlickException
+	 *             for requesting {@link Image} graphics.
 	 */
 	public void render(Graphics g) throws SlickException {
 		Graphics canvasGraphics = canvas.getGraphics();
@@ -180,8 +204,10 @@ public abstract class MenuComponent extends InputAdapter {
 	/**
 	 * Changes the location of the component to the specified arguments
 	 * 
-	 * @param x the {@link #x} attribute to be updated to
-	 * @param y the {@link #y} attribute to be updated to
+	 * @param x
+	 *            the {@link #x} attribute to be updated to
+	 * @param y
+	 *            the {@link #y} attribute to be updated to
 	 */
 	public void setLocation(int x, int y) {
 		this.x = x;
@@ -230,15 +256,7 @@ public abstract class MenuComponent extends InputAdapter {
 	public boolean contains(float x, float y) {
 		return getBoundingBox().contains(x, y);
 	}
-	
-	/**
-	 * Overrides to check parent as well
-	 */
-	@Override
-	public boolean isAcceptingInput() {
-		return super.isAcceptingInput() && (parent == null || parent.isAcceptingInput());
-	}
-	
+
 	/**
 	 * If no mouse pressed method is overridden delegate to children.
 	 */
@@ -248,7 +266,7 @@ public abstract class MenuComponent extends InputAdapter {
 			child.mousePressed(button, x, y);
 		}
 	}
-	
+
 	/**
 	 * If no mouse moved method is overridden delegate to children.
 	 */

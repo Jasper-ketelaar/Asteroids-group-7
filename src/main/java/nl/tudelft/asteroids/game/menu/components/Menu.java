@@ -17,7 +17,7 @@ public class Menu extends MenuComponent {
 	 * for more information. Parent is set to null as by default a menu should not have a parent.
 	 */
 	public Menu(int x, int y, int width, int height) throws SlickException  {
-		super(null, x, y, width, height);
+		super(new NullComponent(), x, y, width, height);
 	}
 
 	/**

@@ -43,6 +43,21 @@ public class PowerUp extends Entity {
 		this.creationTime = System.currentTimeMillis();
 		this.type = type;
 	}
+	
+	/**
+	 * Constructor. The rotation of the power up is set to 0, because the
+	 * rotation doesn't matter. The type of the power up is
+	 * 
+	 * @param sprite
+	 * @param pos
+	 * @throws SlickException
+	 */
+	protected PowerUp(PowerupType type) {
+		super(null, null, 0);
+		this.creationTime = 0;
+		this.pickupTime = 0;
+		this.type = type;
+	}
 
 	/**
 	 * @return The type of the power up.
@@ -72,6 +87,10 @@ public class PowerUp extends Entity {
 	public long creationTimeElapsed() {
 		return System.currentTimeMillis() - creationTime;
 	}
+	
+	public boolean isNullPowerUp(){
+		return (this.type.equals(PowerupType.NULL));
+	}
 
 	@Override
 	public Shape getBoundingBox() {
@@ -81,9 +100,9 @@ public class PowerUp extends Entity {
 	@Override
 	public void render(Graphics g) {
 		Color start = g.getColor();
-		
+
 		g.setColor(getType().getColor());
-		
+
 		g.setAntiAlias(true);
 		g.fill(getBoundingBox());
 
@@ -94,7 +113,8 @@ public class PowerUp extends Entity {
 	 * The different types of power ups.
 	 */
 	public enum PowerupType {
-		BULLET(new Color(1, 0, 0, 0.5f), 10000), POINTS(new Color(0, 1, 0, 0.5f), 8000), INVINCIBILITY(new Color(1, 1, 0, 0.5f), 5000);
+		BULLET(new Color(1, 0, 0, 0.5f), 10000), POINTS(new Color(0, 1, 0, 0.5f),
+				8000), INVINCIBILITY(new Color(1, 1, 0, 0.5f), 5000), NULL(new Color(1, 1, 1, 0.5f), 0);
 
 		private final Color color;
 		private final long duration;
@@ -114,3 +134,5 @@ public class PowerUp extends Entity {
 	}
 
 }
+
+

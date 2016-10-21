@@ -4,6 +4,10 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Circle;
 
+/**
+ * Component representing a MenuSlider.
+ * Not used for now
+ */
 public class MenuSlider extends MenuComponent {
 	
 	private int value;

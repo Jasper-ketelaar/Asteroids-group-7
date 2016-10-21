@@ -41,8 +41,7 @@ public class MenuState extends BasicGameState {
 	 * @throws SlickException
 	 */
 	public MenuState() throws SlickException {
-		if (background == null)
-			background = new Image(BACKGROUND);
+		background = new Image(BACKGROUND);
 		LOGGER.log("Background image loaded");
 	}
 

@@ -1,6 +1,7 @@
 package nl.tudelft.asteroids.game.states;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -15,7 +16,9 @@ import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 import nl.tudelft.asteroids.factory.PowerupFactory;
+import nl.tudelft.asteroids.model.entity.dyn.Bullet;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
+import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 
 import nl.tudelft.asteroids.util.Logger;
@@ -137,6 +140,66 @@ public abstract class DefaultPlayState extends BasicGameState {
 		}
 		LOGGER.update();
 	}
+	
+	/**
+	 * Update asteroids, play player explode animation, split asteroids,
+	 * @param asteroids
+	 * @param player
+	 * @throws SlickException
+	 */
+	public void updateAsteroids(List<Asteroid> asteroids, Player player) throws SlickException{
+		ListIterator<Asteroid> iterator = asteroids.listIterator();
+		while (iterator.hasNext()) {
+			Asteroid asteroid = iterator.next();
+			
+			/*
+			 * If the player is colliding with the asteroid or the explosion
+			 * was already playing, continue playing the explosion
+			 */
+			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
+				player.playExplosion();
+				continue;
+			}
+
+			/*
+			 * Iterate over the bullets and remove them; iterator used to
+			 * prevent ConcurrentModificationException
+			 */
+			Iterator<Bullet> bullets = player.getFiredBullets().iterator();
+			while (bullets.hasNext()) {
+				Bullet b = bullets.next();
+				if (b.collide(asteroid) && asteroid.getExplosion().getFrame() == 0) {
+					player.updateScore(asteroid.getPoints());
+					asteroid.splitAsteroid(iterator);
+					bullets.remove();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Update Powerups
+	 * @param powerUps
+	 * @param player
+	 */
+	public void updatePowerups(List<PowerUp> powerUps, Player player){
+		Iterator<PowerUp> power_up_it = powerUps.listIterator();
+		while (power_up_it.hasNext()) {
+			PowerUp powerUp = power_up_it.next();
+			if (player.collide(powerUp)) {
+				powerUp.setPickupTime();
+				player.setPowerUp(powerUp);
+				power_up_it.remove();
+				
+				LOGGER.log("Power up picked up and removed from screen");
+			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
+				power_up_it.remove();
+				
+				LOGGER.log("Power up despawned after being on screen to long");
+			}
+		}
+	}
+	
 
 	/**
 	 * @param difficulty

@@ -37,7 +37,7 @@ public class Bullet extends Entity {
 	 */
 	public Bullet(Vector2f location, float rotation) throws SlickException {
 		super(new Image(BULLET), location, rotation);
-	
+
 		this.direction = Util.generateDirection(rotation, DEGREE_ADJUSTMENT, SCALE);
 		
 		LOGGER.log(String.format("Bullet fired at (%dx, %dy) with a rotation of %d deg", (int) location.getX(), (int) location.getY(), (int) rotation));

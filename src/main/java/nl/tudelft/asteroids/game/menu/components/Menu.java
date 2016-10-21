@@ -26,6 +26,6 @@ public class Menu extends MenuComponent {
 	@Override
 	public void process(Graphics graphics) {
 		//To show menu, not displayed in release
-		graphics.drawRect(0, 0, width - 1, height - 1);
+		//graphics.drawRect(0, 0, width - 1, height - 1);
 	}
 }

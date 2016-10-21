@@ -377,7 +377,6 @@ public class Player extends ExplodableEntity {
 		getSprite().draw(getX(), getY());
 
 		bullets.forEach(e -> e.render(g));
-		// TODO: render picked up power ups in the right corner
 	}
 
 	/**

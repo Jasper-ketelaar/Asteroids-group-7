@@ -181,10 +181,7 @@ public class Player extends ExplodableEntity {
 	 * @param gc
 	 */
 	private void handlePowerUps() {
-		if (powerUp == null) {
-			this.multiplier = 1;
-			this.invincible = false;
-		} else if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
+		if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
 			powerUp = null;
 		} else {
 			switch (powerUp.getType()) {
@@ -198,6 +195,11 @@ public class Player extends ExplodableEntity {
 
 			case POINTS:
 				this.multiplier = 2;
+				break;
+
+			case NULL:
+				this.multiplier = 1;
+				this.invincible = false;
 				break;
 			}
 		}
@@ -367,12 +369,9 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-		if (powerUp != null) {
-			Color clr = powerUp.getType().getColor();
-			getSprite().setImageColor(clr.r, clr.g, clr.b);
-		} else {
-			getSprite().setImageColor(1, 1, 1);
-		}
+
+		Color clr = powerUp.getType().getColor();
+		getSprite().setImageColor(clr.r, clr.g, clr.b);
 
 		getSprite().draw(getX(), getY());
 

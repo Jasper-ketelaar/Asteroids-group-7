@@ -1,6 +1,8 @@
 package nl.tudelft.asteroids.game.menu.components;
 
 import java.awt.Font;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -19,18 +21,18 @@ public class MenuLabel extends MenuComponent {
 	public final static int BOTTOM_RIGHT = 8;
 	public final static int DEFAULT = 9;
 
+	
 	private final String label;
 	private final int align;
 	private final TrueTypeFont font;
 
-	
 	/**
 	 * Constructor where everything is default
 	 */
 	public MenuLabel(MenuComponent parent, String label, int x, int y, int width, int height) throws SlickException {
 		this(parent, label, DEFAULT, x, y, width, height);
 	}
-	
+
 	/**
 	 * Constructor where the font is default
 	 */
@@ -48,6 +50,8 @@ public class MenuLabel extends MenuComponent {
 		this.label = label;
 		this.align = align;
 		this.font = font;
+
+
 	}
 
 	@Override
@@ -82,6 +86,7 @@ public class MenuLabel extends MenuComponent {
 		default:
 			return 0;
 		}
+		
 	}
 
 	/**
@@ -110,7 +115,8 @@ public class MenuLabel extends MenuComponent {
 
 		default:
 			return 0;
-		}
+		}		
+		
 	}
 
 }

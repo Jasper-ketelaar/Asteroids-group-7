@@ -56,7 +56,7 @@ public class SinglePlayState extends DefaultPlayState {
 		player.render(g);
 		
 		//Update PowerUps
-		if (player.getPowerUp() != null) {
+		if (player.getPowerUp().isNullPowerUp()) {
 			PowerUp pw = player.getPowerUp();
 			g.setColor(pw.getType().getColor()); //set color of PowerUp
 			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); //draw PowerUp name 

@@ -60,6 +60,20 @@ public class MenuLabel extends MenuComponent {
 	}
 
 	/**
+	 * Gets the text
+     */
+	public String getText() {
+		return this.label;
+	}
+
+	/**
+	 * Gets the font
+     */
+	public TrueTypeFont getFont() {
+		return this.font;
+	}
+
+	/**
 	 * Gets the draw x coordinate based on the alignment
 	 */
 	public int getDrawX() {

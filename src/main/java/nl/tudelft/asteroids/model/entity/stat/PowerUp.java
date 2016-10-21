@@ -73,6 +73,22 @@ public class PowerUp extends Entity {
 	public void setPickupTime() {
 		this.pickupTime = System.currentTimeMillis();
 	}
+	
+	/**
+	 * Get the time on which a power up is picked up.
+	 * @return pickupTime
+	 */
+	public long getPickupTime() {
+		return this.pickupTime;
+	}
+	
+	/**
+	 * Get the time on which a power up is created.
+	 * @return creationTime
+	 */
+	public long getCreationTime(){
+		return creationTime;
+	}
 
 	/**
 	 * @return The elapsed time since the power up was picked up.

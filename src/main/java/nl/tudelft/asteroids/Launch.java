@@ -25,15 +25,23 @@ public class Launch {
 
 	private final static Logger LOGGER = Logger.getInstance(Launch.class.getName());
 
+	
+	private AppGameContainer appgc;
 	/**
 	 * Main method for launching the game. The multiplayer flag can be passed to
 	 * this method to initialize a multiplayer game.
-
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		new Launch().start(args);
+
+	}
+
+	public void start(String[] args) {
+
 		LOGGER.registerOutput(System.out);
-		
+
 		try {
 			addLibraryPath();
 			File file = new File(String.format("game%d.log", (int) System.currentTimeMillis()));
@@ -50,17 +58,19 @@ public class Launch {
 		}
 		try {
 			boolean multiplayer = args.length > 0 && args[0].equals("-mp");
-			AppGameContainer appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
+			appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
 			appgc.setDisplayMode(1200, 700, false);
 			appgc.setTargetFrameRate(100);
 			LOGGER.log("Game container fired up", Level.INFO, true);
 			appgc.start();
+			
 
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}
-
+		
 	}
+
 	
 	/**
 	 * Used to set the native library for the project.
@@ -70,23 +80,27 @@ public class Launch {
 	 */
 	public static void addLibraryPath() throws Exception {
 		String pathToAdd = new File("lwjgl/native").getAbsolutePath();
-	    final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
-	    usrPathsField.setAccessible(true);
-	 
-	    //get array of paths
-	    final String[] paths = (String[])usrPathsField.get(null);
-	 
-	    //check if the path to add is already present
-	    for(String path : paths) {
-	        if(path.equals(pathToAdd)) {
-	            return;
-	        }
-	    }
-	 
-	    //add the new path
-	    final String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
-	    newPaths[newPaths.length-1] = pathToAdd;
-	    usrPathsField.set(null, newPaths);
+		final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
+		usrPathsField.setAccessible(true);
+
+		// get array of paths
+		final String[] paths = (String[]) usrPathsField.get(null);
+
+		// check if the path to add is already present
+		for (String path : paths) {
+			if (path.equals(pathToAdd)) {
+				return;
+			}
+		}
+
+		// add the new path
+		final String[] newPaths = Arrays.copyOf(paths, paths.length + 1);
+		newPaths[newPaths.length - 1] = pathToAdd;
+		usrPathsField.set(null, newPaths);
 	}
 
+	
+	public AppGameContainer getGame() {
+		return this.appgc;
+	}
 }

@@ -59,7 +59,7 @@ public class SinglePlayState extends DefaultPlayState {
 		if (player.getPowerUp().isNullPowerUp()) {
 			PowerUp pw = player.getPowerUp();
 			g.setColor(pw.getType().getColor()); //set color of PowerUp
-			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); //draw PowerUp name 
+			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); //draw PowerUp name
 		}
 	}
 
@@ -96,6 +96,10 @@ public class SinglePlayState extends DefaultPlayState {
 	@Override
 	public int getID() {
 		return 1;
+	}
+
+	public Player getPlayer() {
+		return this.player;
 	}
 
 	/**

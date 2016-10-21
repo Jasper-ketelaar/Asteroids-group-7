@@ -221,6 +221,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 */
 	public abstract int getScore();
 
+
 	/**
 	 * Override method.
 	 */

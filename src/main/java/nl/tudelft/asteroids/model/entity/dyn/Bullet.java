@@ -49,6 +49,14 @@ public class Bullet extends Entity {
 	public void setScale(float SCALE) {
 		Bullet.SCALE = SCALE;
 	}
+	
+	/**
+	 * Return the SCALE of the bullet.
+	 * @return SCALE
+	 */
+	public float getScale(){
+		return Bullet.SCALE;
+	}
 
 	/**
 	 * Moves the bullet.

@@ -105,33 +105,7 @@ public class MultiPlayState extends DefaultPlayState {
 			/*
 			 * Update asteroids, play player explode animation, split asteroids,
 			 */
-			ListIterator<Asteroid> iterator = asteroids.listIterator();
-			while (iterator.hasNext()) {
-				Asteroid asteroid = iterator.next();
-				
-				/*
-				 * If the player is colliding with the asteroid or the explosion
-				 * was already playing, continue playing the explosion
-				 */
-				if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
-					player.playExplosion();
-					continue;
-				}
-
-				/*
-				 * Iterate over the bullets and remove them; iterator used to
-				 * prevent ConcurrentModificationException
-				 */
-				Iterator<Bullet> bullets = player.getFiredBullets().iterator();
-				while (bullets.hasNext()) {
-					Bullet b = bullets.next();
-					if (b.collide(asteroid) && asteroid.getExplosion().getFrame() == 0) {
-						player.updateScore(asteroid.getPoints());
-						asteroid.splitAsteroid(iterator);
-						bullets.remove();
-					}
-				}
-			}
+			updateAsteroids(asteroids, player);
 
 			/* update power ups */
 			Iterator<PowerUp> power_up_it = powerUps.listIterator();

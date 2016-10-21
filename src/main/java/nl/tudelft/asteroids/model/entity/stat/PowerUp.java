@@ -52,12 +52,12 @@ public class PowerUp extends Entity {
 	 * @param pos
 	 * @throws SlickException
 	 */
-	private PowerUp(PowerupType type) {
+	protected PowerUp(PowerupType type) {
 		super(null, null, 0);
 		this.creationTime = 0;
+		this.pickupTime = 0;
 		this.type = type;
 	}
-	
 
 	/**
 	 * @return The type of the power up.
@@ -133,16 +133,6 @@ public class PowerUp extends Entity {
 		}
 	}
 
-	public class NullPowerUp extends PowerUp {
-
-		public NullPowerUp() {
-			super(PowerupType.NULL);
-		}
-		
-		@Override
-		public void setPickupTime() {
-			super.pickupTime = 0;
-		}
-	}
-
 }
+
+

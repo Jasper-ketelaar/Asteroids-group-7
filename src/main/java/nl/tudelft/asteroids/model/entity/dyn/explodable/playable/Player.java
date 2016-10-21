@@ -17,6 +17,7 @@ import org.newdawn.slick.openal.Audio;
 import nl.tudelft.asteroids.model.entity.Entity;
 import nl.tudelft.asteroids.model.entity.dyn.Bullet;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.ExplodableEntity;
+import nl.tudelft.asteroids.model.entity.stat.NullPowerUp;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Util;
@@ -46,7 +47,7 @@ public class Player extends ExplodableEntity {
 
 	private List<Bullet> bullets = new ArrayList<>();
 
-	private PowerUp powerUp = null;
+	private PowerUp powerUp = new NullPowerUp();
 
 	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
 
@@ -182,7 +183,7 @@ public class Player extends ExplodableEntity {
 	 */
 	private void handlePowerUps() {
 		if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
-			powerUp = null;
+			powerUp = new NullPowerUp();
 		} else {
 			switch (powerUp.getType()) {
 			case BULLET:

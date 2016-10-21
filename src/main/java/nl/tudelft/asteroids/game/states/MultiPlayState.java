@@ -69,7 +69,7 @@ public class MultiPlayState extends DefaultPlayState {
 		//Handle PowerUps, draw name of PowerUp
 		for (int i = 0; i < players.size(); i++) {
 			Player player = players.get(i);
-			if (player.getPowerUp() != null) {
+			if (!player.getPowerUp().isNullPowerUp()) {
 				PowerUp pw = player.getPowerUp();
 				
 				//Set color and draw String

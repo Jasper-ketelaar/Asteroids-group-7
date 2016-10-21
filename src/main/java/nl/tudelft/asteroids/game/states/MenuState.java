@@ -24,9 +24,8 @@ import nl.tudelft.asteroids.util.Logger.Level;
  */
 public class MenuState extends BasicGameState {
 
-	
 	private final static String MAIN_MENU = "Main menu";
-	
+
 	private final static String BACKGROUND = "BG4.jpg";
 	private final static Logger LOGGER = Logger.getInstance(MenuState.class.getName());
 
@@ -41,8 +40,7 @@ public class MenuState extends BasicGameState {
 	 * @throws SlickException
 	 */
 	public MenuState() throws SlickException {
-		if (background == null)
-			background = new Image(BACKGROUND);
+		background = new Image(BACKGROUND);
 		LOGGER.log("Background image loaded");
 	}
 
@@ -117,7 +115,7 @@ public class MenuState extends BasicGameState {
 		MenuSlider slider = new MenuSlider(options, 50, 50, 100, 20, 0, 100);
 		System.out.println(slider.getAbsoluteX() + ", " + slider.getAbsoluteY());
 		options.append(slider);
-		
+
 		MenuButton ret = new MenuButton(options, retImage, 0, 200);
 		ret.setOnClick(() -> {
 			gc.getInput().removeMouseListener(opt);

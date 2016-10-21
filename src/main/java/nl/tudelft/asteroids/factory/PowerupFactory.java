@@ -47,17 +47,9 @@ public class PowerupFactory {
 	 */
 	public boolean requiresPowerup() {
 		long time = System.currentTimeMillis() - last;
-		if (last != 0 && time > 15000) {
-			return true;
-		} else {
-			float rand = random.nextFloat();
-			if (rand > (0.99999 - build)) {
-				return true;
-			} else {
-				build += 0.000001f;
-			}
-		}
-		return false;
-	}
+		float rand = random.nextFloat();
+		build += 0.000001f;
 
+		return (last != 0 && time > 15000 || rand > (0.99999 - build));
+	}
 }

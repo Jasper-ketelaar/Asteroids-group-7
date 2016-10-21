@@ -1,5 +1,7 @@
 package nl.tudelft.asteroids.game.states;
 
+import nl.tudelft.asteroids.game.Difficulty;
+import nl.tudelft.asteroids.game.menu.components.*;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -9,12 +11,11 @@ import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.tudelft.asteroids.game.AsteroidsGame;
-import nl.tudelft.asteroids.game.menu.components.Menu;
-import nl.tudelft.asteroids.game.menu.components.MenuButton;
-import nl.tudelft.asteroids.game.menu.components.MenuLabel;
-import nl.tudelft.asteroids.game.menu.components.MenuSlider;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The menu state of the Asteroids game.
@@ -63,39 +64,51 @@ public class MenuState extends BasicGameState {
 
 		Input input = gc.getInput();
 
-		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 0);
+		// Difficulty selector
+		List<Difficulty> values = Arrays.asList(Difficulty.values());
+		MenuSelector<Difficulty> selector = new MenuSelector<>(main, 45, 0, 200, 20, values);
+		main.append(selector);
+
+		// Single player button
+		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 50);
 		singlePlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_SINGLE);
 			try {
 				sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE).init(gc, sbg);
-				;
+				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE)).setDifficulty(selector.getItem());
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
 
-		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), 0, 100);
+		// Multi player button
+		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), 0, 150);
 		multiPlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_MULTI);
 			try {
 				sbg.getState(AsteroidsGame.STATE_PLAY_MULTI).init(gc, sbg);
+				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY_MULTI)).setDifficulty(selector.getItem());
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
 
-		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 200);
+		// Options button
+		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 250);
 		options.setOnClick(() -> {
 			input.removeMouseListener(main);
 			input.addMouseListener(opt);
 			menu = this.opt;
 		});
-		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), 0, 300);
+
+		// Exit button
+		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), 0, 350);
 		exit.setOnClick(() -> {
 			LOGGER.log("Game exited by user", Level.INFO, true);
 			System.exit(0);
 		});
 
+		// Append all MenuComponents to the main menu
 		main.append(singlePlayer);
 		main.append(multiPlayer);
 		main.append(exit);
@@ -112,10 +125,6 @@ public class MenuState extends BasicGameState {
 		Image retImage = new Image("menu/ReturnButton.png");
 		Menu options = new Menu(gc.getWidth() / 2 - retImage.getWidth() / 2, 150, 500, 500);
 
-		MenuSlider slider = new MenuSlider(options, 50, 50, 100, 20, 0, 100);
-		System.out.println(slider.getAbsoluteX() + ", " + slider.getAbsoluteY());
-		options.append(slider);
-
 		MenuButton ret = new MenuButton(options, retImage, 0, 200);
 		ret.setOnClick(() -> {
 			gc.getInput().removeMouseListener(opt);
@@ -124,6 +133,7 @@ public class MenuState extends BasicGameState {
 		});
 
 		options.append(ret);
+		gc.getInput().addMouseListener(options);
 		return options;
 	}
 
@@ -152,6 +162,9 @@ public class MenuState extends BasicGameState {
 		return 0;
 	}
 
+	/**
+	 * @return The menu MenoComponent.
+	 */
 	public Menu getMenu() {
 		return menu;
 	}

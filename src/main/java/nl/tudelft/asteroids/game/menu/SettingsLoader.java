@@ -36,6 +36,7 @@ public class SettingsLoader {
 	}
 
 	/**
+	 * Load properties from file.
 	 * @return Properties from the property file
 	 * @throws IOException
 	 */
@@ -53,6 +54,7 @@ public class SettingsLoader {
 	}
 
 	/**
+	 * Save properties to file.
 	 * @param properties
 	 *            Map of properties that need to be saved
 	 */

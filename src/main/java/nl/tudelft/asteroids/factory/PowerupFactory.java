@@ -41,12 +41,13 @@ public class PowerupFactory {
 	}
 
 	/**
-	 * Algorithm if a new PowerUp needs to be spawned.
+	 * Algorithm to check if a new PowerUp needs to be spawned.
 	 * 
 	 * @return Boolean indicating if a new PowerUp needs to be spawned
 	 */
-	public boolean requiresPowerup() {
+	public boolean requiresPowerup(int difficulty) {
 		long time = System.currentTimeMillis() - last;
+
 		float rand = random.nextFloat();
 		build += 0.000001f;
 

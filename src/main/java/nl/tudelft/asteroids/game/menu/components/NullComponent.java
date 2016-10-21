@@ -7,7 +7,6 @@ public class NullComponent extends MenuComponent {
 
 	public NullComponent() throws SlickException {
 		super(null, 0, 0, 0, 0);
-
 	}
 	
 	/**

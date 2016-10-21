@@ -17,7 +17,7 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
  * state.
- * 
+ *
  * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
@@ -27,7 +27,7 @@ public class SinglePlayState extends DefaultPlayState {
 
 	/**
 	 * Constructor; sets background sprite.
-	 * 
+	 *
 	 * @param background
 	 */
 	public SinglePlayState(Image background) {
@@ -54,7 +54,7 @@ public class SinglePlayState extends DefaultPlayState {
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		super.render(gc, arg1, g);
 		player.render(g);
-		
+
 		//Update PowerUps
 		if (player.getPowerUp().isNullPowerUp()) {
 			PowerUp pw = player.getPowerUp();
@@ -85,7 +85,7 @@ public class SinglePlayState extends DefaultPlayState {
 		
 		/* update power ups */
 		updatePowerups(powerUps, player);
-		
+
 		super.update(gc, sbg, delta);
 		LOGGER.update();
 	}

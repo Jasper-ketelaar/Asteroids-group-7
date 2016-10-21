@@ -13,7 +13,7 @@ public class AsteroidTest extends TestWithDisplay {
 	
 	@Test
 	public void testAsteroidConstructor() throws SlickException {
-		Asteroid as = new Asteroid(new Vector2f(0, 0), 0, 1);
+		Asteroid as = new Asteroid(new Vector2f(0, 0), 0, 1, 1);
 	}
 }
 

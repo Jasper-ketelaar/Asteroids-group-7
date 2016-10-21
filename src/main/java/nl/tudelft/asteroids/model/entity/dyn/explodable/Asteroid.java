@@ -24,13 +24,14 @@ public class Asteroid extends ExplodableEntity {
 
 	private final static String ASTEROID_F = "asteroid/asteroid_%d.png";
 
-	protected static final float SPEED = 2f;
+	protected static final float SPEED = 1;
 	protected static final float ROTATION_SPEED = 1.75f;
 
 	private static final int MAX_DEGREES = 360;
 	protected static final int BASE_POINTS = 100;
 
 	private final Vector2f velocity;
+	private final int difficulty;
 
 	private int size;
 
@@ -43,12 +44,13 @@ public class Asteroid extends ExplodableEntity {
 	 *            The rotation of the Asteroid
 	 * @throws SlickException
 	 */
-	public Asteroid(Vector2f position, float rotation, int size) throws SlickException {
+	public Asteroid(Vector2f position, float rotation, int size, int difficulty) throws SlickException {
 		super(new Image(String.format(ASTEROID_F, size)), position, rotation, size);
 
 		this.size = size;
+		this.difficulty = difficulty;
 
-		velocity = Util.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED);
+		velocity = Util.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED * difficulty);
 
 		LOGGER.log(String.format("Asteroid spawned in at: (%dx, %dy) with %d deg as rotation and size %d",
 				(int) position.getX(), (int) position.getY(), (int) rotation, size));
@@ -91,8 +93,8 @@ public class Asteroid extends ExplodableEntity {
 			return;
 		} else {
 			float newRot = MAX_DEGREES * new Random().nextFloat();
-			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot, size + 1));
-			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), Math.abs(newRot - 180), size + 1));
+			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), newRot, size + 1, difficulty));
+			asteroids.add(new Asteroid(new Vector2f(getX(), getY()), Math.abs(newRot - 180), size + 1, difficulty));
 			playExplosion();
 		}
 	}
@@ -101,7 +103,7 @@ public class Asteroid extends ExplodableEntity {
 	 * @return The base points of an Asteroid multiplied by the size
 	 */
 	public int getPoints() {
-		return size * BASE_POINTS;
+		return difficulty * size * BASE_POINTS;
 	}
 	
 	/**

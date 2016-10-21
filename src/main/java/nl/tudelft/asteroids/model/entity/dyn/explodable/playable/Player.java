@@ -17,6 +17,7 @@ import org.newdawn.slick.openal.Audio;
 import nl.tudelft.asteroids.model.entity.Entity;
 import nl.tudelft.asteroids.model.entity.dyn.Bullet;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.ExplodableEntity;
+import nl.tudelft.asteroids.model.entity.stat.NullPowerUp;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Util;
@@ -46,7 +47,7 @@ public class Player extends ExplodableEntity {
 
 	private List<Bullet> bullets = new ArrayList<>();
 
-	private PowerUp powerUp = null;
+	private PowerUp powerUp = new NullPowerUp();
 
 	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
 
@@ -181,11 +182,8 @@ public class Player extends ExplodableEntity {
 	 * @param gc
 	 */
 	private void handlePowerUps() {
-		if (powerUp == null) {
-			this.multiplier = 1;
-			this.invincible = false;
-		} else if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
-			powerUp = null;
+		if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
+			powerUp = new NullPowerUp();
 		} else {
 			switch (powerUp.getType()) {
 			case BULLET:
@@ -198,6 +196,11 @@ public class Player extends ExplodableEntity {
 
 			case POINTS:
 				this.multiplier = 2;
+				break;
+
+			case NULL:
+				this.multiplier = 1;
+				this.invincible = false;
 				break;
 			}
 		}
@@ -367,17 +370,13 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-		if (powerUp != null) {
-			Color clr = powerUp.getType().getColor();
-			getSprite().setImageColor(clr.r, clr.g, clr.b);
-		} else {
-			getSprite().setImageColor(1, 1, 1);
-		}
+
+		Color clr = powerUp.getType().getColor();
+		getSprite().setImageColor(clr.r, clr.g, clr.b);
 
 		getSprite().draw(getX(), getY());
 
 		bullets.forEach(e -> e.render(g));
-		// TODO: render picked up power ups in the right corner
 	}
 
 	/**

@@ -43,9 +43,9 @@ public class AsteroidTest extends TestWithDisplay {
 	@Before
 	public void setUp() throws SlickException {
 
-		testBigAsteroid = new Asteroid(testVector, 7.f, 1);
+		testBigAsteroid = new Asteroid(testVector, 7.f, 1, 1);
 		// testNormalAsteroid = new Asteroid(testVector, 7.f, 2);
-		testSmallAsteroid = new Asteroid(testVector, 7.f, 3);
+		testSmallAsteroid = new Asteroid(testVector, 7.f, 3, 1);
 
 		mockedIterator = Mockito.mock(ListIterator.class);
 		velocity = Util.generateDirection(testBigAsteroid.getRotation(), 90, 2f);
@@ -67,7 +67,7 @@ public class AsteroidTest extends TestWithDisplay {
 	
 	@Test
 	public void testUpdate2() throws SlickException {
-		Asteroid testBigAsteroid2 = new Asteroid(testVector, 7.f, 1);
+		Asteroid testBigAsteroid2 = new Asteroid(testVector, 7.f, 1, 1);
 		testBigAsteroid.setPosition(new Vector2f(-150, -130));
 		testBigAsteroid.setPosition(testBigAsteroid.getPosition().add(velocity));
 		testBigAsteroid.setRotation(testBigAsteroid.getRotation() + 1.75f);

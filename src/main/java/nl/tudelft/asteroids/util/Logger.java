@@ -23,7 +23,7 @@ public class Logger {
 	/**
 	 * Logger class uses the Singleton design pattern. This is the only instance of this class.
 	 */
-	private static Logger instance;
+	private static Logger instance = new Logger();
 
 	/**
 	 * Map containing maps of data linked to ClassNames. 
@@ -64,10 +64,7 @@ public class Logger {
 	 * @param className class name which is required for storing data in the data map.
 	 * @return instance of the Logger class.
 	 */
-	public static Logger getInstance(String className) {
-		if (instance == null) {
-			instance = new Logger();
-		}
+	public synchronized static Logger getInstance(String className) {
 		instance.register(className);
 		return instance;
 	}

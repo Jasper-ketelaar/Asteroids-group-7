@@ -17,7 +17,7 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
  * state.
- * 
+ *
  * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
@@ -27,22 +27,11 @@ public class SinglePlayState extends DefaultPlayState {
 
 	/**
 	 * Constructor; sets background sprite.
-	 * 
+	 *
 	 * @param background
 	 */
 	public SinglePlayState(Image background) {
 		super(background);
-	}
-
-	/**
-	 * Constructor; sets background sprite.
-	 * 
-	 * @param background
-	 * @param player
-	 */
-	public SinglePlayState(Image background, Player player) {
-		super(background);
-		this.player = player;
 	}
 
 	/**
@@ -53,14 +42,8 @@ public class SinglePlayState extends DefaultPlayState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		super.init(gc, arg1);
 
-		if (player == null) {
-			this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
-			this.player.init();
-		}
-	}
-	
-	public Player getPlayer(){
-		return player;
+		this.player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
+		this.player.init();
 	}
 
 	/**
@@ -72,13 +55,11 @@ public class SinglePlayState extends DefaultPlayState {
 		super.render(gc, arg1, g);
 		player.render(g);
 
-		// Update PowerUps
-		if (player.getPowerUp() != null) {
+		//Update PowerUps
+		if (player.getPowerUp().isNullPowerUp()) {
 			PowerUp pw = player.getPowerUp();
-			g.setColor(pw.getType().getColor()); // set color of PowerUp
-			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); // draw
-																				// PowerUp
-																				// name
+			g.setColor(pw.getType().getColor()); //set color of PowerUp
+			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); //draw PowerUp name
 		}
 	}
 
@@ -93,66 +74,20 @@ public class SinglePlayState extends DefaultPlayState {
 		if (player.getExplosion().isStopped()) {
 			LOGGER.log("Player collided with asteroid and died");
 			LOGGER.log("Game over! The score was  " + player.getScore());
-			gc.exit();
+			asteroids.clear();
+			sbg.enterState(0);
 		}
-
-		/* update asteroids, play player explode animation, split asteroids, */
-		ListIterator<Asteroid> iterator = asteroids.listIterator();
-		updateAsteroids(iterator);
-
+		
+		/*
+		 * Update asteroids, play player explode animation, split asteroids,
+		 */
+		updateAsteroids(asteroids, player);
+		
 		/* update power ups */
-		Iterator<PowerUp> power_up_it = powerUps.listIterator();
-		updatePowerUp(power_up_it);
+		updatePowerups(powerUps, player);
 
 		super.update(gc, sbg, delta);
 		LOGGER.update();
-	}
-
-	private void updateAsteroids(ListIterator<Asteroid> iterator) throws SlickException {
-		while (iterator.hasNext()) {
-			Asteroid asteroid = iterator.next();
-			/*
-			 * if the player is colliding with the asteroid or the explosion was
-			 * already playing, continue playing the explosion
-			 */
-			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
-				player.playExplosion();
-				continue;
-			}
-
-			/*
-			 * iterate over the bullets and remove them; iterator used to
-			 * prevent ConcurrentModificationException
-			 */
-			Iterator<Bullet> bullets = player.getFiredBullets().iterator();
-			while (bullets.hasNext()) {
-				Bullet b = bullets.next();
-				if (b.collide(asteroid) && asteroid.getExplosion().getFrame() == 0) {
-					player.updateScore(asteroid.getPoints());
-					asteroid.splitAsteroid(iterator);
-					bullets.remove();
-				}
-			}
-		}
-	}
-
-	private void updatePowerUp(Iterator<PowerUp> power_up_it) {
-
-		while (power_up_it.hasNext()) {
-			PowerUp powerUp = power_up_it.next();
-			if (player.collide(powerUp)) {
-				powerUp.setPickupTime();
-				player.setPowerUp(powerUp);
-				power_up_it.remove();
-
-				LOGGER.log("Power up picked up and removed from screen");
-			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
-				power_up_it.remove();
-
-				LOGGER.log("Power up despawned after being on screen to long");
-			}
-		}
-
 	}
 
 	/**
@@ -160,7 +95,11 @@ public class SinglePlayState extends DefaultPlayState {
 	 */
 	@Override
 	public int getID() {
-		return 0;
+		return 1;
+	}
+
+	public Player getPlayer() {
+		return this.player;
 	}
 
 	/**

@@ -57,9 +57,6 @@ public class Launch {
 			e.printStackTrace();
 		}
 		try {
-			if (args.length > 0) {
-				System.out.println(args[0]);
-			}
 			boolean multiplayer = args.length > 0 && args[0].equals("-mp");
 			appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
 			appgc.setDisplayMode(1200, 700, false);
@@ -74,8 +71,14 @@ public class Launch {
 		
 	}
 
-	public void addLibraryPath() throws Exception {
-		
+	
+	/**
+	 * Used to set the native library for the project.
+	 * This way the game can run out-of-the-box.
+	 * 
+	 * @throws Exception
+	 */
+	public static void addLibraryPath() throws Exception {
 		String pathToAdd = new File("lwjgl/native").getAbsolutePath();
 		final Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
 		usrPathsField.setAccessible(true);

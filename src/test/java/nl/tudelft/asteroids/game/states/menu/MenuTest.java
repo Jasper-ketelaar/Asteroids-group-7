@@ -1,8 +1,10 @@
 package nl.tudelft.asteroids.game.states.menu;
 
+import nl.tudelft.asteroids.game.menu.components.Menu;
 import org.junit.Before;
 import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
+import org.newdawn.slick.SlickException;
 import org.newdawn.slick.gui.GUIContext;
 
 import nl.tudelft.asteroids.TestWithDisplay;
@@ -14,7 +16,12 @@ public class MenuTest extends TestWithDisplay{
 	
 	@Before
 	public void setUp(){
-		menu = new Menu(Mockito.mock(GUIContext.class));
+
+		try {
+			menu = new Menu(0, 0, 0, 0);
+		} catch (SlickException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

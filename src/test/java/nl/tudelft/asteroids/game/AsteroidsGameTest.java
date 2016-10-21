@@ -17,25 +17,22 @@ public class AsteroidsGameTest extends TestWithDisplay{
 
 	
 	private AsteroidsGame testGame1;
-	private AsteroidsGame testGame2;
 	private GameContainer gc;
 	
 	@Before
-	public void setup(){
+	public void setup() throws SlickException {
 		testGame1 = new AsteroidsGame("Asteroids", true);
-		testGame2 = new AsteroidsGame("Asteroids", false);
 		gc = Mockito.mock(GameContainer.class);
+		testGame1.initStatesList(gc);
 	}
 	
 	@Test
 	public void testInitStateList1() throws SlickException{
-		testGame1.initStatesList(gc);
-		assertEquals(MultiPlayState.class , testGame1.getState(0).getClass());
+		assertEquals(MultiPlayState.class , testGame1.getState(2).getClass());
 	}
 	
 	@Test
 	public void testInitStateList2() throws SlickException{
-		testGame2.initStatesList(gc);
-		assertEquals(SinglePlayState.class , testGame2.getState(0).getClass());
+		assertEquals(SinglePlayState.class , testGame1.getState(1).getClass());
 	}
 }

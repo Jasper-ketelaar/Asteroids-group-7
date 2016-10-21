@@ -32,7 +32,7 @@ public class PowerupFactoryTest extends TestWithDisplay{
 	
 	@Test
 	public void testRequiresPowerup(){
-		boolean check = powerupFactory.requiresPowerup();
+		boolean check = powerupFactory.requiresPowerup(1);
 		assertFalse(check);
 	}
 	

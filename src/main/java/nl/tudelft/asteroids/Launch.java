@@ -49,9 +49,6 @@ public class Launch {
 			e.printStackTrace();
 		}
 		try {
-			if (args.length > 0) {
-				System.out.println(args[0]);
-			}
 			boolean multiplayer = args.length > 0 && args[0].equals("-mp");
 			AppGameContainer appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
 			appgc.setDisplayMode(1200, 700, false);

@@ -2,6 +2,7 @@ package nl.tudelft.asteroids.game.states;
 
 import nl.tudelft.asteroids.game.Difficulty;
 import nl.tudelft.asteroids.game.menu.components.*;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -60,17 +61,17 @@ public class MenuState extends BasicGameState {
 	 */
 	public Menu createMainMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
-		Menu main = new Menu(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150, 500, 500);
+		Menu main = new Menu(new MenuData(new Vector2i(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150), 500, 500));
 
 		Input input = gc.getInput();
 
 		// Difficulty selector
 		List<Difficulty> values = Arrays.asList(Difficulty.values());
-		MenuSelector<Difficulty> selector = new MenuSelector<>(main, 45, 0, 200, 20, values);
+		MenuSelector<Difficulty> selector = new MenuSelector<>(main, new MenuData(new Vector2i(45, 0), 200, 20), values);
 		main.append(selector);
 
 		// Single player button
-		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, 0, 50);
+		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, new Vector2i(0, 50));
 		singlePlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_SINGLE);
 			try {
@@ -82,7 +83,7 @@ public class MenuState extends BasicGameState {
 		});
 
 		// Multi player button
-		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), 0, 150);
+		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), new Vector2i(0, 150));
 		multiPlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY_MULTI);
 			try {
@@ -94,7 +95,7 @@ public class MenuState extends BasicGameState {
 		});
 
 		// Options button
-		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 250);
+		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), new Vector2i(0, 250));
 		options.setOnClick(() -> {
 			input.removeMouseListener(main);
 			input.addMouseListener(opt);
@@ -102,7 +103,7 @@ public class MenuState extends BasicGameState {
 		});
 
 		// Exit button
-		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), 0, 350);
+		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), new Vector2i(0, 350));
 		exit.setOnClick(() -> {
 			LOGGER.log("Game exited by user", Level.INFO, true);
 			System.exit(0);
@@ -123,9 +124,9 @@ public class MenuState extends BasicGameState {
 	 */
 	public Menu createOptionsMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Image retImage = new Image("menu/ReturnButton.png");
-		Menu options = new Menu(gc.getWidth() / 2 - retImage.getWidth() / 2, 150, 500, 500);
+		Menu options = new Menu(new MenuData(new Vector2i(gc.getWidth() / 2 - retImage.getWidth() / 2, 150), 500, 500));
 
-		MenuButton ret = new MenuButton(options, retImage, 0, 200);
+		MenuButton ret = new MenuButton(options, retImage, new Vector2i(0, 200));
 		ret.setOnClick(() -> {
 			gc.getInput().removeMouseListener(opt);
 			gc.getInput().addMouseListener(main);

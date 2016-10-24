@@ -16,8 +16,8 @@ public class Menu extends MenuComponent {
 	 * Default constructor refer to {@link MenuComponent#MenuComponent(MenuComponent, int, int, int, int)}
 	 * for more information. Parent is set to null as by default a menu should not have a parent.
 	 */
-	public Menu(int x, int y, int width, int height) throws SlickException  {
-		super(new NullComponent(), x, y, width, height);
+	public Menu(MenuData menudata) throws SlickException  {
+		super(new NullComponent(), menudata);
 	}
 
 	/**

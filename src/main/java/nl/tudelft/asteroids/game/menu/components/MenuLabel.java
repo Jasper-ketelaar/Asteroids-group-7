@@ -29,24 +29,23 @@ public class MenuLabel extends MenuComponent {
 	/**
 	 * Constructor where everything is default
 	 */
-	public MenuLabel(MenuComponent parent, String label, int x, int y, int width, int height) throws SlickException {
-		this(parent, label, DEFAULT, x, y, width, height);
+	public MenuLabel(MenuComponent parent, String label, MenuData menudata) throws SlickException {
+		this(parent, label, DEFAULT, menudata);
 	}
 
 	/**
 	 * Constructor where the font is default
 	 */
-	public MenuLabel(MenuComponent parent, String label, int align, int x, int y, int width, int height)
+	public MenuLabel(MenuComponent parent, String label, int align, MenuData menudata)
 			throws SlickException {
-		this(parent, label, new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true), align, x, y, width, height);
+		this(parent, label, new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true), align, menudata);
 	}
 
 	/**
 	 * Constructor with no defaults
 	 */
-	public MenuLabel(MenuComponent parent, String label, TrueTypeFont font, int align, int x, int y, int width,
-			int height) throws SlickException {
-		super(parent, x, y, width, height);
+	public MenuLabel(MenuComponent parent, String label, TrueTypeFont font, int align, MenuData menudata) throws SlickException {
+		super(parent, menudata);
 		this.label = label;
 		this.align = align;
 		this.font = font;
@@ -89,13 +88,13 @@ public class MenuLabel extends MenuComponent {
 		case TOP_CENTER:
 		case CENTER:
 		case BOTTOM_CENTER:
-			return (width - font.getWidth(label)) / 2;
+			return (menudata.width - font.getWidth(label)) / 2;
 
 		// Right alignment
 		case TOP_RIGHT:
 		case CENTER_RIGHT:
 		case BOTTOM_RIGHT:
-			return (width - font.getWidth(label));
+			return (menudata.width - font.getWidth(label));
 
 		default:
 			return 0;
@@ -119,13 +118,13 @@ public class MenuLabel extends MenuComponent {
 		case CENTER_LEFT:
 		case CENTER:
 		case CENTER_RIGHT:
-			return (height - font.getHeight(label)) / 2;
+			return (menudata.height - font.getHeight(label)) / 2;
 
 		// Bottom alignment
 		case BOTTOM_LEFT:
 		case BOTTOM_CENTER:
 		case BOTTOM_RIGHT:
-			return (height - font.getHeight(label));
+			return (menudata.height - font.getHeight(label));
 
 		default:
 			return 0;

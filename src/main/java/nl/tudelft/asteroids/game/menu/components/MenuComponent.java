@@ -38,24 +38,9 @@ public abstract class MenuComponent extends InputAdapter {
 	protected final ArrayList<MenuComponent> children = new ArrayList<>();
 
 	/**
-	 * The relative x location
+	 * The relative location vector
 	 */
-	protected int x;
-
-	/**
-	 * The relative y location
-	 */
-	protected int y;
-
-	/**
-	 * The width of the canvas of this component
-	 */
-	protected final int width;
-
-	/**
-	 * The height of the canvas of this component
-	 */
-	protected final int height;
+	protected MenuData menudata;
 
 	/**
 	 * The parent of this component
@@ -75,7 +60,8 @@ public abstract class MenuComponent extends InputAdapter {
 	 *      information.
 	 */
 	public MenuComponent(MenuComponent parent, int width, int height) throws SlickException {
-		this(parent, 0, 0, width, height);
+
+		this(parent, new MenuData(new Vector2i(0, 0), width, height));
 	}
 
 	/**
@@ -91,12 +77,9 @@ public abstract class MenuComponent extends InputAdapter {
 	 * @throws SlickException
 	 *             can be thrown when instantiating an {@link Image}
 	 */
-	public MenuComponent(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
-		this.x = x;
-		this.y = y;
-		this.width = width;
-		this.height = height;
-		this.canvas = new Image(width, height);
+	public MenuComponent(MenuComponent parent, MenuData menudata) throws SlickException {
+		this.menudata = menudata;
+		this.canvas = new Image(menudata.width, menudata.height);
 		this.parent = parent;
 	}
 
@@ -104,14 +87,14 @@ public abstract class MenuComponent extends InputAdapter {
 	 * @return the {@link #height} attribute of this component
 	 */
 	public int getHeight() {
-		return height;
+		return menudata.height;
 	}
 
 	/**
 	 * @return the {@link #width} attribute of this component
 	 */
 	public int getWidth() {
-		return width;
+		return menudata.width;
 	}
 
 	/**
@@ -152,14 +135,14 @@ public abstract class MenuComponent extends InputAdapter {
 	 * @return the {@link #x} attribute of this component
 	 */
 	public int getX() {
-		return x;
+		return menudata.x;
 	}
 
 	/**
 	 * @return the {@link #y} attribute of this component
 	 */
 	public int getY() {
-		return y;
+		return menudata.y;
 	}
 
 	/**
@@ -198,7 +181,7 @@ public abstract class MenuComponent extends InputAdapter {
 		}
 
 		canvasGraphics.flush();
-		g.drawImage(canvas, x, y);
+		g.drawImage(canvas, menudata.x, menudata.y);
 	}
 
 	/**
@@ -210,8 +193,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 *            the {@link #y} attribute to be updated to
 	 */
 	public void setLocation(int x, int y) {
-		this.x = x;
-		this.y = y;
+		this.menudata = new MenuData(new Vector2i(x, y), getWidth(), getHeight());
 	}
 
 	/**
@@ -247,7 +229,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 * Returns bounding box
 	 */
 	public Shape getBoundingBox() {
-		return new Rectangle(getAbsoluteX(), getAbsoluteY(), width, height);
+		return new Rectangle(getAbsoluteX(), getAbsoluteY(), menudata.width, menudata.height);
 	}
 
 	/**

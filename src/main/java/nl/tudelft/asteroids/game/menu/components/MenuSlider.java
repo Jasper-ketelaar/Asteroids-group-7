@@ -21,12 +21,12 @@ public class MenuSlider extends MenuComponent {
 	 * Constructor which also initializes the minimum/maximum values of the slider.
 	 * The ratio determines how much the value will increase when the slider is moved.
 	 */
-	public MenuSlider(MenuComponent parent, int x, int y, int width, int height, int min, int max)
+	public MenuSlider(MenuComponent parent, MenuData menudata, int min, int max)
 			throws SlickException {
-		super(parent, x, y, width, height);
+		super(parent, menudata);
 		this.min = min;
 		this.max = max;
-		this.ratio = width / (max - min);
+		this.ratio = menudata.width / (max - min);
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class MenuSlider extends MenuComponent {
 	 */
 	@Override
 	public void process(Graphics graphics) {
-		graphics.fillRect(0, height / 4, width, height / 2);
+		graphics.fillRect(0, menudata.height / 4, menudata.width, menudata.height / 2);
 		graphics.fillOval((float) (ratio * value), 0, 10, 10);
 	}
 	

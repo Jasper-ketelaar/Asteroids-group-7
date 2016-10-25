@@ -55,11 +55,19 @@ public class SinglePlayState extends DefaultPlayState {
 		super.render(gc, arg1, g);
 		player.render(g);
 
-		//Update PowerUps
+		// BEGIN DEBUG BOUNDING BOX
+		g.draw(player.getBoundingBox());
+		asteroids.forEach(a -> g.draw(a.getBoundingBox()));
+		player.getFiredBullets().forEach(b -> g.draw(b.getBoundingBox()));
+		// END DEBUG BOUNDING BOX
+
+		// Update PowerUps
 		if (player.getPowerUp().isNullPowerUp()) {
 			PowerUp pw = player.getPowerUp();
-			g.setColor(pw.getType().getColor()); //set color of PowerUp
-			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); //draw PowerUp name
+			g.setColor(pw.getType().getColor()); // set color of PowerUp
+			g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10); // draw
+																				// PowerUp
+																				// name
 		}
 	}
 
@@ -77,12 +85,12 @@ public class SinglePlayState extends DefaultPlayState {
 			asteroids.clear();
 			sbg.enterState(0);
 		}
-		
+
 		/*
 		 * Update asteroids, play player explode animation, split asteroids,
 		 */
 		updateAsteroids(asteroids, player);
-		
+
 		/* update power ups */
 		updatePowerups(powerUps, player);
 

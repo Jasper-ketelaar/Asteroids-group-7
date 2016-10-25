@@ -6,8 +6,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.StateBasedGame;
 
 import nl.tudelft.asteroids.game.states.MenuState;
-import nl.tudelft.asteroids.game.states.MultiPlayState;
-import nl.tudelft.asteroids.game.states.SinglePlayState;
+import nl.tudelft.asteroids.game.states.NormalPlayState;
 import nl.tudelft.asteroids.util.Logger;
 
 /**
@@ -19,8 +18,7 @@ import nl.tudelft.asteroids.util.Logger;
 public class AsteroidsGame extends StateBasedGame {
 
 	public final static int STATE_MENU_MAIN = 0;
-	public final static int STATE_PLAY_SINGLE = 1;
-	public final static int STATE_PLAY_MULTI = 2;
+	public final static int STATE_PLAY = 1;
 	
 	
 	private final static Logger LOGGER = Logger.getInstance(AsteroidsGame.class.getName());
@@ -51,9 +49,7 @@ public class AsteroidsGame extends StateBasedGame {
 		LOGGER.log("Background image loaded");
 
 		addState(new MenuState());
-		addState(new MultiPlayState(background));
-		addState(new SinglePlayState(background));
-
+		addState(new NormalPlayState(background, multiplayer));
 	}
 
 }

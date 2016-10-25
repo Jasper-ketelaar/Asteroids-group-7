@@ -375,7 +375,7 @@ public class Player extends ExplodableEntity {
 		getSprite().setImageColor(clr.r, clr.g, clr.b);
 
 		getSprite().draw(getX(), getY());
-
+		
 		bullets.forEach(e -> e.render(g));
 	}
 

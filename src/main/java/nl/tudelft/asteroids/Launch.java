@@ -64,7 +64,6 @@ public class Launch {
 			LOGGER.log("Game container fired up", Level.INFO, true);
 			appgc.start();
 			
-
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}

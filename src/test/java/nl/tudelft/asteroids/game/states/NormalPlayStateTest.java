@@ -1,9 +1,6 @@
 package nl.tudelft.asteroids.game.states;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -19,11 +16,11 @@ import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 
 @Category(nl.tudelft.asteroids.TestWithDisplay.class)
-public class SinglePlayStateTest extends TestWithDisplay {
+public class NormalPlayStateTest extends TestWithDisplay {
 
 	
-	private SinglePlayState playstateTest;
-	private SinglePlayState playstateTest2;
+	private NormalPlayState playstateTest;
+	private NormalPlayState playstateTest2;
 	private Player testPlayer;
 	private Player nullPlayer;
 	private GameContainer gc;
@@ -36,9 +33,9 @@ public class SinglePlayStateTest extends TestWithDisplay {
 	public void setup() throws SlickException{
 		background = new Image("BG4.jpg");
 		testPlayer = Mockito.mock(Player.class);
-		playstateTest = new SinglePlayState(background);
+		playstateTest = new NormalPlayState(background);
 
-		playstateTest2 = new SinglePlayState(background);
+		playstateTest2 = new NormalPlayState(background);
 		
 		gc = Mockito.mock(GameContainer.class);
 		arg1 = Mockito.mock(StateBasedGame.class);
@@ -49,7 +46,7 @@ public class SinglePlayStateTest extends TestWithDisplay {
 	@Test
 	public void testInit() throws SlickException {
 		playstateTest2.init(gc, arg1);		
-		assertNotNull(playstateTest2.getPlayer());
+		assertNotNull(playstateTest2.getPlayers());
 	}
 	
 	@Test

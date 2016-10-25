@@ -135,8 +135,18 @@ public class NormalPlayState extends DefaultPlayState {
 		}
 	}
 	
+	/**
+	 * @param multiplayer Boolean indicating muti- or single player.
+	 */
 	public void setMultiplayer(boolean multiplayer) {
 		this.multiplayer = multiplayer;
+	}
+	
+	/**
+	 * @return List containing the players in this playstate.
+	 */
+	public List<Player> getPlayers() {
+		return this.players;
 	}
 
 	/**

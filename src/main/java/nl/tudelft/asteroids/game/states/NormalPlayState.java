@@ -26,16 +26,15 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 public class NormalPlayState extends DefaultPlayState {
 
 	private List<Player> players = new ArrayList<>();
-	private static boolean multiplayer;
+	private static boolean multiplayer = false;
 
 	/**
 	 * Constructor; sets background sprite.
 	 *
 	 * @param background
 	 */
-	public NormalPlayState(Image background, boolean multiplayer) {
+	public NormalPlayState(Image background) {
 		super(background);
-		this.multiplayer = multiplayer;
 	}
 
 	/**
@@ -134,6 +133,10 @@ public class NormalPlayState extends DefaultPlayState {
 				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}
+	}
+	
+	public void setMultiplayer(boolean multiplayer) {
+		this.multiplayer = multiplayer;
 	}
 
 	/**

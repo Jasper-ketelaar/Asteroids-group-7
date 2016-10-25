@@ -25,7 +25,6 @@ public class AsteroidsGame extends StateBasedGame {
 
 	private final static String BACKGROUND = "BG4.jpg";
 
-	private final boolean multiplayer;
 
 	/**
 	 * Constructor; specifying the title of the game.
@@ -33,9 +32,8 @@ public class AsteroidsGame extends StateBasedGame {
 	 * @param title
 	 *            Title of the game, in this case "Asteroids"
 	 */
-	public AsteroidsGame(String title, boolean multiplayer) {
+	public AsteroidsGame(String title) {
 		super(title);
-		this.multiplayer = multiplayer;
 	}
 
 	/**
@@ -49,7 +47,7 @@ public class AsteroidsGame extends StateBasedGame {
 		LOGGER.log("Background image loaded");
 
 		addState(new MenuState());
-		addState(new NormalPlayState(background, multiplayer));
+		addState(new NormalPlayState(background));
 	}
 
 }

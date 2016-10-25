@@ -57,13 +57,11 @@ public class Launch {
 			e.printStackTrace();
 		}
 		try {
-			boolean multiplayer = args.length > 0 && args[0].equals("-mp");
-			appgc = new AppGameContainer(new AsteroidsGame("Asteroids", multiplayer));
+			appgc = new AppGameContainer(new AsteroidsGame("Asteroids"));
 			appgc.setDisplayMode(1200, 700, false);
 			appgc.setTargetFrameRate(100);
 			LOGGER.log("Game container fired up", Level.INFO, true);
 			appgc.start();
-			
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}

@@ -74,8 +74,9 @@ public class MenuState extends BasicGameState {
 		singlePlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY);
 			try {
-				sbg.getState(AsteroidsGame.STATE_PLAY).init(gc, sbg);
+				((NormalPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setMultiplayer(false);
 				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setDifficulty(selector.getItem());
+				sbg.getState(AsteroidsGame.STATE_PLAY).init(gc, sbg);
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
@@ -86,8 +87,9 @@ public class MenuState extends BasicGameState {
 		multiPlayer.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_PLAY);
 			try {
-				sbg.getState(AsteroidsGame.STATE_PLAY).init(gc, sbg);
+				((NormalPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setMultiplayer(true);
 				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setDifficulty(selector.getItem());
+				sbg.getState(AsteroidsGame.STATE_PLAY).init(gc, sbg);
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}

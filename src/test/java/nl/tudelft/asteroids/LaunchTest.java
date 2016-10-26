@@ -9,7 +9,6 @@ public class LaunchTest extends TestWithDisplay {
 
 	private Launch launcher;
 	
-	
 	@Before
 	public void setUp() {
 		launcher = new Launch();
@@ -20,6 +19,4 @@ public class LaunchTest extends TestWithDisplay {
 	public void getGame() {
 		
 	}
-	
-
 }

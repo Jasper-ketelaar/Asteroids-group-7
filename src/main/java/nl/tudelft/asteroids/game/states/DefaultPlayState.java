@@ -203,14 +203,14 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 	/**
 	 * @param difficulty
-	 *            The difficulty to which the game is set (MEDIUM or HARD)
+	 *            The difficulty to which the game is set (EASY or MEDIUM or HARD)
 	 */
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
 	}
 
 	/**
-	 * @return The games difficulty (MEDIUM or HARD)
+	 * @return The games difficulty (EASY or MEDIUM or HARD)
 	 */
 	public Difficulty getDifficulty() {
 		return difficulty;

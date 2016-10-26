@@ -25,8 +25,8 @@ public class Launch {
 
 	private final static Logger LOGGER = Logger.getInstance(Launch.class.getName());
 
-	
 	private AppGameContainer appgc;
+
 	/**
 	 * Main method for launching the game. The multiplayer flag can be passed to
 	 * this method to initialize a multiplayer game.
@@ -38,6 +38,10 @@ public class Launch {
 
 	}
 
+	/**
+	 * Hook up LOGGER to System.out. Create a new Log file. Set up the game:
+	 * size, frame rate.
+	 */
 	public void start(String[] args) {
 
 		LOGGER.registerOutput(System.out);
@@ -65,13 +69,12 @@ public class Launch {
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}
-		
+
 	}
 
-	
 	/**
-	 * Used to set the native library for the project.
-	 * This way the game can run out-of-the-box.
+	 * Used to set the native library for the project. This way the game can run
+	 * out-of-the-box.
 	 * 
 	 * @throws Exception
 	 */
@@ -96,7 +99,6 @@ public class Launch {
 		usrPathsField.set(null, newPaths);
 	}
 
-	
 	public AppGameContainer getGame() {
 		return this.appgc;
 	}

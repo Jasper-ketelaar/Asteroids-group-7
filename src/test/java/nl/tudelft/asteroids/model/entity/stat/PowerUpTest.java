@@ -1,6 +1,7 @@
 package nl.tudelft.asteroids.model.entity.stat;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import org.newdawn.slick.Graphics;
 
@@ -35,9 +36,7 @@ public class PowerUpTest extends TestWithDisplay {
 	 */
 	@Before
 	public void setUp() {
-		
 		testPU = new PowerUp(testVector, testBullet);
-		
 	}
 	
 	@Test
@@ -84,4 +83,16 @@ public class PowerUpTest extends TestWithDisplay {
 		//Mockito.verify(graphics, Mockito.times(1)).fill(testPU.getBoundingBox());
 		Mockito.verify(graphics, Mockito.times(1)).setColor(graphics.getColor());
 	}
+	
+	@Test
+	public void testIsNullPowerUp(){
+		assertFalse(testPU.isNullPowerUp());
+	}
+	
+	@Test
+	public void testGetDuration(){
+		long expected = 10000;
+		assertEquals(expected, testBullet.getDuration());
+	}
+	
 }

@@ -10,12 +10,11 @@ import org.newdawn.slick.geom.Vector2f;
 /**
  * Abstract Class used to represent entities in the game.
  * 
- * @author Leroy Velzel, Bernard Bot, 
- * Jasper Ketelaar, Emre Ilgin, Bryan Doerga
+ * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
 public abstract class Entity {
-	
+
 	protected static final int DEGREE_ADJUSTMENT = 90;
 
 	private Vector2f pos;
@@ -41,8 +40,9 @@ public abstract class Entity {
 
 	/**
 	 * Simple Constructor only taking a position vector.
-	 * @param 	pos
-	 * 			The position of the asteroid.
+	 * 
+	 * @param pos
+	 *            The position of the asteroid.
 	 */
 	public Entity(Vector2f pos) {
 		this.pos = pos;
@@ -70,7 +70,8 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param pos The position of the Entity
+	 * @param pos
+	 *            The position of the Entity
 	 */
 	public void setPosition(Vector2f pos) {
 		this.pos = pos;
@@ -91,15 +92,16 @@ public abstract class Entity {
 	}
 
 	/**
-	 * @param rotation The rotation of the Entity
+	 * @param rotation
+	 *            The rotation of the Entity
 	 */
 	public void setRotation(float rotation) {
 		animation.getCurrentFrame().setRotation(rotation);
 	}
 
 	/**
-	 * @param 	animation 
-	 * 			The animation of the sprite
+	 * @param animation
+	 *            The animation of the sprite
 	 */
 	public void setAnimation(Animation animation) {
 		this.animation = animation;
@@ -179,8 +181,24 @@ public abstract class Entity {
 	}
 
 	/**
+	 * Generate a direction vector based on the rotation of the Entity.
+	 * 
+	 * @param rotation
+	 *            The rotation of the Entity
+	 * @return direction vector
+	 */
+	public static Vector2f generateDirection(float rotation, int DEGREE_ADJUSTMENT, float SCALE) {
+		double rotationRadians = Math.toRadians(rotation - DEGREE_ADJUSTMENT);
+		float xDelta = (float) Math.cos(rotationRadians);
+		float yDelta = (float) Math.sin(rotationRadians);
+		return new Vector2f(xDelta, yDelta).normalise().scale(SCALE);
+	}
+
+	/**
 	 * Handles collision between Entities.
-	 * @param entity The other Entity
+	 * 
+	 * @param entity
+	 *            The other Entity
 	 * @return True if the sprite collides
 	 */
 	public boolean collide(Entity entity) {

@@ -14,7 +14,6 @@ import nl.tudelft.asteroids.game.states.NormalPlayState;
 @Category(nl.tudelft.asteroids.TestWithDisplay.class)
 public class AsteroidsGameTest extends TestWithDisplay{
 
-	
 	private AsteroidsGame testGame1;
 	private GameContainer gc;
 	

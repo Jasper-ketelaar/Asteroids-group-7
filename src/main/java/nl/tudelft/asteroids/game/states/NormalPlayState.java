@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.newdawn.slick.Game;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -26,7 +25,7 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 public class NormalPlayState extends DefaultPlayState {
 
 	private List<Player> players = new ArrayList<>();
-	private static boolean multiplayer = false;
+	private boolean multiplayer;
 
 	/**
 	 * Constructor; sets background sprite.
@@ -35,6 +34,7 @@ public class NormalPlayState extends DefaultPlayState {
 	 */
 	public NormalPlayState(Image background) {
 		super(background);
+		this.multiplayer = false;
 	}
 
 	/**
@@ -66,13 +66,15 @@ public class NormalPlayState extends DefaultPlayState {
 		super.render(gc, arg1, g);
 
 		players.forEach(p -> p.render(g));
-		players.forEach(p -> {
-			int activePowerUps = 0; // used to draw powerups beneath each other
+		
+		int activePowerUps = 0; // used to draw powerup text beneath each other
+		for (int i = 0; i < players.size(); i++) {
+			Player p = players.get(i);
 			if (!p.getPowerUp().isNullPowerUp()) {
 				drawPowerUps(g, gc, p.getPowerUp(), activePowerUps);
 				activePowerUps++;
 			}
-		});
+		}
 	}
 
 	/**
@@ -102,9 +104,9 @@ public class NormalPlayState extends DefaultPlayState {
 				LOGGER.log("Player collided with asteroid and died");
 
 				if (players.size() == 0) {
-					LOGGER.log("Game over! The score was  " + player.getScore());
 					asteroids.clear();
 					sbg.enterState(0);
+					LOGGER.log("Game over! The score was  " + player.getScore());
 				}
 			}
 

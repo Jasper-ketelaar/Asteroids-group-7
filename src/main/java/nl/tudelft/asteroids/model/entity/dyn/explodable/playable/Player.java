@@ -14,13 +14,13 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
 
+import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.model.entity.Entity;
 import nl.tudelft.asteroids.model.entity.dyn.Bullet;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.ExplodableEntity;
 import nl.tudelft.asteroids.model.entity.stat.NullPowerUp;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 import nl.tudelft.asteroids.util.Logger;
-import nl.tudelft.asteroids.util.Util;
 import nl.tudelft.asteroids.util.Logger.Level;
 
 /**
@@ -75,8 +75,8 @@ public class Player extends ExplodableEntity {
 	public Player(Vector2f position) throws SlickException {
 		super(position);
 		this.direction = new Vector2f(0, -1);
-		this.fire = Util.loadAudio(FIRE_WAV);
-		this.thrust = Util.loadAudio(THRUST_WAV);
+		this.fire = AsteroidsGame.loadAudio(FIRE_WAV);
+		this.thrust = AsteroidsGame.loadAudio(THRUST_WAV);
 		this.score = 0;
 		this.multiplier = 1;
 		this.invincible = false;
@@ -245,7 +245,8 @@ public class Player extends ExplodableEntity {
 
 		boolean hasRotated = updateRotation(input);
 		if (hasRotated) {
-			direction = Util.decompose(Math.toRadians(getRotation() - DEGREE_ADJUSTMENT));
+			double radian = Math.toRadians(getRotation() - DEGREE_ADJUSTMENT);
+			direction = new Vector2f((float) Math.cos(radian), (float) Math.sin(radian));
 			if (direction.length() > 0) {
 				direction.normalise();
 			}

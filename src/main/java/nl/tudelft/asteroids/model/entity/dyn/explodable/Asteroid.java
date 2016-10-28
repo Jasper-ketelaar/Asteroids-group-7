@@ -2,9 +2,8 @@ package nl.tudelft.asteroids.model.entity.dyn.explodable;
 
 import org.newdawn.slick.geom.Vector2f;
 
+import nl.tudelft.asteroids.model.entity.Entity;
 import nl.tudelft.asteroids.util.Logger;
-import nl.tudelft.asteroids.util.Util;
-
 import java.util.ListIterator;
 import java.util.Random;
 
@@ -50,7 +49,7 @@ public class Asteroid extends ExplodableEntity {
 		this.size = size;
 		this.difficulty = difficulty;
 
-		velocity = Util.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED * difficulty);
+		velocity = Entity.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED * difficulty);
 
 		LOGGER.log(String.format("Asteroid spawned in at: (%dx, %dy) with %d deg as rotation and size %d",
 				(int) position.getX(), (int) position.getY(), (int) rotation, size));

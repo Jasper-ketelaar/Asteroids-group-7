@@ -3,7 +3,7 @@ package nl.tudelft.asteroids.game.states;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
@@ -12,8 +12,6 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
-import nl.tudelft.asteroids.model.entity.dyn.Bullet;
-import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 
@@ -24,18 +22,10 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
  * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
  */
-public class MultiPlayState extends DefaultPlayState {
+public class NormalPlayState extends DefaultPlayState {
 
-	private List<Player> players = new ArrayList<>();
-
-	/**
-	 * Constructor; sets background sprite.
-	 *
-	 * @param background
-	 */
-	public MultiPlayState(Image background) {
-		super(background);
-	}
+	protected List<Player> players = new ArrayList<>();
+	private boolean multiplayer;
 
 	/**
 	 * Initializes the PlayState. The Player, Asteroids and sound are added to
@@ -45,15 +35,16 @@ public class MultiPlayState extends DefaultPlayState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		super.init(gc, arg1);
 
-		Player player = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
-		player.init();
-		players.add(player);
+		Player player1 = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
+		player1.init();
+		players.add(player1);
 
-		player = new Player(new Vector2f(gc.getWidth() / 3, gc.getHeight() / 3));
-		player.init();
-		player.bindKeys(Input.KEY_W, Input.KEY_A, Input.KEY_D, Input.KEY_SPACE);
-		players.add(player);
-
+		if (multiplayer) {
+			Player player2 = new Player(new Vector2f(gc.getWidth() / 3, gc.getHeight() / 3));
+			player2.init();
+			player2.bindKeys(Input.KEY_W, Input.KEY_A, Input.KEY_D, Input.KEY_SPACE);
+			players.add(player2);
+		}
 	}
 
 	/**
@@ -64,19 +55,24 @@ public class MultiPlayState extends DefaultPlayState {
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		super.render(gc, arg1, g);
 
-		players.forEach(e -> e.render(g));
-
-		//Handle PowerUps, draw name of PowerUp
+		players.forEach(p -> p.render(g));
+		
+		int activePowerUps = 0; // used to draw powerup text beneath each other
 		for (int i = 0; i < players.size(); i++) {
-			Player player = players.get(i);
-			if (!player.getPowerUp().isNullPowerUp()) {
-				PowerUp pw = player.getPowerUp();
-
-				//Set color and draw String
-				g.setColor(pw.getType().getColor());
-				g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + i * 10); //magic numbers
+			Player p = players.get(i);
+			if (!p.getPowerUp().isNullPowerUp()) {
+				drawPowerUps(g, gc, p.getPowerUp(), activePowerUps);
+				activePowerUps++;
 			}
 		}
+	}
+
+	/**
+	 * Draw powerUps on the top of the screen.
+	 */
+	private static void drawPowerUps(Graphics g, GameContainer gc, PowerUp pw, int activePowerUps) {
+		g.setColor(pw.getType().getColor());
+		g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + (activePowerUps * 10));
 	}
 
 	/**
@@ -85,49 +81,64 @@ public class MultiPlayState extends DefaultPlayState {
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
-		/* update player, exit game when player has exploded */
 		Iterator<Player> playerIterator = players.iterator();
 		while (playerIterator.hasNext()) {
 			Player player = playerIterator.next();
+
+			// Update player
 			player.update(gc, delta);
+
+			// Death check
 			if (player.getExplosion().isStopped()) {
 				playerIterator.remove();
 				LOGGER.log("Player collided with asteroid and died");
 
 				if (players.size() == 0) {
-					LOGGER.log("Game over! The score was  " + player.getScore());
 					asteroids.clear();
 					sbg.enterState(0);
-
+					LOGGER.log("Game over! The score was  " + player.getScore());
 				}
 			}
 
-			/*
-			 * Update asteroids, play player explode animation, split asteroids,
-			 */
+			// Update Asteroids (super class) and PowerUps (this class)
 			updateAsteroids(asteroids, player);
-
-			/* update power ups */
-			Iterator<PowerUp> power_up_it = powerUps.listIterator();
-			while (power_up_it.hasNext()) {
-				PowerUp powerUp = power_up_it.next();
-				if (player.collide(powerUp)) {
-					powerUp.setPickupTime();
-					player.setPowerUp(powerUp);
-					power_up_it.remove();
-
-					LOGGER.log("Power up picked up and removed from screen");
-				} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
-					power_up_it.remove();
-
-					LOGGER.log("Power up despawned after being on screen to long");
-				}
-			}
-
+			updatePowerUps(player);
 		}
 
 		super.update(gc, sbg, delta);
 		LOGGER.update();
+	}
+
+	protected void updatePowerUps(Player player) {
+		Iterator<PowerUp> power_up_it = powerUps.listIterator();
+		while (power_up_it.hasNext()) {
+			PowerUp powerUp = power_up_it.next();
+			if (player.collide(powerUp)) {
+				powerUp.setPickupTime();
+				player.setPowerUp(powerUp);
+				power_up_it.remove();
+
+				LOGGER.log("Power up picked up and removed from screen");
+			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
+				power_up_it.remove();
+
+				LOGGER.log("Power up despawned after being on screen to long");
+			}
+		}
+	}
+	
+	/**
+	 * @param multiplayer Boolean indicating muti- or single player.
+	 */
+	public void setMultiplayer(boolean multiplayer) {
+		this.multiplayer = multiplayer;
+	}
+	
+	/**
+	 * @return List containing the players in this playstate.
+	 */
+	public List<Player> getPlayers() {
+		return this.players;
 	}
 
 	/**
@@ -135,7 +146,7 @@ public class MultiPlayState extends DefaultPlayState {
 	 */
 	@Override
 	public int getID() {
-		return 2;
+		return 1;
 	}
 
 	/**

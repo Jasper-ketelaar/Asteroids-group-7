@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 
+import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.game.Difficulty;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
@@ -22,7 +24,6 @@ import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 
 import nl.tudelft.asteroids.util.Logger;
-import nl.tudelft.asteroids.util.Util;
 
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
@@ -44,18 +45,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 	protected final List<Asteroid> asteroids = new ArrayList<>();
 	protected final List<PowerUp> powerUps = new ArrayList<>();
 
-	private final Image background;
-
 	private Difficulty difficulty = Difficulty.MEDIUM;
 
-	/**
-	 * Constructor; sets background sprite.
-	 * 
-	 * @param background
-	 */
-	public DefaultPlayState(Image background) {
-		this.background = background;
-	}
 
 	/**
 	 * Initializes the PlayState. The Player, Asteroids and sound are added to
@@ -65,12 +56,15 @@ public abstract class DefaultPlayState extends BasicGameState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		long curr = System.currentTimeMillis(); // measure load time
 
-		Audio audio = Util.loadAudio(MUSIC_LOOP);
+		Audio audio = AsteroidsGame.loadAudio(MUSIC_LOOP);
 		System.out.println(arg1.getCurrentStateID());
 		if (!audio.isPlaying())
 			audio.playAsMusic(1, 1, true);
 		System.out.println("True");
 
+		asteroids.clear();
+		powerUps.clear();
+		
 		LOGGER.log("Background music loaded");
 
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
@@ -83,7 +77,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		// draw background
-		g.drawImage(background, 0, 0);
+		g.drawImage(AsteroidsGame.background, 0, 0);
 
 		g.drawString(difficulty.toString(), gc.getWidth() - g.getFont().getWidth(difficulty.toString()), 0);
 
@@ -94,7 +88,6 @@ public abstract class DefaultPlayState extends BasicGameState {
 		// set color of font and draw SCORE
 		g.setColor(Color.white);
 		g.drawString("SCORE: " + getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
-
 	}
 
 	/**
@@ -120,7 +113,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 		 */
 		int max = (int) (difficulty.getDifficulty() + Math.floor(getScore() / 2000));
 		if (asteroids.size() < max) {
-			asteroids.add(new Asteroid(Util.randomLocation(gc), 0, 1, difficulty.getDifficulty()));
+			asteroids.add(new Asteroid(randomLocation(gc), 0, 1, difficulty.getDifficulty()));
 		}
 
 		/*
@@ -135,26 +128,26 @@ public abstract class DefaultPlayState extends BasicGameState {
 			if (asteroid.getExplosion().isStopped()) {
 				iterator.remove();
 				LOGGER.log("Asteroid destroyed and instance removed from the game");
-				continue;
 			}
 		}
 		LOGGER.update();
 	}
-	
+
 	/**
 	 * Update asteroids, play player explode animation, split asteroids,
+	 * 
 	 * @param asteroids
 	 * @param player
 	 * @throws SlickException
 	 */
-	public void updateAsteroids(List<Asteroid> asteroids, Player player) throws SlickException{
+	public void updateAsteroids(List<Asteroid> asteroids, Player player) throws SlickException {
 		ListIterator<Asteroid> iterator = asteroids.listIterator();
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
-			
+
 			/*
-			 * If the player is colliding with the asteroid or the explosion
-			 * was already playing, continue playing the explosion
+			 * If the player is colliding with the asteroid or the explosion was
+			 * already playing, continue playing the explosion
 			 */
 			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
 				player.playExplosion();
@@ -176,13 +169,14 @@ public abstract class DefaultPlayState extends BasicGameState {
 			}
 		}
 	}
-	
+
 	/**
 	 * Update Powerups
+	 * 
 	 * @param powerUps
 	 * @param player
 	 */
-	public void updatePowerups(List<PowerUp> powerUps, Player player){
+	public void updatePowerups(List<PowerUp> powerUps, Player player) {
 		Iterator<PowerUp> power_up_it = powerUps.listIterator();
 		while (power_up_it.hasNext()) {
 			PowerUp powerUp = power_up_it.next();
@@ -190,27 +184,26 @@ public abstract class DefaultPlayState extends BasicGameState {
 				powerUp.setPickupTime();
 				player.setPowerUp(powerUp);
 				power_up_it.remove();
-				
+
 				LOGGER.log("Power up picked up and removed from screen");
 			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
 				power_up_it.remove();
-				
+
 				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}
 	}
-	
 
 	/**
 	 * @param difficulty
-	 *            The difficulty to which the game is set (MEDIUM or HARD)
+	 *            The difficulty to which the game is set (EASY or MEDIUM or HARD)
 	 */
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;
 	}
 
 	/**
-	 * @return The games difficulty (MEDIUM or HARD)
+	 * @return The games difficulty (EASY or MEDIUM or HARD)
 	 */
 	public Difficulty getDifficulty() {
 		return difficulty;
@@ -221,6 +214,22 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 */
 	public abstract int getScore();
 
+	/**
+	 * Generates a random location vector.
+	 * 
+	 * @param gc
+	 * @return
+	 */
+	public static Vector2f randomLocation(GameContainer gc) {
+		Random random = new Random();
+
+		float randomX = random.nextBoolean() ? random.nextFloat() * (gc.getWidth() / 2)
+				: random.nextFloat() * (gc.getWidth() / 2) + gc.getWidth() / 2;
+		float randomY = random.nextBoolean() ? random.nextFloat() * (gc.getHeight() / 2)
+				: random.nextFloat() * (gc.getHeight() / 2) + gc.getHeight() / 2;
+
+		return new Vector2f(randomX, randomY);
+	}
 
 	/**
 	 * Override method.

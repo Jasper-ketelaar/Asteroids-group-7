@@ -6,7 +6,7 @@ import org.newdawn.slick.SlickException;
 public class NullComponent extends MenuComponent {
 
 	public NullComponent() throws SlickException {
-		super(null, 0, 0, 0, 0);
+		super(null, new MenuData(new Vector2i(0,0), 0, 0));
 	}
 	
 	/**

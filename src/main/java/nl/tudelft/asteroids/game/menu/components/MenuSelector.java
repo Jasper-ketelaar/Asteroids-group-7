@@ -27,8 +27,8 @@ public class MenuSelector<T> extends MenuComponent {
     /**
      * Default super class constuctor.
      */
-    public MenuSelector(MenuComponent parent, int x, int y, int width, int height) throws SlickException {
-        this(parent, x, y, width, height, new ArrayList<>());
+    public MenuSelector(MenuComponent parent, MenuData menudata) throws SlickException {
+        this(parent, menudata, new ArrayList<>());
     }
 
     /**
@@ -43,11 +43,11 @@ public class MenuSelector<T> extends MenuComponent {
      * @param items
      * @throws SlickException
      */
-    public MenuSelector(MenuComponent parent, int x, int y, int width, int height, List<T> items) throws SlickException {
-        super(parent, x, y, width, height + 5);
+    public MenuSelector(MenuComponent parent, MenuData menudata, List<T> items) throws SlickException {
+        super(parent, new MenuData(menudata.coordinates, menudata.width, menudata.height + 5));
         this.items = items;
         Image base = new Image("menu/LeftRightIcon.png");
-        float scale = (float) height / base.getHeight();
+        float scale = (float) menudata.height / base.getHeight();
         this.left = base.getScaledCopy(scale);
         this.right = left.copy();
         this.right.rotate(180);
@@ -61,8 +61,8 @@ public class MenuSelector<T> extends MenuComponent {
     public void process(Graphics graphics) {
         T item = items.get(current);
         left.draw(0, 5);
-        font.drawString((width / 2) - (font.getWidth(item.toString()) / 2), 0, item.toString());
-        right.draw(width - right.getWidth(), 5);
+        font.drawString((menudata.width / 2) - (font.getWidth(item.toString()) / 2), 0, item.toString());
+        right.draw(menudata.width - right.getWidth(), 5);
     }
 
     /**
@@ -107,7 +107,7 @@ public class MenuSelector<T> extends MenuComponent {
     @Override
     public void mouseMoved(int oldx, int oldy, int newx, int newy) {
         Rectangle left = new Rectangle(getAbsoluteX(), getAbsoluteY(), this.left.getWidth(), this.left.getHeight());
-        Rectangle right = new Rectangle(getAbsoluteX() + (width - this.right.getWidth()),
+        Rectangle right = new Rectangle(getAbsoluteX() + (menudata.width - this.right.getWidth()),
                 getAbsoluteY(), this.right.getWidth(), this.right.getHeight());
         if (left.contains(newx, newy)) {
             this.left.setAlpha(0.8f);

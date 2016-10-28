@@ -48,6 +48,8 @@ public class Player extends ExplodableEntity {
 	private List<Bullet> bullets = new ArrayList<>();
 
 	private PowerUp powerUp = new NullPowerUp();
+	
+	private boolean canFire = true;
 
 	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
 
@@ -148,12 +150,29 @@ public class Player extends ExplodableEntity {
 
 			Input input = gc.getInput();
 			handleMovement(input, delta);
-			handleBullets(gc);
+			if (canFire) {
+				handleBullets(gc);
+			}
 			handlePowerUps();
 			LOGGER.update();
 		}
 	}
-
+	
+	/**
+	 * Disables firing for the player
+	 */
+	public void disableFire() {
+		this.canFire = false;
+	}
+	
+	
+	/**
+	 * canFire getter
+	 */
+	public boolean canFire() {
+		return canFire;
+	}
+	
 	/**
 	 * @return list containing all the bullets on screen
 	 */
@@ -376,7 +395,7 @@ public class Player extends ExplodableEntity {
 		getSprite().setImageColor(clr.r, clr.g, clr.b);
 
 		getSprite().draw(getX(), getY());
-		
+
 		bullets.forEach(e -> e.render(g));
 	}
 

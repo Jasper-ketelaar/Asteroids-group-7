@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
@@ -35,11 +34,14 @@ public class NormalPlayState extends DefaultPlayState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		super.init(gc, arg1);
 
-		Player player1 = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
-		player1.init();
-		players.add(player1);
+		if (players.size() < 1) {
+			Player player1 = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
+			player1.init();
+			players.add(player1);
+		}
 
 		if (multiplayer) {
+			System.out.println("AYY LMAO");
 			Player player2 = new Player(new Vector2f(gc.getWidth() / 3, gc.getHeight() / 3));
 			player2.init();
 			player2.bindKeys(Input.KEY_W, Input.KEY_A, Input.KEY_D, Input.KEY_SPACE);
@@ -56,7 +58,7 @@ public class NormalPlayState extends DefaultPlayState {
 		super.render(gc, arg1, g);
 
 		players.forEach(p -> p.render(g));
-		
+
 		int activePowerUps = 0; // used to draw powerup text beneath each other
 		for (int i = 0; i < players.size(); i++) {
 			Player p = players.get(i);
@@ -70,7 +72,7 @@ public class NormalPlayState extends DefaultPlayState {
 	/**
 	 * Draw powerUps on the top of the screen.
 	 */
-	private static void drawPowerUps(Graphics g, GameContainer gc, PowerUp pw, int activePowerUps) {
+	private void drawPowerUps(Graphics g, GameContainer gc, PowerUp pw, int activePowerUps) {
 		g.setColor(pw.getType().getColor());
 		g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + (activePowerUps * 10));
 	}
@@ -95,6 +97,7 @@ public class NormalPlayState extends DefaultPlayState {
 
 				if (players.size() == 0) {
 					asteroids.clear();
+					players.clear();
 					sbg.enterState(0);
 					LOGGER.log("Game over! The score was  " + player.getScore());
 				}
@@ -126,14 +129,15 @@ public class NormalPlayState extends DefaultPlayState {
 			}
 		}
 	}
-	
+
 	/**
-	 * @param multiplayer Boolean indicating muti- or single player.
+	 * @param multiplayer
+	 *            Boolean indicating muti- or single player.
 	 */
 	public void setMultiplayer(boolean multiplayer) {
 		this.multiplayer = multiplayer;
 	}
-	
+
 	/**
 	 * @return List containing the players in this playstate.
 	 */

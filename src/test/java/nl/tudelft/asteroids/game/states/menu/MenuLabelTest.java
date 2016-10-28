@@ -1,7 +1,10 @@
 package nl.tudelft.asteroids.game.states.menu;
 
 import nl.tudelft.asteroids.TestWithDisplay;
+import nl.tudelft.asteroids.game.menu.components.MenuData;
 import nl.tudelft.asteroids.game.menu.components.MenuLabel;
+import nl.tudelft.asteroids.game.menu.components.Vector2i;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -26,7 +29,7 @@ public class MenuLabelTest extends TestWithDisplay {
         text = "test";
         font = Mockito.mock(TrueTypeFont.class);
         try {
-            menuItem = new MenuLabel(null, "test", font, MenuLabel.CENTER, 0, 0, 50, 50);
+            menuItem = new MenuLabel(null, "test", font, MenuLabel.CENTER, new MenuData(new Vector2i(0, 0), 50, 50));
         } catch (SlickException e) {
             e.printStackTrace();
         }

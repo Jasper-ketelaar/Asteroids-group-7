@@ -6,8 +6,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
 
+import nl.tudelft.asteroids.game.AsteroidsGame;
 import nl.tudelft.asteroids.model.entity.Entity;
-import nl.tudelft.asteroids.util.Util;
 
 /**
  * Game Entity that can play an explode animation, using the explosion sprites
@@ -59,7 +59,7 @@ public class ExplodableEntity extends Entity {
 		super(sprite, pos, rotation);
 		explosion = new Animation(big, EXPLOSION_SPEED);
 		explosion.setLooping(false);
-		this.explosionAudio = Util.loadAudio(EXPLOSION_AUDIO_FILE);
+		this.explosionAudio = AsteroidsGame.loadAudio(EXPLOSION_AUDIO_FILE);
 	}
 
 	public ExplodableEntity(Image sprite, Vector2f pos, float rotation, int size) throws SlickException {
@@ -77,7 +77,7 @@ public class ExplodableEntity extends Entity {
 			break;
 		}
 		explosion.setLooping(false);
-		this.explosionAudio = Util.loadAudio(EXPLOSION_AUDIO_FILE);
+		this.explosionAudio = AsteroidsGame.loadAudio(EXPLOSION_AUDIO_FILE);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class ExplodableEntity extends Entity {
 		
 		explosion = animation;
 		explosion.setLooping(false);
-		this.explosionAudio = Util.loadAudio(EXPLOSION_AUDIO_FILE);
+		this.explosionAudio = AsteroidsGame.loadAudio(EXPLOSION_AUDIO_FILE);
 		
 	}
 

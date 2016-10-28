@@ -28,23 +28,9 @@ public class MenuState extends BasicGameState {
 
 	private final static String MAIN_MENU = "Main menu";
 
-	private final static String BACKGROUND = "BG4.jpg";
 	private final static Logger LOGGER = Logger.getInstance(MenuState.class.getName());
 
-	private static Image background;
-
 	private Menu menu, main, opt;
-
-	/**
-	 * Constructor; sets background sprite.
-	 * 
-	 * @param background
-	 * @throws SlickException
-	 */
-	public MenuState() throws SlickException {
-		background = new Image(BACKGROUND);
-		LOGGER.log("Background image loaded");
-	}
 
 	/**
 	 * Empty override method.
@@ -63,6 +49,7 @@ public class MenuState extends BasicGameState {
 		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
 		Menu main = new Menu(new MenuData(new Vector2i(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150), 500, 500));
 
+
 		Input input = gc.getInput();
 
 		// Difficulty selector
@@ -73,10 +60,11 @@ public class MenuState extends BasicGameState {
 		// Single player button
 		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, new Vector2i(0, 50));
 		singlePlayer.setOnClick(() -> {
-			sbg.enterState(AsteroidsGame.STATE_PLAY_SINGLE);
+			sbg.enterState(AsteroidsGame.STATE_PLAY);
 			try {
-				sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE).init(gc, sbg);
-				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY_SINGLE)).setDifficulty(selector.getItem());
+				((NormalPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setMultiplayer(false);
+				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setDifficulty(selector.getItem());
+				sbg.getState(AsteroidsGame.STATE_PLAY).init(gc, sbg);
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
@@ -85,10 +73,21 @@ public class MenuState extends BasicGameState {
 		// Multi player button
 		MenuButton multiPlayer = new MenuButton(main, new Image("menu/MultiPlayerButton.png"), new Vector2i(0, 150));
 		multiPlayer.setOnClick(() -> {
-			sbg.enterState(AsteroidsGame.STATE_PLAY_MULTI);
+			sbg.enterState(AsteroidsGame.STATE_PLAY);
 			try {
-				sbg.getState(AsteroidsGame.STATE_PLAY_MULTI).init(gc, sbg);
-				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY_MULTI)).setDifficulty(selector.getItem());
+				((NormalPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setMultiplayer(true);
+				((DefaultPlayState) sbg.getState(AsteroidsGame.STATE_PLAY)).setDifficulty(selector.getItem());
+				sbg.getState(AsteroidsGame.STATE_PLAY).init(gc, sbg);
+			} catch (SlickException e) {
+				LOGGER.log("Initialization failed", Level.ERROR, true);
+			}
+		});
+
+		MenuButton rampage = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 250);
+		rampage.setOnClick(() -> {
+			sbg.enterState(AsteroidsGame.STATE_RAMPAGE);
+			try {
+			sbg.getState(AsteroidsGame.STATE_RAMPAGE).init(gc, sbg);
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
@@ -96,6 +95,7 @@ public class MenuState extends BasicGameState {
 
 		// Options button
 		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), new Vector2i(0, 250));
+
 		options.setOnClick(() -> {
 			input.removeMouseListener(main);
 			input.addMouseListener(opt);
@@ -104,6 +104,7 @@ public class MenuState extends BasicGameState {
 
 		// Exit button
 		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), new Vector2i(0, 350));
+
 		exit.setOnClick(() -> {
 			LOGGER.log("Game exited by user", Level.INFO, true);
 			System.exit(0);
@@ -114,7 +115,7 @@ public class MenuState extends BasicGameState {
 		main.append(multiPlayer);
 		main.append(exit);
 		main.append(options);
-
+		main.append(rampage);
 		input.addMouseListener(main);
 		return main;
 	}
@@ -143,7 +144,7 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {
-		g.drawImage(background, 0, 0);
+		g.drawImage(AsteroidsGame.background, 0, 0);
 		menu.render(g);
 	}
 

@@ -14,8 +14,8 @@ import org.newdawn.slick.geom.Vector2f;
 import org.mockito.Mockito;
 
 import nl.tudelft.asteroids.TestWithDisplay;
+import nl.tudelft.asteroids.model.entity.Entity;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
-import nl.tudelft.asteroids.util.Util;
 
 /**
  * TODO: COMMENTS
@@ -48,7 +48,7 @@ public class AsteroidTest extends TestWithDisplay {
 		testSmallAsteroid = new Asteroid(testVector, 7.f, 3, 1);
 
 		mockedIterator = Mockito.mock(ListIterator.class);
-		velocity = Util.generateDirection(testBigAsteroid.getRotation(), 90, 2f);
+		velocity = Entity.generateDirection(testBigAsteroid.getRotation(), 90, 2f);
 	}
 
 	/**

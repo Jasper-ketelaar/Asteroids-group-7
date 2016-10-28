@@ -14,6 +14,7 @@ import org.newdawn.slick.util.ResourceLoader;
 
 import nl.tudelft.asteroids.game.states.MenuState;
 import nl.tudelft.asteroids.game.states.NormalPlayState;
+import nl.tudelft.asteroids.game.states.RampagePlayState;
 import nl.tudelft.asteroids.util.Logger;
 import nl.tudelft.asteroids.util.Logger.Level;
 
@@ -27,6 +28,7 @@ public class AsteroidsGame extends StateBasedGame {
 
 	public final static int STATE_MENU_MAIN = 0;
 	public final static int STATE_PLAY = 1;
+	public final static int STATE_RAMPAGE = 2;
 	
 	private final static String AUDIO_BASE = "sfx/";
 	private final static Map<String, Audio> AUDIO_CACHE = new HashMap<String, Audio>();
@@ -34,6 +36,7 @@ public class AsteroidsGame extends StateBasedGame {
 	private final static Logger LOGGER = Logger.getInstance(AsteroidsGame.class.getName());
 
 	private final static String BACKGROUND = "BG4.jpg";
+	public static Image background;
 
 
 	/**
@@ -53,12 +56,16 @@ public class AsteroidsGame extends StateBasedGame {
 	 */
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
-		Image background = new Image(BACKGROUND);
+		this.background = new Image(BACKGROUND);
+		
 		LOGGER.log("Background image loaded");
 
+		
 		addState(new MenuState());
-		addState(new NormalPlayState(background));
+		addState(new NormalPlayState());
+		addState(new RampagePlayState());
 	}
+	
 	
 	/**
 	 * Loads an audio file based on the format and name

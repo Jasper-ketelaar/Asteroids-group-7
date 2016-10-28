@@ -45,18 +45,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 	protected final List<Asteroid> asteroids = new ArrayList<>();
 	protected final List<PowerUp> powerUps = new ArrayList<>();
 
-	private final Image background;
-
 	private Difficulty difficulty = Difficulty.MEDIUM;
 
-	/**
-	 * Constructor; sets background sprite.
-	 * 
-	 * @param background
-	 */
-	public DefaultPlayState(Image background) {
-		this.background = background;
-	}
 
 	/**
 	 * Initializes the PlayState. The Player, Asteroids and sound are added to
@@ -72,6 +62,9 @@ public abstract class DefaultPlayState extends BasicGameState {
 			audio.playAsMusic(1, 1, true);
 		System.out.println("True");
 
+		asteroids.clear();
+		powerUps.clear();
+		
 		LOGGER.log("Background music loaded");
 
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
@@ -84,7 +77,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		// draw background
-		g.drawImage(background, 0, 0);
+		g.drawImage(AsteroidsGame.background, 0, 0);
 
 		g.drawString(difficulty.toString(), gc.getWidth() - g.getFont().getWidth(difficulty.toString()), 0);
 

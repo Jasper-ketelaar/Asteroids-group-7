@@ -24,18 +24,8 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
  */
 public class NormalPlayState extends DefaultPlayState {
 
-	private List<Player> players = new ArrayList<>();
+	protected List<Player> players = new ArrayList<>();
 	private boolean multiplayer;
-
-	/**
-	 * Constructor; sets background sprite.
-	 *
-	 * @param background
-	 */
-	public NormalPlayState(Image background) {
-		super(background);
-		this.multiplayer = false;
-	}
 
 	/**
 	 * Initializes the PlayState. The Player, Asteroids and sound are added to
@@ -111,15 +101,15 @@ public class NormalPlayState extends DefaultPlayState {
 			}
 
 			// Update Asteroids (super class) and PowerUps (this class)
-			super.updateAsteroids(asteroids, player);
-			this.updatePowerUps(player);
+			updateAsteroids(asteroids, player);
+			updatePowerUps(player);
 		}
 
 		super.update(gc, sbg, delta);
 		LOGGER.update();
 	}
 
-	private void updatePowerUps(Player player) {
+	protected void updatePowerUps(Player player) {
 		Iterator<PowerUp> power_up_it = powerUps.listIterator();
 		while (power_up_it.hasNext()) {
 			PowerUp powerUp = power_up_it.next();

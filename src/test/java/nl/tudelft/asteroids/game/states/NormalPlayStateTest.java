@@ -33,9 +33,9 @@ public class NormalPlayStateTest extends TestWithDisplay {
 	public void setup() throws SlickException{
 		background = new Image("BG4.jpg");
 		testPlayer = Mockito.mock(Player.class);
-		playstateTest = new NormalPlayState(background);
+		playstateTest = new NormalPlayState();
 
-		playstateTest2 = new NormalPlayState(background);
+		playstateTest2 = new NormalPlayState();
 		
 		gc = Mockito.mock(GameContainer.class);
 		arg1 = Mockito.mock(StateBasedGame.class);

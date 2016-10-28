@@ -81,11 +81,12 @@ public class MenuState extends BasicGameState {
 			}
 		});
 
-		MenuButton rampage = new MenuButton(main, new Image("menu/OptionsButton.png"), 0, 250);
+		MenuButton rampage = new MenuButton(main, new Image("menu/RampageButton.png"), 0, 250);
 		rampage.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_RAMPAGE);
 			try {
-			sbg.getState(AsteroidsGame.STATE_RAMPAGE).init(gc, sbg);
+				((NormalPlayState) sbg.getState(AsteroidsGame.STATE_RAMPAGE)).setMultiplayer(false);
+				sbg.getState(AsteroidsGame.STATE_RAMPAGE).init(gc, sbg);
 			} catch (SlickException e) {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}

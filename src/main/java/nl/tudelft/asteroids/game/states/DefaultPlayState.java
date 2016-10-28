@@ -45,7 +45,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 	protected final List<Asteroid> asteroids = new ArrayList<>();
 	protected final List<PowerUp> powerUps = new ArrayList<>();
 
-	private Difficulty difficulty = Difficulty.MEDIUM;
+	protected Difficulty difficulty = Difficulty.MEDIUM;
 
 
 	/**
@@ -68,6 +68,13 @@ public abstract class DefaultPlayState extends BasicGameState {
 		LOGGER.log("Background music loaded");
 
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
+	}
+	
+	/**
+	 * Changes the way powerups spawn
+	 */
+	public void setPowerUpFactory(PowerupFactory factory) {
+		this.powerupFactory = factory;
 	}
 
 	/**
@@ -107,14 +114,9 @@ public abstract class DefaultPlayState extends BasicGameState {
 		}
 
 		/*
-		 * Algorithm for randomly spawning in asteroids when there are too
-		 * little asteroids on the screen. A higher score means that more
-		 * asteroids can be spawned.
+		 * Spawns asteroids if necessary
 		 */
-		int max = (int) (difficulty.getDifficulty() + Math.floor(getScore() / 2000));
-		if (asteroids.size() < max) {
-			asteroids.add(new Asteroid(randomLocation(gc), 0, 1, difficulty.getDifficulty()));
-		}
+		spawnAsteroids(gc);
 
 		/*
 		 * Update asteroids
@@ -133,6 +135,17 @@ public abstract class DefaultPlayState extends BasicGameState {
 		LOGGER.update();
 	}
 
+	/**
+	 * Spawning asteroids
+	 * @throws SlickException 
+	 */
+	public void spawnAsteroids(GameContainer gc) throws SlickException {
+		int max = (int) (difficulty.getDifficulty() + Math.floor(getScore() / 2000));
+		if (asteroids.size() < max) {
+			asteroids.add(new Asteroid(randomLocation(gc), 0, 1, difficulty.getDifficulty()));
+		}
+	}
+	
 	/**
 	 * Update asteroids, play player explode animation, split asteroids,
 	 * 

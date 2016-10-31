@@ -95,8 +95,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 	}
 
 	/**
-	 * Updates the Player and Asteroids. Handles Bullet/Asteroid collision.
-	 * Plays the explosion sound.
+	 * Spawns powerups and asteroids.
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {

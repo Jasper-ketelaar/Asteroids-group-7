@@ -97,10 +97,13 @@ public class RampagePlayState extends NormalPlayState {
 		Iterator<Asteroid> iterator = asteroids.iterator();
 		while (iterator.hasNext()) {
 			Asteroid current = iterator.next();
+			
+			current.update(gc);
+			
 			if (current.getExplosion().isStopped()) {
 				iterator.remove();
+				continue;
 			}
-
 			if (player.collide(current) && current.getExplosion().getFrame() == 0) {
 				current.playExplosion();
 				player.updateScore((int) (multiplier * current.getPoints()));

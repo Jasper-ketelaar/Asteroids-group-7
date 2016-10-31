@@ -50,8 +50,7 @@ public class NormalPlayState extends DefaultPlayState {
 	}
 
 	/**
-	 * Renders the Player (Bullets are rendered in the Player Class), Asteroids
-	 * and background.
+	 * Render player and respective powerups on top of render of superclass.
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
@@ -76,6 +75,9 @@ public class NormalPlayState extends DefaultPlayState {
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		// Spawn asteroids and powerups
+		super.update(gc, sbg, delta);
+		
 		Iterator<Player> playerIterator = players.iterator();
 		while (playerIterator.hasNext()) {
 			Player player = playerIterator.next();
@@ -88,11 +90,19 @@ public class NormalPlayState extends DefaultPlayState {
 			updateAsteroids(asteroids, player, gc);
 			updatePowerUps(powerUps, player);
 		}
-
-		super.update(gc, sbg, delta);
 		LOGGER.update();
 	}
 
+	/**
+	 * Checks if the player has died.
+	 * 
+	 * @param sbg
+	 *            The game the Player is currently playing
+	 * @param player
+	 *            The Player that is checked
+	 * @param playerIterator
+	 *            The Iterator is passed to be able to remove the Player.
+	 */
 	public void deathCheck(StateBasedGame sbg, Player player, Iterator<Player> playerIterator) {
 		if (player.getExplosion().isStopped()) {
 			playerIterator.remove();

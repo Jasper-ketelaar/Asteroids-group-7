@@ -26,8 +26,7 @@ import nl.tudelft.asteroids.util.Logger;
 
 /**
  * The play state of the Asteroids game. The actual gameplay is executed in this
- * state. This is an abstract class extended by the multiplayer and single
- * player play states.
+ * state. This is an abstract class extended by the normal play state.
  * 
  * @author Leroy Velzel, Bernard Bot, Jasper Ketelaar, Emre Ilgin, Bryan Doerga
  *
@@ -80,11 +79,11 @@ public abstract class DefaultPlayState extends BasicGameState {
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		// set color for drawing Strings; draw difficulty, score, and background
-		g.setColor(Color.white);
+		g.drawImage(AsteroidsGame.background, 0, 0);
+		g.setColor(Color.yellow);
 		g.drawString(difficulty.toString(), gc.getWidth() - g.getFont().getWidth(difficulty.toString()), 0);
 		g.drawString("SCORE: " + getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
-		g.drawImage(AsteroidsGame.background, 0, 0);
-
+		
 		// render Asteroids, PowerUps
 		powerUps.forEach(p -> p.render(g));
 		asteroids.forEach(a -> a.render(g));

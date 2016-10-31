@@ -91,7 +91,7 @@ public class NormalPlayState extends DefaultPlayState {
 	}
 
 	/**
-	 * Overriden to prevent asteroids from spawning on player.
+	 * Overridden to prevent asteroids from spawning on the location of the player.
 	 */
 	@Override
 	public Vector2f randomLocation(GameContainer gc) {

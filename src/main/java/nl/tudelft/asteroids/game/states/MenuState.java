@@ -44,14 +44,16 @@ public class MenuState extends BasicGameState {
 	 */
 	public Menu createMainMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
-		Menu main = new Menu(new MenuData(new Vector2i(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150), 500, 500));
+		Menu main = new Menu(
+				new MenuData(new Vector2i(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150), 500, 500));
 
 		Input input = gc.getInput();
 
 		// Difficulty selector
 		List<Difficulty> values = Arrays.asList(Difficulty.values());
-		MenuSelector<Difficulty> selector = new MenuSelector<>(main, new MenuData(new Vector2i(45, 0), 200, 20), values);
-		main.append(selector);
+		MenuSelector<Difficulty> selector = new MenuSelector<>(main, new MenuData(new Vector2i(45, 0), 200, 20),
+				values);
+		selector.setCurrent(1); // set default to MEDIUM
 
 		// Single player button
 		MenuButton singlePlayer = new MenuButton(main, singlePlayerImg, new Vector2i(0, 50));
@@ -78,7 +80,7 @@ public class MenuState extends BasicGameState {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
-		
+
 		// Rampage button
 		MenuButton rampage = new MenuButton(main, new Image("menu/RampageButton.png"), new Vector2i(0, 250));
 		rampage.setOnClick(() -> {
@@ -99,14 +101,15 @@ public class MenuState extends BasicGameState {
 		});
 
 		// Append all MenuComponents to the main menu
+		main.append(selector);
 		main.append(singlePlayer);
 		main.append(multiPlayer);
-		main.append(exit);
 		main.append(rampage);
+		main.append(exit);
 		input.addMouseListener(main);
 		return main;
 	}
-	
+
 	/**
 	 * Draws the background image.
 	 */
@@ -120,7 +123,8 @@ public class MenuState extends BasicGameState {
 	 * Empty override method.
 	 */
 	@Override
-	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException {}
+	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException {
+	}
 
 	/**
 	 * Initial state
@@ -131,7 +135,7 @@ public class MenuState extends BasicGameState {
 	}
 
 	/**
-	 * @return The menu MenoComponent.
+	 * @return The menu MenuComponent.
 	 */
 	public Menu getMenu() {
 		return menu;

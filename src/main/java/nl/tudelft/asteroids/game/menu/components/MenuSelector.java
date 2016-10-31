@@ -79,11 +79,15 @@ public class MenuSelector<T> extends MenuComponent {
 		return items.get(current);
 	}
 
-	public void setCurrent(int n) {
-		if(n < items.size())
-			current = n;
+	/**
+	 * @param i
+	 *            The index for the current selected item.
+	 */
+	public void setCurrent(int i) {
+		if (i < items.size())
+			current = i;
 	}
-	
+
 	/**
 	 * Changes current item when left/right arrow is pressed. Makes the items
 	 * 'loop around' by checking the size of the list.

@@ -129,19 +129,18 @@ public class Player extends ExplodableEntity {
 	 * @param delta
 	 */
 	public void update(GameContainer gc, int delta) {
-		if (!getAnimation().getImage(0).equals(still.getImage(0))
-				&& !getAnimation().getImage(0).equals(moving.getImage(0))) {
-			System.out.println(getAnimation().getImage(0).equals(still.getImage(0)));
-			getAnimation().update(delta);
-		} else {
-			positionUpdate(gc);
+		Image sprite = getAnimation().getImage(0);
+		if(sprite.equals(still.getImage(0)) || sprite.equals(moving.getImage(0))) {
 			Input input = gc.getInput();
 			handleMovement(input, delta);
 			if (canFire) {
 				handleBullets(gc);
 			}
 			handlePowerUps();
+			positionUpdate(gc);
 			LOGGER.update();
+		} else {
+			getAnimation().update(delta);
 		}
 	}
 	

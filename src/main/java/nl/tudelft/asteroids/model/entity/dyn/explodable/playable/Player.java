@@ -134,20 +134,7 @@ public class Player extends ExplodableEntity {
 			System.out.println(getAnimation().getImage(0).equals(still.getImage(0)));
 			getAnimation().update(delta);
 		} else {
-
-			// logic for moving through screen borders
-			if (getMaxX() < 0 && getMinX() < 0) {
-				setPosition(new Vector2f(gc.getWidth(), getY()));
-			} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
-				setPosition(new Vector2f(0.0f - getSprite().getWidth(), getY()));
-			}
-
-			if (getMaxY() < 0 && getMinY() < 0) {
-				setPosition(new Vector2f(getX(), gc.getHeight()));
-			} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
-				setPosition(new Vector2f(getX(), 0.0f - getSprite().getHeight()));
-			}
-
+			positionUpdate(gc);
 			Input input = gc.getInput();
 			handleMovement(input, delta);
 			if (canFire) {

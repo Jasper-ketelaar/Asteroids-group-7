@@ -1,6 +1,7 @@
 package nl.tudelft.asteroids.model.entity;
 
 import org.newdawn.slick.Animation;
+import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.geom.Ellipse;
@@ -36,6 +37,24 @@ public abstract class Entity {
 			this.animation.getCurrentFrame().setRotation(rotation);
 		}
 		this.pos = pos;
+	}
+	
+	/**
+	 * Logic for moving through screen borders
+	 * @param gc
+	 */
+	public void positionUpdate(GameContainer gc) {
+		if (getMaxX() < 0 && getMinX() < 0) {
+			setPosition(new Vector2f(gc.getWidth(), getY()));
+		} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
+			setPosition(new Vector2f(0.0f - getWidth(), getY()));
+		}
+
+		if (getMaxY() < 0 && getMinY() < 0) {
+			setPosition(new Vector2f(getX(), gc.getHeight()));
+		} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
+			setPosition(new Vector2f(getX(), 0.0f - getHeight()));
+		}
 	}
 
 	/**

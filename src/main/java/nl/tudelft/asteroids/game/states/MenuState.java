@@ -112,8 +112,8 @@ public class MenuState extends BasicGameState {
 	 */
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {
-		menu.render(g);
 		g.drawImage(AsteroidsGame.background, 0, 0);
+		menu.render(g);
 	}
 
 	/**

@@ -10,17 +10,19 @@ import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 
 public class EntityTest {
 	
-	private Asteroid asteroid;
+	private Asteroid asteroid1;
+	private Asteroid asteroid2;
 	private Vector2f vector;
 	
 	@Before
 	public void setUp() throws SlickException{
 		vector = new Vector2f(2.0f, 2.0f);
-		asteroid = new Asteroid(vector, 2.0f, 2, 2);
+		asteroid1 = new Asteroid(vector, 2.0f, 2, 2);
+		asteroid2 = new Asteroid(vector, 2.0f, 2, 2);
 	}
 	
 	@Test
 	public void testCollide(){
-		assertTrue(asteroid.collide(asteroid));
+		assertTrue(asteroid1.collide(asteroid2));
 	}
 }

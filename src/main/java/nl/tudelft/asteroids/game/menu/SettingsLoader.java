@@ -72,4 +72,12 @@ public class SettingsLoader {
 		}
 	}
 
+	public Properties getProps() {
+		return props;
+	}
+
+	public void setProps(Properties props) {
+		this.props = props;
+	}
+
 }

@@ -20,7 +20,6 @@ import nl.tudelft.asteroids.model.entity.dyn.Bullet;
 public class BulletTest extends TestWithDisplay {
 
 	private Bullet testBullet;
-
 	private Vector2f testVector = new Vector2f(2, 7);
 
 	/**
@@ -30,9 +29,7 @@ public class BulletTest extends TestWithDisplay {
 	 */
 	@Before
 	public void setUp() throws SlickException {
-
 		testBullet = new Bullet(testVector, 5.f);
-
 	}
 
 	/**
@@ -53,6 +50,5 @@ public class BulletTest extends TestWithDisplay {
 		testBullet.setScale(newScale);
 		assertEquals(0.f, testBullet.getScale(), 0);
 	}
-
 
 }

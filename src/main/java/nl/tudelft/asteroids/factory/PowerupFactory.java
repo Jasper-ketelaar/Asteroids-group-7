@@ -30,8 +30,7 @@ public class PowerupFactory {
 	 */
 	public PowerUp create(GameContainer gc) {
 		Vector2f location = new Vector2f(random.nextFloat() * gc.getWidth(), random.nextFloat() * gc.getHeight());
-		PowerupType type = PowerupType.values()[(int) Math.ceil(random.nextDouble() * 2)];
-		System.out.println((int) Math.ceil(random.nextDouble() * 2));
+		PowerupType type = PowerupType.values()[random.nextInt(3)];
 		PowerUp powerup = new PowerUp(location, type);
 
 		last = System.currentTimeMillis();
@@ -47,10 +46,7 @@ public class PowerupFactory {
 	 */
 	public boolean requiresPowerup(int difficulty) {
 		long time = System.currentTimeMillis() - last;
-
-		float rand = random.nextFloat();
 		build += 0.000001f;
-
-		return (last != 0 && time > 15000 || rand > (0.99999 - build));
+		return (last != 0 && time > 15000 || random.nextFloat() > (0.99999 - build));
 	}
 }

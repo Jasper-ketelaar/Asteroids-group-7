@@ -43,7 +43,7 @@ public class PowerUp extends Entity {
 		this.creationTime = System.currentTimeMillis();
 		this.type = type;
 	}
-	
+
 	/**
 	 * Constructor. The rotation of the power up is set to 0, because the
 	 * rotation doesn't matter. The type of the power up is
@@ -73,20 +73,22 @@ public class PowerUp extends Entity {
 	public void setPickupTime() {
 		this.pickupTime = System.currentTimeMillis();
 	}
-	
+
 	/**
 	 * Get the time on which a power up is picked up.
+	 * 
 	 * @return pickupTime
 	 */
 	public long getPickupTime() {
 		return this.pickupTime;
 	}
-	
+
 	/**
 	 * Get the time on which a power up is created.
+	 * 
 	 * @return creationTime
 	 */
-	public long getCreationTime(){
+	public long getCreationTime() {
 		return creationTime;
 	}
 
@@ -103,8 +105,8 @@ public class PowerUp extends Entity {
 	public long creationTimeElapsed() {
 		return System.currentTimeMillis() - creationTime;
 	}
-	
-	public boolean isNullPowerUp(){
+
+	public boolean isNullPowerUp() {
 		return (this.type.equals(PowerupType.NULL));
 	}
 
@@ -118,11 +120,10 @@ public class PowerUp extends Entity {
 		Color start = g.getColor();
 
 		g.setColor(getType().getColor());
-
 		g.setAntiAlias(true);
 		g.fill(getBoundingBox());
 
-		g.setColor(start);
+		g.setColor(start); // set color to original value
 	}
 
 	/**
@@ -150,5 +151,3 @@ public class PowerUp extends Entity {
 	}
 
 }
-
-

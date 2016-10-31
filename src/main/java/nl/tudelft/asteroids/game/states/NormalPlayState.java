@@ -41,7 +41,6 @@ public class NormalPlayState extends DefaultPlayState {
 		}
 
 		if (multiplayer) {
-			System.out.println("AYY LMAO");
 			Player player2 = new Player(new Vector2f(gc.getWidth() / 3, gc.getHeight() / 3));
 			player2.init();
 			player2.bindKeys(Input.KEY_W, Input.KEY_A, Input.KEY_D, Input.KEY_SPACE);
@@ -81,11 +80,9 @@ public class NormalPlayState extends DefaultPlayState {
 		Iterator<Player> playerIterator = players.iterator();
 		while (playerIterator.hasNext()) {
 			Player player = playerIterator.next();
-
-			// Update player, Death check
+			// Update player (bullets included), death check
 			player.update(gc, delta);
 			deathCheck(sbg, player, playerIterator);
-
 			// Update asteroids, powerups
 			updateAsteroids(asteroids, player, gc);
 			updatePowerUps(powerUps, player);
@@ -107,7 +104,6 @@ public class NormalPlayState extends DefaultPlayState {
 		if (player.getExplosion().isStopped()) {
 			playerIterator.remove();
 			LOGGER.log("Player collided with asteroid and died");
-
 			if (players.size() == 0) {
 				asteroids.clear();
 				players.clear();

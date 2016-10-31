@@ -2,7 +2,6 @@ package nl.tudelft.asteroids.game.menu.components;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
-import org.newdawn.slick.geom.Circle;
 
 /**
  * Component representing a MenuSlider.
@@ -11,9 +10,6 @@ import org.newdawn.slick.geom.Circle;
 public class MenuSlider extends MenuComponent {
 	
 	private int value;
-	
-	private final int min;
-	private final int max;
 	
 	private final double ratio;
 
@@ -24,8 +20,6 @@ public class MenuSlider extends MenuComponent {
 	public MenuSlider(MenuComponent parent, MenuData menudata, int min, int max)
 			throws SlickException {
 		super(parent, menudata);
-		this.min = min;
-		this.max = max;
 		this.ratio = menudata.width / (max - min);
 	}
 

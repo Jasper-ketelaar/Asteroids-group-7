@@ -1,9 +1,6 @@
 package nl.tudelft.asteroids.game.menu.components;
 
 import java.awt.Font;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.TrueTypeFont;

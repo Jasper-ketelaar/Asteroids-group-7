@@ -11,7 +11,6 @@ import nl.tudelft.asteroids.game.Difficulty;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.openal.Audio;
@@ -56,7 +55,6 @@ public abstract class DefaultPlayState extends BasicGameState {
 		long curr = System.currentTimeMillis(); // measure load time
 
 		Audio audio = AsteroidsGame.loadAudio(MUSIC_LOOP);
-		System.out.println(arg1.getCurrentStateID());
 		if (!audio.isPlaying())
 			audio.playAsMusic(1, 1, true);
 		System.out.println("True");
@@ -65,7 +63,6 @@ public abstract class DefaultPlayState extends BasicGameState {
 		powerUps.clear();
 
 		LOGGER.log("Background music loaded");
-
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
 	}
 
@@ -82,9 +79,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
-		// set color for drawing Strings
+		// set color for drawing Strings; draw difficulty, score, and background
 		g.setColor(Color.white);
-		// draw difficulty, score, and background
 		g.drawString(difficulty.toString(), gc.getWidth() - g.getFont().getWidth(difficulty.toString()), 0);
 		g.drawString("SCORE: " + getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
 		g.drawImage(AsteroidsGame.background, 0, 0);
@@ -139,31 +135,25 @@ public abstract class DefaultPlayState extends BasicGameState {
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
 			asteroid.update(gc);
-
-			// remove asteroid when it has exploded
+			// Remove asteroid when it has exploded
 			if (asteroid.getExplosion().isStopped()) {
 				iterator.remove();
 				LOGGER.log("Asteroid destroyed and instance removed from the game");
 				continue;
 			}
-
-			// continue playing explosion
+			// Continue playing explosion
 			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
 				player.playExplosion();
 				continue;
 			}
-
-			/*
-			 * Iterate over the bullets and remove them; iterator used to
-			 * prevent ConcurrentModificationException
-			 */
-			Iterator<Bullet> bullets = player.getFiredBullets().iterator();
-			while (bullets.hasNext()) {
-				Bullet b = bullets.next();
+			// Iterate over bullets
+			Iterator<Bullet> bullet_it = player.getFiredBullets().iterator();
+			while (bullet_it.hasNext()) {
+				Bullet b = bullet_it.next();
 				if (b.collide(asteroid) && asteroid.getExplosion().getFrame() == 0) {
 					player.updateScore(asteroid.getPoints());
 					asteroid.splitAsteroid(iterator);
-					bullets.remove();
+					bullet_it.remove();
 					break;
 				}
 			}
@@ -184,11 +174,9 @@ public abstract class DefaultPlayState extends BasicGameState {
 				powerUp.setPickupTime();
 				player.setPowerUp(powerUp);
 				power_up_it.remove();
-
 				LOGGER.log("Power up picked up and removed from screen");
 			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
 				power_up_it.remove();
-
 				LOGGER.log("Power up despawned after being on screen to long");
 			}
 		}

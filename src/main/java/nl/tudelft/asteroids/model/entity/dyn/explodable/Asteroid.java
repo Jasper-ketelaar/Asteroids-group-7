@@ -48,8 +48,7 @@ public class Asteroid extends ExplodableEntity {
 
 		this.size = size;
 		this.difficulty = difficulty;
-
-		velocity = Entity.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED * difficulty);
+		this.velocity = Entity.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED * difficulty);
 
 		LOGGER.log(String.format("Asteroid spawned in at: (%dx, %dy) with %d deg as rotation and size %d",
 				(int) position.getX(), (int) position.getY(), (int) rotation, size));

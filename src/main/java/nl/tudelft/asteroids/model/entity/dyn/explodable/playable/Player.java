@@ -377,10 +377,8 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-
 		Color clr = powerUp.getType().getColor();
 		getSprite().setImageColor(clr.r, clr.g, clr.b);
-
 		getSprite().draw(getX(), getY());
 
 		bullets.forEach(e -> e.render(g));

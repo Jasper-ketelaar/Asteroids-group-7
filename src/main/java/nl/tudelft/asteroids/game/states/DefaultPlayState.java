@@ -47,7 +47,6 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 	protected Difficulty difficulty = Difficulty.MEDIUM;
 
-
 	/**
 	 * Initializes the PlayState. The Player, Asteroids and sound are added to
 	 * the game. Prints load time to console.
@@ -64,12 +63,12 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 		asteroids.clear();
 		powerUps.clear();
-		
+
 		LOGGER.log("Background music loaded");
 
 		LOGGER.log("Game was loaded in " + (System.currentTimeMillis() - curr) + " ms");
 	}
-	
+
 	/**
 	 * Changes the way powerups spawn
 	 */
@@ -83,18 +82,16 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
-		// draw background
-		g.drawImage(AsteroidsGame.background, 0, 0);
-
+		// set color for drawing Strings
+		g.setColor(Color.white);
+		// draw difficulty, score, and background
 		g.drawString(difficulty.toString(), gc.getWidth() - g.getFont().getWidth(difficulty.toString()), 0);
+		g.drawString("SCORE: " + getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
+		g.drawImage(AsteroidsGame.background, 0, 0);
 
 		// render Asteroids, PowerUps
 		powerUps.forEach(p -> p.render(g));
 		asteroids.forEach(a -> a.render(g));
-
-		// set color of font and draw SCORE
-		g.setColor(Color.white);
-		g.drawString("SCORE: " + getScore(), SCORE_LOCATION.x, SCORE_LOCATION.y);
 	}
 
 	/**
@@ -103,24 +100,42 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		spawnPowerUps(gc);
+		spawnAsteroids(gc);
+		LOGGER.update();
+	}
 
-		/*
-		 * Algorithm for randomly spawning in power ups when there are too
-		 * little power ups on the screen.
-		 */
+	/**
+	 * Spawning asteroids
+	 * 
+	 * @throws SlickException
+	 */
+	public void spawnAsteroids(GameContainer gc) throws SlickException {
+		if (asteroids.size() < (int) (difficulty.getDifficulty() + Math.floor(getScore() / 2000))) {
+			asteroids.add(new Asteroid(randomLocation(gc), 0, 1, difficulty.getDifficulty()));
+		}
+	}
+
+	/**
+	 * Spawning powerups
+	 * 
+	 * @param gc
+	 */
+	public void spawnPowerUps(GameContainer gc) {
 		if (powerUps.size() < 3 && powerupFactory.requiresPowerup(difficulty.getDifficulty())) {
 			powerUps.add(powerupFactory.create(gc));
 			LOGGER.log("A new PowerUp spawned");
 		}
+	}
 
-		/*
-		 * Spawns asteroids if necessary
-		 */
-		spawnAsteroids(gc);
-
-		/*
-		 * Update asteroids
-		 */
+	/**
+	 * Update asteroids, play player explode animation, split asteroids,
+	 * 
+	 * @param asteroids
+	 * @param player
+	 * @throws SlickException
+	 */
+	public void updateAsteroids(List<Asteroid> asteroids, Player player, GameContainer gc) throws SlickException {
 		ListIterator<Asteroid> iterator = asteroids.listIterator();
 		while (iterator.hasNext()) {
 			Asteroid asteroid = iterator.next();
@@ -130,38 +145,10 @@ public abstract class DefaultPlayState extends BasicGameState {
 			if (asteroid.getExplosion().isStopped()) {
 				iterator.remove();
 				LOGGER.log("Asteroid destroyed and instance removed from the game");
+				continue;
 			}
-		}
-		LOGGER.update();
-	}
 
-	/**
-	 * Spawning asteroids
-	 * @throws SlickException 
-	 */
-	public void spawnAsteroids(GameContainer gc) throws SlickException {
-		int max = (int) (difficulty.getDifficulty() + Math.floor(getScore() / 2000));
-		if (asteroids.size() < max) {
-			asteroids.add(new Asteroid(randomLocation(gc), 0, 1, difficulty.getDifficulty()));
-		}
-	}
-	
-	/**
-	 * Update asteroids, play player explode animation, split asteroids,
-	 * 
-	 * @param asteroids
-	 * @param player
-	 * @throws SlickException
-	 */
-	public void updateAsteroids(List<Asteroid> asteroids, Player player) throws SlickException {
-		ListIterator<Asteroid> iterator = asteroids.listIterator();
-		while (iterator.hasNext()) {
-			Asteroid asteroid = iterator.next();
-
-			/*
-			 * If the player is colliding with the asteroid or the explosion was
-			 * already playing, continue playing the explosion
-			 */
+			// continue playing explosion
 			if (player.collide(asteroid) && player.getExplosion().getFrame() == 0) {
 				player.playExplosion();
 				continue;
@@ -178,6 +165,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 					player.updateScore(asteroid.getPoints());
 					asteroid.splitAsteroid(iterator);
 					bullets.remove();
+					break;
 				}
 			}
 		}
@@ -189,7 +177,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 * @param powerUps
 	 * @param player
 	 */
-	public void updatePowerups(List<PowerUp> powerUps, Player player) {
+	public void updatePowerUps(List<PowerUp> powerUps, Player player) {
 		Iterator<PowerUp> power_up_it = powerUps.listIterator();
 		while (power_up_it.hasNext()) {
 			PowerUp powerUp = power_up_it.next();
@@ -209,7 +197,8 @@ public abstract class DefaultPlayState extends BasicGameState {
 
 	/**
 	 * @param difficulty
-	 *            The difficulty to which the game is set (EASY or MEDIUM or HARD)
+	 *            The difficulty to which the game is set (EASY or MEDIUM or
+	 *            HARD)
 	 */
 	public void setDifficulty(Difficulty difficulty) {
 		this.difficulty = difficulty;

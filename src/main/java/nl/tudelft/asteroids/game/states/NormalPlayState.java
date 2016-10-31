@@ -57,24 +57,17 @@ public class NormalPlayState extends DefaultPlayState {
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		super.render(gc, arg1, g);
 
-		players.forEach(p -> p.render(g));
-
-		int activePowerUps = 0; // used to draw powerup text beneath each other
 		for (int i = 0; i < players.size(); i++) {
 			Player p = players.get(i);
-			if (!p.getPowerUp().isNullPowerUp()) {
-				drawPowerUps(g, gc, p.getPowerUp(), activePowerUps);
-				activePowerUps++;
+			PowerUp pw = p.getPowerUp();
+
+			// render player and powerUp
+			p.render(g);
+			if (!pw.isNullPowerUp()) {
+				g.setColor(pw.getType().getColor());
+				g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + (i * 10));
 			}
 		}
-	}
-
-	/**
-	 * Draw powerUps on the top of the screen.
-	 */
-	private void drawPowerUps(Graphics g, GameContainer gc, PowerUp pw, int activePowerUps) {
-		g.setColor(pw.getType().getColor());
-		g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + (activePowerUps * 10));
 	}
 
 	/**
@@ -87,45 +80,29 @@ public class NormalPlayState extends DefaultPlayState {
 		while (playerIterator.hasNext()) {
 			Player player = playerIterator.next();
 
-			// Update player
+			// Update player, Death check
 			player.update(gc, delta);
+			deathCheck(sbg, player, playerIterator);
 
-			// Death check
-			if (player.getExplosion().isStopped()) {
-				playerIterator.remove();
-				LOGGER.log("Player collided with asteroid and died");
-
-				if (players.size() == 0) {
-					asteroids.clear();
-					players.clear();
-					sbg.enterState(0);
-					LOGGER.log("Game over! The score was  " + player.getScore());
-				}
-			}
-
-			// Update Asteroids (super class) and PowerUps (this class)
-			updateAsteroids(asteroids, player);
-			updatePowerUps(player);
+			// Update asteroids, powerups
+			updateAsteroids(asteroids, player, gc);
+			updatePowerUps(powerUps, player);
 		}
 
 		super.update(gc, sbg, delta);
 		LOGGER.update();
 	}
 
-	protected void updatePowerUps(Player player) {
-		Iterator<PowerUp> power_up_it = powerUps.listIterator();
-		while (power_up_it.hasNext()) {
-			PowerUp powerUp = power_up_it.next();
-			if (player.collide(powerUp)) {
-				powerUp.setPickupTime();
-				player.setPowerUp(powerUp);
-				power_up_it.remove();
+	public void deathCheck(StateBasedGame sbg, Player player, Iterator<Player> playerIterator) {
+		if (player.getExplosion().isStopped()) {
+			playerIterator.remove();
+			LOGGER.log("Player collided with asteroid and died");
 
-				LOGGER.log("Power up picked up and removed from screen");
-			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
-				power_up_it.remove();
-
-				LOGGER.log("Power up despawned after being on screen to long");
+			if (players.size() == 0) {
+				asteroids.clear();
+				players.clear();
+				sbg.enterState(0);
+				LOGGER.log("Game over! The score was  " + player.getScore());
 			}
 		}
 	}

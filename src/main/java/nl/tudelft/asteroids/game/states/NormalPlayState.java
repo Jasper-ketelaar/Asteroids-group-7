@@ -3,7 +3,6 @@ package nl.tudelft.asteroids.game.states;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -11,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 
@@ -76,7 +76,7 @@ public class NormalPlayState extends DefaultPlayState {
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
 		// Spawn asteroids and powerups
 		super.update(gc, sbg, delta);
-		
+
 		Iterator<Player> playerIterator = players.iterator();
 		while (playerIterator.hasNext()) {
 			Player player = playerIterator.next();
@@ -88,6 +88,30 @@ public class NormalPlayState extends DefaultPlayState {
 			updatePowerUps(powerUps, player);
 		}
 		LOGGER.update();
+	}
+
+	/**
+	 * Overriden to prevent asteroids from spawning on player.
+	 */
+	@Override
+	public Vector2f randomLocation(GameContainer gc) {
+		Vector2f location = super.randomLocation(gc);
+		Asteroid asteroid = null;
+		try {
+			asteroid = new Asteroid(location, 0, 1, difficulty.getDifficulty());
+		} catch (SlickException e1) {
+			e1.printStackTrace();
+		}
+
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+			if (player.collide(asteroid)) {
+				location = super.randomLocation(gc);
+				asteroid.setPosition(location);
+				i = 0;
+			}
+		}
+		return location;
 	}
 
 	/**

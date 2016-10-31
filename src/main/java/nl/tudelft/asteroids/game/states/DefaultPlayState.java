@@ -209,7 +209,7 @@ public abstract class DefaultPlayState extends BasicGameState {
 	 * @param gc
 	 * @return
 	 */
-	public static Vector2f randomLocation(GameContainer gc) {
+	public Vector2f randomLocation(GameContainer gc) {
 		Random random = new Random();
 		return new Vector2f(random.nextFloat() * gc.getWidth(), random.nextFloat() * gc.getHeight());
 	}

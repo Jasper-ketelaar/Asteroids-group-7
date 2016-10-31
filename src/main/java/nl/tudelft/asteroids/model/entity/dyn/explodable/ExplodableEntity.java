@@ -114,7 +114,6 @@ public class ExplodableEntity extends Entity {
 		setAnimation(explosion);
 		explosion.update(0);
 		explosionAudio.playAsSoundEffect(1, 1, false);
-
 	}
 
 	/**

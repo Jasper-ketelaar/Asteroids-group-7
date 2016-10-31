@@ -26,18 +26,15 @@ import java.util.List;
  */
 public class MenuState extends BasicGameState {
 
-	private final static String MAIN_MENU = "Main menu";
-
 	private final static Logger LOGGER = Logger.getInstance(MenuState.class.getName());
 
-	private Menu menu, main, opt;
+	private Menu menu, main;
 
 	/**
 	 * Empty override method.
 	 */
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		opt = createOptionsMenu(gc, sbg);
 		main = createMainMenu(gc, sbg);
 		menu = main;
 	}
@@ -48,7 +45,6 @@ public class MenuState extends BasicGameState {
 	public Menu createMainMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		Image singlePlayerImg = new Image("menu/SinglePlayerButton.png");
 		Menu main = new Menu(new MenuData(new Vector2i(gc.getWidth() / 2 - singlePlayerImg.getWidth() / 2, 150), 500, 500));
-
 
 		Input input = gc.getInput();
 
@@ -82,7 +78,8 @@ public class MenuState extends BasicGameState {
 				LOGGER.log("Initialization failed", Level.ERROR, true);
 			}
 		});
-
+		
+		// Rampage button
 		MenuButton rampage = new MenuButton(main, new Image("menu/RampageButton.png"), new Vector2i(0, 250));
 		rampage.setOnClick(() -> {
 			sbg.enterState(AsteroidsGame.STATE_RAMPAGE);
@@ -94,18 +91,8 @@ public class MenuState extends BasicGameState {
 			}
 		});
 
-		// Options button
-		MenuButton options = new MenuButton(main, new Image("menu/OptionsButton.png"), new Vector2i(0, 250));
-
-		options.setOnClick(() -> {
-			input.removeMouseListener(main);
-			input.addMouseListener(opt);
-			menu = this.opt;
-		});
-
 		// Exit button
 		MenuButton exit = new MenuButton(main, new Image("menu/ExitButton.png"), new Vector2i(0, 350));
-
 		exit.setOnClick(() -> {
 			LOGGER.log("Game exited by user", Level.INFO, true);
 			System.exit(0);
@@ -115,47 +102,25 @@ public class MenuState extends BasicGameState {
 		main.append(singlePlayer);
 		main.append(multiPlayer);
 		main.append(exit);
-		main.append(options);
 		main.append(rampage);
 		input.addMouseListener(main);
 		return main;
 	}
-
-	/**
-	 * Initializes the options menu
-	 */
-	public Menu createOptionsMenu(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		Image retImage = new Image("menu/ReturnButton.png");
-		Menu options = new Menu(new MenuData(new Vector2i(gc.getWidth() / 2 - retImage.getWidth() / 2, 150), 500, 500));
-
-		MenuButton ret = new MenuButton(options, retImage, new Vector2i(0, 200));
-		ret.setOnClick(() -> {
-			gc.getInput().removeMouseListener(opt);
-			gc.getInput().addMouseListener(main);
-			menu = this.main;
-		});
-
-		options.append(ret);
-		gc.getInput().addMouseListener(options);
-		return options;
-	}
-
+	
 	/**
 	 * Draws the background image.
 	 */
 	@Override
 	public void render(GameContainer arg0, StateBasedGame arg1, Graphics g) throws SlickException {
-		g.drawImage(AsteroidsGame.background, 0, 0);
 		menu.render(g);
+		g.drawImage(AsteroidsGame.background, 0, 0);
 	}
 
 	/**
 	 * Empty override method.
 	 */
 	@Override
-	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException {
-
-	}
+	public void update(GameContainer arg0, StateBasedGame arg1, int arg2) throws SlickException {}
 
 	/**
 	 * Initial state

@@ -59,7 +59,6 @@ public class AsteroidsGame extends StateBasedGame {
 		this.background = new Image(BACKGROUND);
 		
 		LOGGER.log("Background image loaded");
-
 		
 		addState(new MenuState());
 		addState(new NormalPlayState());

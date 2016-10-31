@@ -6,9 +6,10 @@ import org.junit.Test;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 
+import nl.tudelft.asteroids.TestWithDisplay;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 
-public class EntityTest {
+public class EntityTest extends TestWithDisplay{
 	
 	private Asteroid asteroid1;
 	private Asteroid asteroid2;

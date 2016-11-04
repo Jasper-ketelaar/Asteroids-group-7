@@ -31,14 +31,10 @@ public class NullComponent extends MenuComponent {
 	public float getAbsoluteY() {
 		return super.getY();
 	}
-
+	
 	/**
-	 * Overrides to check parent as well
+	 * Forced override
 	 */
-	@Override
-	public boolean isAcceptingInput() {
-		return true;
-	}
 	@Override
 	public void process(Graphics graphics) {
 

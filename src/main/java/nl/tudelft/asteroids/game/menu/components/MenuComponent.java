@@ -85,6 +85,14 @@ public abstract class MenuComponent extends InputAdapter {
 	}
 
 	/**
+	 * Returns the parent component
+	 * @return the {@link #parent} attribute of this component
+	 */
+	public MenuComponent getParent() {
+		return parent;
+	}
+	
+	/**
 	 * @return the {@link #height} attribute of this component
 	 */
 	public int getHeight() {
@@ -193,7 +201,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 * @param y
 	 *            the {@link #y} attribute to be updated to
 	 */
-	public void setLocation(int x, int y) {
+	public void setLocation(float x, float y) {
 		this.menudata = new MenuData(new Vector2f(x, y), getWidth(), getHeight());
 	}
 

@@ -3,7 +3,6 @@ package nl.tudelft.asteroids.game.states;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -11,6 +10,7 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
 
+import nl.tudelft.asteroids.model.entity.dyn.explodable.Asteroid;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 
@@ -41,7 +41,6 @@ public class NormalPlayState extends DefaultPlayState {
 		}
 
 		if (multiplayer) {
-			System.out.println("AYY LMAO");
 			Player player2 = new Player(new Vector2f(gc.getWidth() / 3, gc.getHeight() / 3));
 			player2.init();
 			player2.bindKeys(Input.KEY_W, Input.KEY_A, Input.KEY_D, Input.KEY_SPACE);
@@ -50,31 +49,23 @@ public class NormalPlayState extends DefaultPlayState {
 	}
 
 	/**
-	 * Renders the Player (Bullets are rendered in the Player Class), Asteroids
-	 * and background.
+	 * Render player and respective powerups on top of render of superclass.
 	 */
 	@Override
 	public void render(GameContainer gc, StateBasedGame arg1, Graphics g) throws SlickException {
 		super.render(gc, arg1, g);
 
-		players.forEach(p -> p.render(g));
-
-		int activePowerUps = 0; // used to draw powerup text beneath each other
 		for (int i = 0; i < players.size(); i++) {
 			Player p = players.get(i);
-			if (!p.getPowerUp().isNullPowerUp()) {
-				drawPowerUps(g, gc, p.getPowerUp(), activePowerUps);
-				activePowerUps++;
+			PowerUp pw = p.getPowerUp();
+
+			// render player and powerUp
+			p.render(g);
+			if (!pw.isNullPowerUp()) {
+				g.setColor(pw.getType().getColor());
+				g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + (i * 10));
 			}
 		}
-	}
-
-	/**
-	 * Draw powerUps on the top of the screen.
-	 */
-	private void drawPowerUps(Graphics g, GameContainer gc, PowerUp pw, int activePowerUps) {
-		g.setColor(pw.getType().getColor());
-		g.drawString(pw.getType().toString(), gc.getWidth() / 2 - 50, 10 + (activePowerUps * 10));
 	}
 
 	/**
@@ -83,49 +74,65 @@ public class NormalPlayState extends DefaultPlayState {
 	 */
 	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		// Spawn asteroids and powerups
+		super.update(gc, sbg, delta);
+
 		Iterator<Player> playerIterator = players.iterator();
 		while (playerIterator.hasNext()) {
 			Player player = playerIterator.next();
-
-			// Update player
+			// Update player (bullets included), death check
 			player.update(gc, delta);
-
-			// Death check
-			if (player.getExplosion().isStopped()) {
-				playerIterator.remove();
-				LOGGER.log("Player collided with asteroid and died");
-
-				if (players.size() == 0) {
-					asteroids.clear();
-					players.clear();
-					sbg.enterState(0);
-					LOGGER.log("Game over! The score was  " + player.getScore());
-				}
-			}
-
-			// Update Asteroids (super class) and PowerUps (this class)
-			updateAsteroids(asteroids, player);
-			updatePowerUps(player);
+			deathCheck(sbg, player, playerIterator);
+			// Update asteroids, powerups
+			updateAsteroids(asteroids, player, gc);
+			updatePowerUps(powerUps, player);
 		}
-
-		super.update(gc, sbg, delta);
 		LOGGER.update();
 	}
 
-	protected void updatePowerUps(Player player) {
-		Iterator<PowerUp> power_up_it = powerUps.listIterator();
-		while (power_up_it.hasNext()) {
-			PowerUp powerUp = power_up_it.next();
-			if (player.collide(powerUp)) {
-				powerUp.setPickupTime();
-				player.setPowerUp(powerUp);
-				power_up_it.remove();
+	/**
+	 * Overridden to prevent asteroids from spawning on the location of the player.
+	 */
+	@Override
+	public Vector2f randomLocation(GameContainer gc) {
+		Vector2f location = super.randomLocation(gc);
+		Asteroid asteroid = null;
+		try {
+			asteroid = new Asteroid(location, 0, 1, difficulty.getDifficulty());
+		} catch (SlickException e1) {
+			e1.printStackTrace();
+		}
 
-				LOGGER.log("Power up picked up and removed from screen");
-			} else if (powerUp.creationTimeElapsed() > PowerUp.DISAPPEAR_AFTER) {
-				power_up_it.remove();
+		for (int i = 0; i < players.size(); i++) {
+			Player player = players.get(i);
+			if (player.collide(asteroid)) {
+				location = super.randomLocation(gc);
+				asteroid.setPosition(location);
+				i = 0;
+			}
+		}
+		return location;
+	}
 
-				LOGGER.log("Power up despawned after being on screen to long");
+	/**
+	 * Checks if the player has died.
+	 * 
+	 * @param sbg
+	 *            The game the Player is currently playing
+	 * @param player
+	 *            The Player that is checked
+	 * @param playerIterator
+	 *            The Iterator is passed to be able to remove the Player.
+	 */
+	public void deathCheck(StateBasedGame sbg, Player player, Iterator<Player> playerIterator) {
+		if (player.getExplosion().isStopped()) {
+			playerIterator.remove();
+			LOGGER.log("Player collided with asteroid and died");
+			if (players.size() == 0) {
+				asteroids.clear();
+				players.clear();
+				sbg.enterState(0);
+				LOGGER.log("Game over! The score was  " + player.getScore());
 			}
 		}
 	}

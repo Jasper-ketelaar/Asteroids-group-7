@@ -93,14 +93,16 @@ public class RampagePlayState extends NormalPlayState {
 	 * default behaviour
 	 */
 	@Override
-	public void updateAsteroids(List<Asteroid> asteroids, Player player) {
+	public void updateAsteroids(List<Asteroid> asteroids, Player player, GameContainer gc) {
 		Iterator<Asteroid> iterator = asteroids.iterator();
 		while (iterator.hasNext()) {
 			Asteroid current = iterator.next();
+			current.update(gc);
+			
 			if (current.getExplosion().isStopped()) {
 				iterator.remove();
+				continue;
 			}
-
 			if (player.collide(current) && current.getExplosion().getFrame() == 0) {
 				current.playExplosion();
 				player.updateScore((int) (multiplier * current.getPoints()));

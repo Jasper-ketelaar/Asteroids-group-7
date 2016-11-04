@@ -48,8 +48,7 @@ public class Asteroid extends ExplodableEntity {
 
 		this.size = size;
 		this.difficulty = difficulty;
-
-		velocity = Entity.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED * difficulty);
+		this.velocity = Entity.generateDirection(rotation, DEGREE_ADJUSTMENT, SPEED * difficulty);
 
 		LOGGER.log(String.format("Asteroid spawned in at: (%dx, %dy) with %d deg as rotation and size %d",
 				(int) position.getX(), (int) position.getY(), (int) rotation, size));
@@ -64,19 +63,7 @@ public class Asteroid extends ExplodableEntity {
 	public void update(GameContainer gc) {
 		setPosition(getPosition().add(velocity));
 		setRotation(getRotation() + ROTATION_SPEED);
-
-		//logic for moving through screen borders
-		if (getMaxX() < 0 && getMinX() < 0) {
-			setPosition(new Vector2f(gc.getWidth(), getY()));
-		} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
-			setPosition(new Vector2f(0.0f - getWidth(), getY()));
-		}
-
-		if (getMaxY() < 0 && getMinY() < 0) {
-			setPosition(new Vector2f(getX(), gc.getHeight()));
-		} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
-			setPosition(new Vector2f(getX(), 0.0f - getHeight()));
-		}
+		positionUpdate(gc);
 	}
 
 	/**

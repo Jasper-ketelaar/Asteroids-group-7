@@ -105,7 +105,6 @@ public class ExplodableEntity extends Entity {
 		explosion = animation;
 		explosion.setLooping(false);
 		this.explosionAudio = AsteroidsGame.loadAudio(EXPLOSION_AUDIO_FILE);
-		
 	}
 
 	/**
@@ -115,7 +114,6 @@ public class ExplodableEntity extends Entity {
 		setAnimation(explosion);
 		explosion.update(0);
 		explosionAudio.playAsSoundEffect(1, 1, false);
-
 	}
 
 	/**

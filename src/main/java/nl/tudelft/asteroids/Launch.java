@@ -43,7 +43,6 @@ public class Launch {
 	 * size, frame rate.
 	 */
 	public void start(String[] args) {
-
 		LOGGER.registerOutput(System.out);
 
 		try {
@@ -69,7 +68,6 @@ public class Launch {
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}
-
 	}
 
 	/**

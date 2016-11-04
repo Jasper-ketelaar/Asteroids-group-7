@@ -129,32 +129,18 @@ public class Player extends ExplodableEntity {
 	 * @param delta
 	 */
 	public void update(GameContainer gc, int delta) {
-		if (!getAnimation().getImage(0).equals(still.getImage(0))
-				&& !getAnimation().getImage(0).equals(moving.getImage(0))) {
-			System.out.println(getAnimation().getImage(0).equals(still.getImage(0)));
-			getAnimation().update(delta);
-		} else {
-
-			// logic for moving through screen borders
-			if (getMaxX() < 0 && getMinX() < 0) {
-				setPosition(new Vector2f(gc.getWidth(), getY()));
-			} else if (getMaxX() > gc.getWidth() && getMinX() > gc.getWidth()) {
-				setPosition(new Vector2f(0.0f - getSprite().getWidth(), getY()));
-			}
-
-			if (getMaxY() < 0 && getMinY() < 0) {
-				setPosition(new Vector2f(getX(), gc.getHeight()));
-			} else if (getMaxY() > gc.getHeight() && getMinY() > gc.getHeight()) {
-				setPosition(new Vector2f(getX(), 0.0f - getSprite().getHeight()));
-			}
-
+		Image sprite = getAnimation().getImage(0);
+		if(sprite.equals(still.getImage(0)) || sprite.equals(moving.getImage(0))) {
 			Input input = gc.getInput();
 			handleMovement(input, delta);
 			if (canFire) {
 				handleBullets(gc);
 			}
 			handlePowerUps();
+			positionUpdate(gc);
 			LOGGER.update();
+		} else {
+			getAnimation().update(delta);
 		}
 	}
 	
@@ -390,10 +376,8 @@ public class Player extends ExplodableEntity {
 	 * Renders the Player and Bullet sprites.
 	 */
 	public void render(Graphics g) {
-
 		Color clr = powerUp.getType().getColor();
 		getSprite().setImageColor(clr.r, clr.g, clr.b);
-
 		getSprite().draw(getX(), getY());
 
 		bullets.forEach(e -> e.render(g));

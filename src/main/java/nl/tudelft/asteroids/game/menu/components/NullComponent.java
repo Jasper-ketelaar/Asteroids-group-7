@@ -2,11 +2,12 @@ package nl.tudelft.asteroids.game.menu.components;
 
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
 public class NullComponent extends MenuComponent {
 
 	public NullComponent() throws SlickException {
-		super(null, new MenuData(new Vector2i(0,0), 0, 0));
+		super(null, new MenuData(new Vector2f(0,0), 0, 0));
 	}
 	
 	/**
@@ -16,7 +17,7 @@ public class NullComponent extends MenuComponent {
 	 * @return the absolute x value
 	 */
 	@Override
-	public int getAbsoluteX() {
+	public float getAbsoluteX() {
 		return super.getX();
 	}
 
@@ -27,7 +28,7 @@ public class NullComponent extends MenuComponent {
 	 * @return the absolute y value
 	 */
 	@Override
-	public int getAbsoluteY() {
+	public float getAbsoluteY() {
 		return super.getY();
 	}
 

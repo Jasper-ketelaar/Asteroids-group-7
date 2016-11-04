@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.state.StateBasedGame;
@@ -39,11 +38,13 @@ public class NormalPlayState extends DefaultPlayState {
 	 * 
 	 * @throws SlickException
 	 */
-	public void addPlayer(GameContainer gc) throws SlickException {
+	public Player addPlayer(GameContainer gc) throws SlickException {
+		System.out.println(gc.getWidth() + " size");
 		Player player = new Player(
-				new Vector2f(gc.getWidth() / (players.size() + 1), gc.getHeight() / (players.size() + 1)));
+				new Vector2f(gc.getWidth() / (players.size() + 2), gc.getHeight() / (players.size() + 2)));
 		player.init();
 		players.add(player);
+		return player;
 	}
 	
 	/**
@@ -51,12 +52,10 @@ public class NormalPlayState extends DefaultPlayState {
 	 * 
 	 * @throws SlickException
 	 */
-	public void addPlayer(GameContainer gc, int... binds) throws SlickException {
-		Player player = new Player(
-				new Vector2f(gc.getWidth() / (players.size() + 1), gc.getHeight() / (players.size() + 1)));
-		player.init();
+	public Player addPlayer(GameContainer gc, int... binds) throws SlickException {
+		Player player = addPlayer(gc);
 		player.bindKeys(binds[0], binds[1], binds[2], binds[3]);
-		players.add(player);
+		return player;
 	}
 
 	/**

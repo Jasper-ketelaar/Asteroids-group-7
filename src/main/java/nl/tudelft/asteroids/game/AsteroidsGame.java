@@ -56,7 +56,8 @@ public class AsteroidsGame extends StateBasedGame {
 	 */
 	@Override
 	public void initStatesList(GameContainer arg0) throws SlickException {
-		this.background = new Image(BACKGROUND);
+		if (background == null)
+			background = new Image(BACKGROUND);
 		
 		LOGGER.log("Background image loaded");
 		

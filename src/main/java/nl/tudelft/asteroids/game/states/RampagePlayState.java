@@ -47,6 +47,7 @@ public class RampagePlayState extends NormalPlayState {
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		super.init(gc, arg1);
 		this.start = System.currentTimeMillis();
+		this.addPlayer(gc);
 		this.players.get(0).disableFire();
 	}
 

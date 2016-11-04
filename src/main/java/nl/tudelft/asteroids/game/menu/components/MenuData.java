@@ -1,13 +1,15 @@
 package nl.tudelft.asteroids.game.menu.components;
 
+import org.newdawn.slick.geom.Vector2f;
+
 public class MenuData {
-	protected int x;
-	protected int y;
+	protected float x;
+	protected float y;
 	protected int width;
 	protected int height;
-	protected Vector2i coordinates;
+	protected Vector2f coordinates;
 
-	public MenuData(Vector2i coordinates, int width, int height) {
+	public MenuData(Vector2f coordinates, int width, int height) {
 		this.coordinates = coordinates;
 		this.x = coordinates.x;
 		this.y = coordinates.y;

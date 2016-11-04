@@ -51,7 +51,7 @@ public class Player extends ExplodableEntity {
 	
 	private boolean canFire = true;
 
-	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_NUMPAD0;
+	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_RCONTROL;
 
 	private Vector2f direction;
 	private Vector2f movingDirection;

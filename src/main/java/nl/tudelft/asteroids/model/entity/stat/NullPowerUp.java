@@ -1,22 +1,40 @@
 package nl.tudelft.asteroids.model.entity.stat;
 
+/**
+ * Class describing a null powerup to remove ugly null checks
+ * 
+ * @author Jasper
+ *
+ */
 public class NullPowerUp extends PowerUp {
 
-		public NullPowerUp() {
-			super(PowerupType.NULL);
-		}
-		
-		@Override
-		public void setPickupTime() {
-			
-		}
-		@Override
-		public long pickupTimeElapsed() {
-			return 0;
-		}
-
-		@Override
-		public long creationTimeElapsed() {
-			return 0;
-		}
+	/**
+	 * Simple constructor
+	 */
+	public NullPowerUp() {
+		super(PowerupType.NULL);
 	}
+
+	/**
+	 * Force override
+	 */
+	@Override
+	public void setPickupTime() {
+
+	}
+	/**
+	 * Force override
+	 */
+	@Override
+	public long pickupTimeElapsed() {
+		return 0;
+	}
+
+	/**
+	 * Force override
+	 */
+	@Override
+	public long creationTimeElapsed() {
+		return 0;
+	}
+}

@@ -3,6 +3,7 @@ package nl.tudelft.asteroids.game.menu.components;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.geom.Vector2f;
 
 public class MenuButton extends MenuComponent {
 
@@ -20,8 +21,8 @@ public class MenuButton extends MenuComponent {
 	 * 
 	 * @param button
 	 */
-	public MenuButton(MenuComponent parent, Image button, Vector2i coordinates) throws SlickException {
-		super(parent, new MenuData(new Vector2i(coordinates.x - 1, coordinates.y - 1), button.getWidth() + 1,
+	public MenuButton(MenuComponent parent, Image button, Vector2f coordinates) throws SlickException {
+		super(parent, new MenuData(new Vector2f(coordinates.x - 1, coordinates.y - 1), button.getWidth() + 1,
 				button.getHeight() + 1));
 		this.button = button;
 	}

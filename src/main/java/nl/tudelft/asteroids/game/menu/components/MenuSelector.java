@@ -17,11 +17,11 @@ public class MenuSelector<T> extends MenuComponent {
 
 	private final TrueTypeFont font = new TrueTypeFont(new Font("Verdana", Font.BOLD, 20), true);
 
-	private final Image left;
-	private final Image right;
+	protected final Image left;
+	protected final Image right;
 	private final List<T> items;
-	private boolean leftHovered;
-	private boolean rightHovered;
+	protected boolean leftHovered;
+	protected boolean rightHovered;
 	private int current;
 
 	/**

@@ -32,11 +32,6 @@ public class MenuButton extends MenuComponent {
 	 */
 	@Override
 	public void process(Graphics graphics) {
-		if (hovered)
-			button.setAlpha(HOVER);
-		else
-			button.setAlpha(STANDARD);
-
 		graphics.drawImage(button, 0, 0);
 	}
 
@@ -45,7 +40,12 @@ public class MenuButton extends MenuComponent {
 	 */
 	@Override
 	public void mouseMoved(int oldx, int oldy, int newx, int newy) {
+		super.mouseMoved(oldx, oldy, newx, newy);
 		hovered = contains(newx, newy);
+		if (hovered)
+			button.setAlpha(HOVER);
+		else
+			button.setAlpha(STANDARD);
 	}
 
 	/**
@@ -53,6 +53,7 @@ public class MenuButton extends MenuComponent {
 	 */
 	@Override
 	public void mousePressed(int button, int x, int y) {
+		super.mousePressed(button, x, y);
 		if (hovered) {
 			action.run();
 		}

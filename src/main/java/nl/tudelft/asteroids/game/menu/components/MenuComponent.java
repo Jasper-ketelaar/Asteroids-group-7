@@ -8,6 +8,7 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Rectangle;
 import org.newdawn.slick.geom.Shape;
+import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.util.InputAdapter;
 
 /**
@@ -61,7 +62,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 */
 	public MenuComponent(MenuComponent parent, int width, int height) throws SlickException {
 
-		this(parent, new MenuData(new Vector2i(0, 0), width, height));
+		this(parent, new MenuData(new Vector2f(0, 0), width, height));
 	}
 
 	/**
@@ -104,7 +105,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 * 
 	 * @return the absolute x value
 	 */
-	public int getAbsoluteX() {
+	public float getAbsoluteX() {
 
 		return getX() + parent.getAbsoluteX();
 
@@ -117,7 +118,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 * 
 	 * @return the absolute y value
 	 */
-	public int getAbsoluteY() {
+	public float getAbsoluteY() {
 
 		return getY() + parent.getAbsoluteY();
 
@@ -134,14 +135,14 @@ public abstract class MenuComponent extends InputAdapter {
 	/**
 	 * @return the {@link #x} attribute of this component
 	 */
-	public int getX() {
+	public float getX() {
 		return menudata.x;
 	}
 
 	/**
 	 * @return the {@link #y} attribute of this component
 	 */
-	public int getY() {
+	public float getY() {
 		return menudata.y;
 	}
 
@@ -193,7 +194,7 @@ public abstract class MenuComponent extends InputAdapter {
 	 *            the {@link #y} attribute to be updated to
 	 */
 	public void setLocation(int x, int y) {
-		this.menudata = new MenuData(new Vector2i(x, y), getWidth(), getHeight());
+		this.menudata = new MenuData(new Vector2f(x, y), getWidth(), getHeight());
 	}
 
 	/**

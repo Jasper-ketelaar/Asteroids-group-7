@@ -24,7 +24,6 @@ import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 public class NormalPlayState extends DefaultPlayState {
 
 	protected List<Player> players = new ArrayList<>();
-	private boolean multiplayer;
 
 	/**
 	 * Initializes the PlayState. The Player, Asteroids and sound are added to
@@ -33,19 +32,31 @@ public class NormalPlayState extends DefaultPlayState {
 	@Override
 	public void init(GameContainer gc, StateBasedGame arg1) throws SlickException {
 		super.init(gc, arg1);
+	}
 
-		if (players.size() < 1) {
-			Player player1 = new Player(new Vector2f(gc.getWidth() / 2, gc.getHeight() / 2));
-			player1.init();
-			players.add(player1);
-		}
-
-		if (multiplayer) {
-			Player player2 = new Player(new Vector2f(gc.getWidth() / 3, gc.getHeight() / 3));
-			player2.init();
-			player2.bindKeys(Input.KEY_W, Input.KEY_A, Input.KEY_D, Input.KEY_SPACE);
-			players.add(player2);
-		}
+	/**
+	 * Creates a new player
+	 * 
+	 * @throws SlickException
+	 */
+	public void addPlayer(GameContainer gc) throws SlickException {
+		Player player = new Player(
+				new Vector2f(gc.getWidth() / (players.size() + 1), gc.getHeight() / (players.size() + 1)));
+		player.init();
+		players.add(player);
+	}
+	
+	/**
+	 * Creates a new player with special keybinds
+	 * 
+	 * @throws SlickException
+	 */
+	public void addPlayer(GameContainer gc, int... binds) throws SlickException {
+		Player player = new Player(
+				new Vector2f(gc.getWidth() / (players.size() + 1), gc.getHeight() / (players.size() + 1)));
+		player.init();
+		player.bindKeys(binds[0], binds[1], binds[2], binds[3]);
+		players.add(player);
 	}
 
 	/**
@@ -91,7 +102,8 @@ public class NormalPlayState extends DefaultPlayState {
 	}
 
 	/**
-	 * Overridden to prevent asteroids from spawning on the location of the player.
+	 * Overridden to prevent asteroids from spawning on the location of the
+	 * player.
 	 */
 	@Override
 	public Vector2f randomLocation(GameContainer gc) {
@@ -135,14 +147,6 @@ public class NormalPlayState extends DefaultPlayState {
 				LOGGER.log("Game over! The score was  " + player.getScore());
 			}
 		}
-	}
-
-	/**
-	 * @param multiplayer
-	 *            Boolean indicating muti- or single player.
-	 */
-	public void setMultiplayer(boolean multiplayer) {
-		this.multiplayer = multiplayer;
 	}
 
 	/**

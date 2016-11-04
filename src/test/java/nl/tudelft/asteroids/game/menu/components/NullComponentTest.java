@@ -37,4 +37,5 @@ public class NullComponentTest extends TestWithDisplay {
 		Assert.assertEquals(0, test.getAbsoluteY(), 0);
 	}
 
+
 }

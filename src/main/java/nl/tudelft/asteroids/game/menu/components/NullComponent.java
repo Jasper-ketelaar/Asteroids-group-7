@@ -39,5 +39,13 @@ public class NullComponent extends MenuComponent {
 	public void process(Graphics graphics) {
 
 	}
+	
+	/**
+	 * NPE prevention
+	 */
+	@Override
+	public boolean isAcceptingInput() {
+		return false;
+	}
 
 }

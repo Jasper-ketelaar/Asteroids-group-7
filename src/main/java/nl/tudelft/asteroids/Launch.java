@@ -64,7 +64,8 @@ public class Launch {
 			appgc.setDisplayMode(1200, 700, false);
 			appgc.setTargetFrameRate(100);
 			LOGGER.log("Game container fired up", Level.INFO, true);
-			appgc.start();
+			if (args.length == 0 || !args[0].contains("test"))
+				appgc.start();
 		} catch (SlickException ex) {
 			LOGGER.log("SlickException thrown", Level.ERROR, true);
 		}

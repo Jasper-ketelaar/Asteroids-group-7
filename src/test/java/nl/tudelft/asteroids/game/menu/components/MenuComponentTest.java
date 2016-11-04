@@ -67,7 +67,7 @@ public class MenuComponentTest extends TestWithDisplay {
 
 	@Test
 	public void testIsAcceptingInput() {
-		Assert.assertTrue(test.isAcceptingInput());
+		Assert.assertFalse(test.isAcceptingInput());
 	}
 
 	@Test

@@ -53,7 +53,7 @@ public class NormalPlayStateTest extends TestWithDisplay {
 	public void testRender() throws SlickException {
 		playstateTest.init(gc, arg1);
 		Mockito.when(testPlayer.getPowerUp()).thenReturn(Mockito.mock(PowerUp.class));
-		//playstateTest.render(gc, arg1, g);
+//		playstateTest.render(gc, arg1, g);
 		//Mockito.verify(g, Mockito.times(1)).setColor(Mockito.anyObject());
 		//Mockito.verify(g, Mockito.times(1)).drawString("SCORE: 0", 8.0f, 22.0f);
 	}

@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import org.newdawn.slick.Animation;
+
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Ellipse;
@@ -19,8 +20,11 @@ import org.newdawn.slick.geom.Vector2f;
 import nl.tudelft.asteroids.TestWithDisplay;
 import nl.tudelft.asteroids.model.entity.dyn.Bullet;
 import nl.tudelft.asteroids.model.entity.dyn.explodable.playable.Player;
+
+import nl.tudelft.asteroids.model.entity.stat.NullPowerUp;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp;
 import nl.tudelft.asteroids.model.entity.stat.PowerUp.PowerupType;
+
 
 /**
  * TODO: COMMENTS
@@ -182,4 +186,53 @@ public class PlayerTest extends TestWithDisplay {
 		assertTrue(bullets.isEmpty());
 	}
 
+	
+	@Test
+	public void testCanFire(){
+		assertTrue(testPlayer.canFire());
+	}
+	
+	@Test
+	public void testDisableFire(){
+		testPlayer.disableFire();
+		assertFalse(testPlayer.canFire());
+	}
+	
+	@Test
+	public void testGetFiredBullets(){
+		assertEquals(testPlayer.getFiredBullets(), testPlayer.getFiredBullets());
+	}
+	
+	@Test
+	public void testGetPowerUp(){
+		PowerUp expected = new NullPowerUp();
+		testPlayer.setPowerUp(expected);
+		assertEquals(expected, testPlayer.getPowerUp());
+	}
+	
+	@Test
+	public void testGetUpKey(){
+		assertEquals(Input.KEY_UP, testPlayer.getUpKey());
+	}
+	
+	@Test
+	public void testGetRightKey(){
+		assertEquals(Input.KEY_RIGHT, testPlayer.getRightKey());
+	}
+	
+	@Test
+	public void testGetLeftKey(){
+		assertEquals(Input.KEY_LEFT, testPlayer.getLeftKey());
+	}
+	
+	@Test
+	public void testGetShootKey(){
+		assertEquals(Input.KEY_RCONTROL, testPlayer.getShootKey());
+	}
+	
+	@Test
+	public void testBindKeys(){
+		testPlayer.bindKeys(0, 1, 2, 3);
+		assertEquals(0, testPlayer.getUpKey());
+	}
 }

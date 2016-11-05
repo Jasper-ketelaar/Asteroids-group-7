@@ -371,6 +371,38 @@ public class Player extends ExplodableEntity {
 		this.right = right;
 		this.shoot = shoot;
 	}
+	
+	/**
+	 * Returns the up-keybinding for the player.
+	 * @return
+	 */
+	public int getUpKey(){
+		return this.up;
+	}
+	
+	/**
+	 * Returns the left-keybinding for the player.
+	 * @return
+	 */
+	public int getLeftKey(){
+		return this.left;
+	}
+	
+	/**
+	 * Returns the right-keybinding for the player.
+	 * @return
+	 */
+	public int getRightKey(){
+		return this.right;
+	}
+	
+	/**
+	 * Returns the shoot-keybinding for the player.
+	 * @return
+	 */
+	public int getShootKey(){
+		return this.shoot;
+	}
 
 	/**
 	 * Renders the Player and Bullet sprites.

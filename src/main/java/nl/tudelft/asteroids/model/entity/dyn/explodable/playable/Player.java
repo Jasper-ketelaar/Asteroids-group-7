@@ -51,7 +51,7 @@ public class Player extends ExplodableEntity {
 	
 	private boolean canFire = true;
 
-	private int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_RCONTROL;
+	protected int up = Input.KEY_UP, right = Input.KEY_RIGHT, left = Input.KEY_LEFT, shoot = Input.KEY_RCONTROL;
 
 	private Vector2f direction;
 	private Vector2f movingDirection;
@@ -186,7 +186,7 @@ public class Player extends ExplodableEntity {
 	 * 
 	 * @param gc
 	 */
-	private void handlePowerUps() {
+	public void handlePowerUps() {
 		if (powerUp.pickupTimeElapsed() > powerUp.getType().getDuration()) {
 			powerUp = new NullPowerUp();
 		} else {
@@ -241,7 +241,7 @@ public class Player extends ExplodableEntity {
 	 * 
 	 * @param input
 	 */
-	private void handleMovement(Input input, int delta) {
+	protected void handleMovement(Input input, int delta) {
 		int deltaTotal = (int) LOGGER.getData("delta")[0] + delta;
 
 		boolean upd = deltaTotal > 1000;
@@ -318,7 +318,7 @@ public class Player extends ExplodableEntity {
 	 * @param direction
 	 * @param velocity
 	 */
-	private void move(Vector2f direction, double velocity) {
+	protected void move(Vector2f direction, double velocity) {
 		setPosition(getPosition().add(direction.scale((float) velocity)));
 	}
 
@@ -328,7 +328,7 @@ public class Player extends ExplodableEntity {
 	 * @param input
 	 * @return
 	 */
-	private boolean updateRotation(Input input) {
+	protected boolean updateRotation(Input input) {
 		if (input.isKeyDown(right)) {
 			moving.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
 			still.getCurrentFrame().setRotation(getRotation() + ROTATION_SPEED);
